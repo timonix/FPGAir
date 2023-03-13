@@ -1,0 +1,9 @@
+﻿<Project>
+  <ItemGroup>
+    <File Include="test_02.vhd" />
+    <File Include="test_02_tb.vhd" />
+  </ItemGroup>
+  <PropertyGroup>
+    <HardwareStartPath>test_02.vhd</HardwareStartPath>
+  </PropertyGroup>
+</Project>
