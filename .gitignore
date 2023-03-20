@@ -5,6 +5,7 @@ Generated/
 incremental_db/
 output_files/
 db/
+impl/
 
 ## MacOS
 .DS_Store
