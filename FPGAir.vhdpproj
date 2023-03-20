@@ -1,9 +1,11 @@
 ﻿<Project>
   <ItemGroup>
+    <File Include="rtl/fpga_project_1.cst" />
+    <File Include="rtl/fpga_project_1.sdc" />
     <File Include="rtl/test_02.vhd" />
-    <File Include="tb/test_02_tb.vhd" />
+    <File Include="rtl/top.vhd" />
   </ItemGroup>
   <PropertyGroup>
-    <HardwareStartPath>rtl/test_02.vhd</HardwareStartPath>
+    <HardwareStartPath>rtl/top.vhd</HardwareStartPath>
   </PropertyGroup>
 </Project>

@@ -2,11 +2,11 @@
 [Libraries]
 work.files = [
 	'rtl/test_02.vhd',
-	'tb/test_02_tb.vhd'
+	'rtl/top.vhd'
 ]
 [libraries.work]
 files = [
 	'rtl/test_02.vhd',
-	'tb/test_02_tb.vhd'
+	'rtl/top.vhd'
 ]
 # auto-generated-end

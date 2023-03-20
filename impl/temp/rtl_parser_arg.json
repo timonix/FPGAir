@@ -2,7 +2,12 @@
  "Files" : [
   {
    "Library" : "work",
-   "Path" : "C:/Users/tjade/VHDPlus/Projects/FPGAir/rtl/top.vhd",
+   "Path" : "C:/Users/Tommy/VHDPlus/Projects/FPGAir/rtl/test_02.vhd",
+   "Type" : "vhdl"
+  },
+  {
+   "Library" : "work",
+   "Path" : "C:/Users/Tommy/VHDPlus/Projects/FPGAir/rtl/top.vhd",
    "Type" : "vhdl"
   }
  ],
@@ -10,7 +15,7 @@
 
  ],
  "LoopLimit" : 2000,
- "ResultFile" : "C:/Users/tjade/VHDPlus/Projects/FPGAir/impl/temp/rtl_parser.result",
+ "ResultFile" : "C:/Users/Tommy/VHDPlus/Projects/FPGAir/impl/temp/rtl_parser.result",
  "Top" : "",
  "VerilogStd" : "verilog_2001",
  "VhdlStd" : "vhdl_93"

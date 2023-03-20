@@ -1,0 +1,18 @@
+[
+ {
+  "InstFile" : "C:/Users/Tommy/VHDPlus/Projects/FPGAir/rtl/test_02.vhd",
+  "InstLine" : 5,
+  "InstName" : "test_02",
+  "ModuleFile" : "C:/Users/Tommy/VHDPlus/Projects/FPGAir/rtl/test_02.vhd",
+  "ModuleLine" : 5,
+  "ModuleName" : "test_02"
+ },
+ {
+  "InstFile" : "C:/Users/Tommy/VHDPlus/Projects/FPGAir/rtl/top.vhd",
+  "InstLine" : 5,
+  "InstName" : "top",
+  "ModuleFile" : "C:/Users/Tommy/VHDPlus/Projects/FPGAir/rtl/top.vhd",
+  "ModuleLine" : 5,
+  "ModuleName" : "top"
+ }
+]
