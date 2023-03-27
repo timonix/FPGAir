@@ -3,6 +3,8 @@
 work.files = [
 	'rtl/I2C_byte.vhd',
 	'tb/I2C_byte_tb.vhd',
+	'rtl/radio.vhd',
+	'tb/tb_radio.vhd',
 	'rtl/test_02.vhd',
 	'tb/test_02_tb.vhd',
 	'rtl/top.vhd'
@@ -11,6 +13,8 @@ work.files = [
 files = [
 	'rtl/I2C_byte.vhd',
 	'tb/I2C_byte_tb.vhd',
+	'rtl/radio.vhd',
+	'tb/tb_radio.vhd',
 	'rtl/test_02.vhd',
 	'tb/test_02_tb.vhd',
 	'rtl/top.vhd'

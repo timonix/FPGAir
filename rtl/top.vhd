@@ -6,46 +6,44 @@ entity top is
     port (
         sys_clk      : in  std_logic;
         sys_rst_n     : in  std_logic;
-        led  : out std_logic_vector(5 downto 0)
+        led  : out std_logic_vector(5 downto 0);
+        channel_1 : in std_logic
     );
 end top;
 
 architecture rtl of top is
+
+    signal signal_1 : STD_LOGIC_VECTOR(9 downto 0);
     
-    signal led_array : std_logic_vector(5 downto 0);
-    signal counter : integer range 0 to 28000000 := 0;
-    constant hetz : integer := 28000000;
-    
+    component radio is
+        generic(
+            frequency_mhz : real := 27.0
+        );
+        port(
+            clk  : in std_logic;
+            rst : in STD_LOGIC;
+            channel_1 : in STD_LOGIC;
+            signal_1 : out STD_LOGIC_VECTOR(9 downto 0)
+            
+        );
+    end component;
+
     
 begin
     
-    led <= led_array;
+    radio_module : radio
+    port map (
+        clk => sys_clk,
+        rst => sys_rst_n,
+        channel_1 => channel_1,
+        signal_1 => signal_1
+    );
     
     p_1_HZ : process (sys_clk) is
 
     begin
-        if rising_edge(sys_clk) then
-            counter <= counter + 1;
-
-            if counter < hetz / counter then
-                led_array <= led_array AND "011111";
-            elsif counter < hetz * 2/6  then
-                led_array <= led_array AND "101111";
-            elsif counter < hetz * 3/6 then
-                led_array <= led_array AND "110111";
-            elsif counter < hetz * 4/6 then
-                led_array <= led_array AND "111011";
-            elsif counter < hetz * 5/6 then
-                led_array <= led_array AND "111101";
-            else
-                led_array <= (others => '1');
-                counter <= 0;
-            end if;
-            
-            if sys_rst_n = '1' then
-                --counter <= (others => '0');
-            end if;
-        end if;
+        
+        
     end process p_1_HZ;
     
     
