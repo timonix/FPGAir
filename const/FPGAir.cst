@@ -23,4 +23,4 @@ IO_PORT "sys_rst_n" PULL_MODE=UP;
 IO_LOC "sys_clk" 52;
 IO_PORT "sys_clk" IO_TYPE=LVCMOS33 PULL_MODE=UP;    
 IO_LOC "channel_1" 70;
-IO_PORT "channel_1" PULL_MODE=UP DRIVE=8
+IO_PORT "channel_1" IO_TYPE=LVCMOS33 PULL_MODE=UP;

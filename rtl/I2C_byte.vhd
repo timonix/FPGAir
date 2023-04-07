@@ -18,7 +18,7 @@ end entity I2C_byte;
 
 architecture rtl of I2C_byte is
     
-    signal clock_divisor : positive := positive(frequency_mhz / (4.0 * i2c_frequency_mhz));
+    constant clock_divisor : positive := positive(frequency_mhz / (4.0 * i2c_frequency_mhz));
     signal clock_divider_counter : natural range 0 to clock_divisor + 1 := 0;
     signal i2c_clock : STD_LOGIC := '0';
     
