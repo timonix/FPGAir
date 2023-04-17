@@ -3,7 +3,9 @@
 work.files = [
 	'rtl/I2C_byte.vhd',
 	'tb/I2C_byte_tb.vhd',
-	'rtl/radio.vhd',
+	'rtl/pwm.vhd',
+	'rtl/radio_channel.vhd',
+	'tb/tb_pwm.vhd',
 	'tb/tb_radio.vhd',
 	'rtl/test_02.vhd',
 	'tb/test_02_tb.vhd',
@@ -13,7 +15,9 @@ work.files = [
 files = [
 	'rtl/I2C_byte.vhd',
 	'tb/I2C_byte_tb.vhd',
-	'rtl/radio.vhd',
+	'rtl/pwm.vhd',
+	'rtl/radio_channel.vhd',
+	'tb/tb_pwm.vhd',
 	'tb/tb_radio.vhd',
 	'rtl/test_02.vhd',
 	'tb/test_02_tb.vhd',
