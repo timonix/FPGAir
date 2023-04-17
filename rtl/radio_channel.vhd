@@ -18,7 +18,7 @@ entity radio_channel is
     );
 end entity radio_channel;
 
-architecture rtl of radio is
+architecture rtl of radio_channel is
     
     signal micro_second : real := 1.0;
     signal clock_divisor : positive := positive(frequency_mhz / micro_second);
@@ -34,7 +34,7 @@ architecture rtl of radio is
     signal ch1_scaling_factor : integer;
     signal ch1_offset : integer;
     
-    signal ch1_counter : unsigned := ();
+    signal ch1_counter : unsigned ;
     signal ch1_last_val : STD_LOGIC;
     
 begin

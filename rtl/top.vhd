@@ -32,7 +32,7 @@ architecture rtl of top is
     
 begin
     
-led(5 downto 0) <= signal_1(9 downto 4);
+    led(5 downto 0) <= signal_1(9 downto 4);
     radio_module : radio
     port map (
         clk => sys_clk,
