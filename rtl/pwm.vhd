@@ -18,12 +18,14 @@ architecture rtl of pwm is
     
     constant micro_second : real := 1.0;
     constant clock_divisor : positive := positive(frequency_mhz / micro_second);
-    signal clock_divider_counter : natural range 0 to clock_divisor + 1 := 0;
-    signal micro_clock : STD_LOGIC := '0';
+    constant period_time : INTEGER := 2500;
+
+    signal clock_divider_counter : natural range 0 to clock_divisor + 1 := 0; 
+    signal micro_clock : STD_LOGIC := '0'; -- 1 DFF
     
-    signal period_counter : INTEGER := 0;
+    signal period_counter : NATURAL range 0 to period_time + 1 := 0;  -- 
     signal pulse_time : unsigned(10 downto 0); -- Time of pulse
-    signal period_time : INTEGER := 2500;
+    
     
 begin
     radio_clock_proc : process (clk)
