@@ -4,6 +4,7 @@
     <File Include="const/FPGAir.sdc" />
     <File Include="rtl/I2C_byte.vhd" />
     <File Include="rtl/pwm.vhd" />
+    <File Include="rtl/pwm_top_test.vhd" />
     <File Include="rtl/radio_channel.vhd" />
     <File Include="rtl/test_02.vhd" />
     <File Include="rtl/top.vhd" />
