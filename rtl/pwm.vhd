@@ -16,8 +16,8 @@ end entity pwm;
 
 architecture rtl of pwm is
     
-    signal micro_second : real := 1.0;
-    signal clock_divisor : positive := positive(frequency_mhz / micro_second);
+    constant micro_second : real := 1.0;
+    constant clock_divisor : positive := positive(frequency_mhz / micro_second);
     signal clock_divider_counter : natural range 0 to clock_divisor + 1 := 0;
     signal micro_clock : STD_LOGIC := '0';
     
