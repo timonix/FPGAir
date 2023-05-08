@@ -2,6 +2,7 @@
   <ItemGroup>
     <File Include="const/FPGAir.cst" />
     <File Include="const/FPGAir.sdc" />
+    <File Include="rtl/DCCM.vhd" />
     <File Include="rtl/I2C_byte.vhd" />
     <File Include="rtl/pwm.vhd" />
     <File Include="rtl/pwm_top_test.vhd" />
