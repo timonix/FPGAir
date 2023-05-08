@@ -124,25 +124,6 @@ begin
                 end if;
             end if;
             
---            bool Tx(uint8_t dat){
---
---            for(uint8_t i = 8; i; i--){
---                (dat & 0x80) ? SDA_ON : SDA_OFF; //Mask for the eigth bit
---                dat<<=1;  //Move
---                dly();
---                SCL_ON;
---                dly();
---                SCL_OFF;
---                dly();
---            }
---                SDA_ON;
---                SCL_ON;
---                dly();
---                bool ack = !SDA_READ;    // Acknowledge bit
---                SCL_OFF;
---                return ack;
---            }
-            
             if s_latched_command = c_ctrl_rw then
                 o_working <= '1';
                 

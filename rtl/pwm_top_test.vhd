@@ -24,9 +24,10 @@ architecture rtl of pwm_top_test is
         port(
             clk  : in std_logic;
             rst : in STD_LOGIC;
+            enable : in std_logic;
             speed : in STD_LOGIC_VECTOR(10 downto 0);
             output : out STD_LOGIC;
-            micro_clock_out : out STD_LOGIC
+            sync : out STD_LOGIC
         );
     end component;
 
@@ -40,9 +41,10 @@ begin
     port map (
         clk => sys_clk,
         rst => sys_rst_n,
+        enable => '1',
         speed => speed_input,
         output => output_pin,
-        micro_clock_out => micro_clock_pin
+        sync => micro_clock_pin
     );
     
     process(sys_clk)

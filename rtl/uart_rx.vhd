@@ -2,23 +2,26 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity pwm is
+entity uart_rx is
     generic (
-        frequency_mhz : real := 27.0
+        frequency_mhz : real := 27.0;
+        buffer_size : natural := 2
     );
     port(
+        
         clk : in STD_LOGIC;
         rst : in STD_LOGIC;
         enable : in BOOLEAN;
-        speed : in UNSIGNED(10 downto 0);
-        output : out STD_LOGIC;
-        sync : out STD_LOGIC -- High on when speed gets sampled
+        rx : in STD_LOGIC;
+        
+        data : out STD_LOGIC_VECTOR(buffer_size * 8-1 downto 0);
+        data_valid : out BOOLEAN;
+        ready : in BOOLEAN
+        
     );
-end entity pwm;
+end entity uart_rx;
 
-
-
-architecture rtl of pwm is
+architecture rtl of uart_rx is
     
     type my_type_T is (Init_E, asd_E);
     
@@ -83,15 +86,3 @@ begin
     end process;
 
 end architecture rtl;
-
-
-
-
-
-
-
-
-
-
-
-

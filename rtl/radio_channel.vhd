@@ -2,6 +2,8 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
+use work.common_pkg.all;
+
 entity radio_channel is
     generic (
         frequency_mhz : real := 27.0
@@ -10,7 +12,7 @@ entity radio_channel is
         clk : in std_logic;
         rst : in STD_LOGIC;
         ch1 : in STD_LOGIC;
-        enable_output : in BOOLEAN;
+        enable : in BOOLEAN;
         channel_data : out UNSIGNED(9 downto 0)
     );
 end entity radio_channel;
@@ -54,7 +56,7 @@ begin
                 channel_data <= ch1_counter;
             end if;
             
-            if not enable_output then
+            if not enable then
                 channel_data <= (others => '0');
             end if;
             
