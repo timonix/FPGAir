@@ -72,8 +72,8 @@ begin
                 pulse_time <= speed + 1000;
             end if;
             
-            if not enable or rst then
-                pulse_time <= 0;
+            if not enable or rst = '1' then
+                pulse_time <= (others => '0');
                 output <= '0';
                 period_counter <= 0;
             end if;

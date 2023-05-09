@@ -14,7 +14,7 @@ end pwm_top_test;
 architecture rtl of pwm_top_test is
 
     
-    signal speed_input : STD_LOGIC_VECTOR(10 downto 0);-- := "00111110100";
+    signal speed_input : UNSIGNED(10 downto 0);-- := "00111110100";
     signal counter : UNSIGNED(30 downto 0);
     
     component pwm is
@@ -24,8 +24,8 @@ architecture rtl of pwm_top_test is
         port(
             clk  : in std_logic;
             rst : in STD_LOGIC;
-            enable : in std_logic;
-            speed : in STD_LOGIC_VECTOR(10 downto 0);
+            enable : in BOOLEAN;
+            speed : in UNSIGNED(10 downto 0);
             output : out STD_LOGIC;
             sync : out STD_LOGIC
         );
@@ -34,14 +34,14 @@ architecture rtl of pwm_top_test is
     
 begin
     
-    speed_input(9 downto 0) <= STD_LOGIC_VECTOR(counter(30 downto 21));
+    speed_input(9 downto 0) <= counter(30 downto 21);
     speed_input(10) <= '0';
     
     radio_module : pwm
     port map (
         clk => sys_clk,
         rst => sys_rst_n,
-        enable => '1',
+        enable => true,
         speed => speed_input,
         output => output_pin,
         sync => micro_clock_pin
