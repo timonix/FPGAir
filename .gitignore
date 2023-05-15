@@ -40,5 +40,7 @@ mem_init/
 **/Software/**/generated_bsp/
 **/Software/**/compile_commands.json
 
+*.user
+
 ## Python
 *__pycache__*
