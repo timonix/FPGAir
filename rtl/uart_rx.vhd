@@ -5,84 +5,68 @@ use IEEE.numeric_std.all;
 entity uart_rx is
     generic (
         frequency_mhz : real := 27.0;
-        buffer_size : natural := 2
+        baud_rate_mhz : real := 9600.0/1000000
     );
-    port(
+    port (
         
         clk : in STD_LOGIC;
         rst : in STD_LOGIC;
-        enable : in BOOLEAN;
+        enable : in boolean;
         rx : in STD_LOGIC;
         
-        data : out STD_LOGIC_VECTOR(buffer_size * 8-1 downto 0);
-        data_valid : out BOOLEAN;
-        ready : in BOOLEAN
+        data : out STD_LOGIC_VECTOR(7 downto 0);
+        data_valid : out boolean;
+        ready : in boolean
         
     );
 end entity uart_rx;
 
 architecture rtl of uart_rx is
     
-    type my_type_T is (Init_E, asd_E);
+    type state_t is (idle_E, working_E);
+    signal state : state_t;
     
-    constant micro_second : real := 1.0;
-    constant clock_divisor : positive := positive(frequency_mhz / micro_second) - 1;
-    constant period_time : INTEGER := 2500 * 8 - 1; -- 2500 for 400Hz
-
-    signal clock_divider_counter : natural range 0 to clock_divisor + 1 := 0;
-    signal micro_clock : STD_LOGIC := '0'; -- 1 DFF
+    constant period_time : natural := integer(frequency_mhz/baud_rate_mhz);
+    constant half_period : natural := period_time/2;
     
-    signal period_counter : NATURAL range 0 to period_time + 1 := 0;  --
-    signal pulse_time : unsigned(10 downto 0); -- Time of pulse
+    signal period_counter : natural range 0 to period_time + 1;
+    
+    signal s_data : STD_LOGIC_VECTOR(8 downto 0);
     
     
 begin
+    data <= s_data(7 downto 0);
     
-    radio_clock_proc : process (clk)
+    process (clk)
     begin
         if rising_edge(clk) then
-            clock_divider_counter <= clock_divider_counter + 1;
-            micro_clock <= '0';
-            if clock_divider_counter = clock_divisor then
-                clock_divider_counter <= 0;
-                micro_clock <= '1';
+            
+            if not (period_counter = 0) then
+                period_counter <= period_counter - 1;
+            end if;
+            
+            if state = idle_E and rx = '0' then
+                period_counter <= period_time/2;
+                state <= working_E;
+                s_data <= (others => '1');
+            end if;
+            
+            if state = working_E and period_counter = 0 and s_data(8) = '1' then
+                s_data<= s_data(7 downto 0) & rx;
+                period_counter <= period_time;
+            end if;
+            
+            if state = working_E and period_counter = 0 and s_data(8) = '0' then
+                state <= idle_E;
+            end if;
+            
+            if rst = '1' then
+                period_counter <= 0;
+                s_data <= (others => '0');
             end if;
             
         end if;
-    end process;
-    
-    process(clk)
-    begin
-        
-        if rising_edge(clk) then
-            
-            sync <= '0';
-            
-            -- Add to period counter each micro second
-            if micro_clock = '1' then
-                period_counter <= period_counter + 1;
-            end if;
-            
-            -- While signal is active
-            if period_counter < pulse_time then
-                output <= '1';
-            end if;
-            
-            -- End of period, reset and fetch new speed time value
-            if period_counter > period_time then
-                sync <= '1';
-                period_counter <= 0;
-                pulse_time <= speed + 1000;
-            end if;
-            
-            if not enable or rst then
-                pulse_time <= 0;
-                output <= '0';
-                period_counter <= 0;
-            end if;
-            
-        end if;
-        
+
     end process;
 
 end architecture rtl;
