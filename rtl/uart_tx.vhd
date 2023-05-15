@@ -68,8 +68,8 @@ begin
             end if;
             
             if rst = '1' then
+                state <= idle_E;
                 period_counter <= 0;
-                s_data <= (others => '0');
                 tx <= '1';
             end if;
             
