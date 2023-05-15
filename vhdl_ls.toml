@@ -1,6 +1,7 @@
 # auto-generated
 [Libraries]
 work.files = [
+	'rtl/DCCM.vhd',
 	'rtl/I2C_byte.vhd',
 	'tb/I2C_byte_tb.vhd',
 	'rtl/common_pkg.vhd',
@@ -9,12 +10,15 @@ work.files = [
 	'rtl/radio_channel.vhd',
 	'tb/tb_pwm.vhd',
 	'tb/tb_radio.vhd',
+	'tb/tb_uart_rx.vhd',
 	'rtl/test_02.vhd',
 	'tb/test_02_tb.vhd',
-	'rtl/top.vhd'
+	'rtl/top.vhd',
+	'rtl/uart_rx.vhd'
 ]
 [libraries.work]
 files = [
+	'rtl/DCCM.vhd',
 	'rtl/I2C_byte.vhd',
 	'tb/I2C_byte_tb.vhd',
 	'rtl/common_pkg.vhd',
@@ -23,8 +27,10 @@ files = [
 	'rtl/radio_channel.vhd',
 	'tb/tb_pwm.vhd',
 	'tb/tb_radio.vhd',
+	'tb/tb_uart_rx.vhd',
 	'rtl/test_02.vhd',
 	'tb/test_02_tb.vhd',
-	'rtl/top.vhd'
+	'rtl/top.vhd',
+	'rtl/uart_rx.vhd'
 ]
 # auto-generated-end

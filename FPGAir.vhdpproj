@@ -14,9 +14,10 @@
     <File Include="tb/I2C_byte_tb.vhd" />
     <File Include="tb/tb_pwm.vhd" />
     <File Include="tb/tb_radio.vhd" />
+    <File Include="tb/tb_uart_rx.vhd" />
     <File Include="tb/test_02_tb.vhd" />
   </ItemGroup>
   <PropertyGroup>
-    <HardwareStartPath>rtl/top.vhd</HardwareStartPath>
+    <HardwareStartPath>tb/tb_uart_rx.vhd</HardwareStartPath>
   </PropertyGroup>
 </Project>

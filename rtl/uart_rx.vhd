@@ -5,7 +5,7 @@ use IEEE.numeric_std.all;
 entity uart_rx is
     generic (
         frequency_mhz : real := 27.0;
-        baud_rate_mhz : real := 9600.0/1000000
+        baud_rate_mhz : real := 115200.0/1000000.0
     );
     port (
         
@@ -15,8 +15,7 @@ entity uart_rx is
         rx : in STD_LOGIC;
         
         data : out STD_LOGIC_VECTOR(7 downto 0);
-        data_valid : out boolean;
-        ready : in boolean
+        data_valid : out boolean
         
     );
 end entity uart_rx;
@@ -35,7 +34,7 @@ architecture rtl of uart_rx is
     
     
 begin
-    data <= s_data(7 downto 0);
+    data <= s_data(8 downto 1);
     
     process (clk)
     begin
@@ -52,12 +51,12 @@ begin
                 s_data <= (others => '1');
             end if;
             
-            if state = working_E and period_counter = 0 and s_data(8) = '1' then
-                s_data<= s_data(7 downto 0) & rx;
+            if state = working_E and period_counter = 0 and s_data(0) = '1' then
+                s_data<= rx & s_data(8 downto 1);
                 period_counter <= period_time;
             end if;
             
-            if state = working_E and period_counter = 0 and s_data(8) = '0' then
+            if state = working_E and period_counter = 0 and s_data(0) = '0' then
                 state <= idle_E;
                 data_valid <= True;
             end if;
