@@ -11,10 +11,12 @@ work.files = [
 	'tb/tb_pwm.vhd',
 	'tb/tb_radio.vhd',
 	'tb/tb_uart_rx.vhd',
+	'tb/tb_uart_tx.vhd',
 	'rtl/test_02.vhd',
 	'tb/test_02_tb.vhd',
 	'rtl/top.vhd',
-	'rtl/uart_rx.vhd'
+	'rtl/uart_rx.vhd',
+	'rtl/uart_tx.vhd'
 ]
 [libraries.work]
 files = [
@@ -28,9 +30,11 @@ files = [
 	'tb/tb_pwm.vhd',
 	'tb/tb_radio.vhd',
 	'tb/tb_uart_rx.vhd',
+	'tb/tb_uart_tx.vhd',
 	'rtl/test_02.vhd',
 	'tb/test_02_tb.vhd',
 	'rtl/top.vhd',
-	'rtl/uart_rx.vhd'
+	'rtl/uart_rx.vhd',
+	'rtl/uart_tx.vhd'
 ]
 # auto-generated-end

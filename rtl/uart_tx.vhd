@@ -5,7 +5,7 @@ use IEEE.numeric_std.all;
 entity uart_tx is
     generic (
         frequency_mhz : real := 27.0;
-        baud_rate_mhz : real := 9600.0/1000000
+        baud_rate_mhz : real := 115200.0/1000000.0
     );
     port (
         
@@ -33,10 +33,12 @@ architecture rtl of uart_tx is
     
     signal s_data : STD_LOGIC_VECTOR(9 downto 0);
     
-    signal bit_counter : NATURAL range 0 to 9;
+    signal bit_counter : NATURAL range 0 to 10;
     
 begin
     --s_data(7 downto 0) <= data;
+    
+    ready <= state = idle_E;
     
     process (clk)
     begin
@@ -51,25 +53,24 @@ begin
                 s_data(9) <= '1';
                 s_data(0) <= '0';
                 s_data(8 downto 1) <= data;
-                ready <= FALSE;
                 state <= working_E;
             end if;
             
-            if state = working_E and period_counter = 0 then
+            if state = working_E and period_counter = 0 and not (bit_counter = 10) then
                 tx <= s_data(0);
                 s_data(8 downto 0) <= s_data(9 downto 1);
                 period_counter <= period_time;
                 bit_counter <= bit_counter + 1;
             end if;
             
-            if state = working_E and period_counter = 0 and bit_counter = 9 then
-                ready <= TRUE;
+            if state = working_E and period_counter = 0 and bit_counter = 10 then
                 state <= idle_E;
             end if;
             
             if rst = '1' then
                 period_counter <= 0;
                 s_data <= (others => '0');
+                tx <= '1';
             end if;
             
         end if;
