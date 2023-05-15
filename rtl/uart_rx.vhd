@@ -40,6 +40,7 @@ begin
     process (clk)
     begin
         if rising_edge(clk) then
+            data_valid <= False;
             
             if not (period_counter = 0) then
                 period_counter <= period_counter - 1;
@@ -58,11 +59,12 @@ begin
             
             if state = working_E and period_counter = 0 and s_data(8) = '0' then
                 state <= idle_E;
+                data_valid <= True;
             end if;
             
-            if rst = '1' then
+            if rst = '1' or not enable then
+                state <= idle_E;
                 period_counter <= 0;
-                s_data <= (others => '0');
             end if;
             
         end if;
