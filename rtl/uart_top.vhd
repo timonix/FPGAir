@@ -35,8 +35,7 @@ architecture rtl of uart_top is
             enable        : in boolean;
             rx            : in STD_LOGIC;
             data          : out STD_LOGIC_VECTOR(7 downto 0);
-            data_valid    : out boolean;
-            ready         : in boolean
+            data_valid    : out boolean
         );
     end component uart_rx;
     
@@ -60,8 +59,7 @@ begin
         enable        => TRUE,
         rx            => rx,
         data          => uart_data,
-        data_valid    => uart_data_valid,
-        ready         => TRUE
+        data_valid    => uart_data_valid
     );
     
     
