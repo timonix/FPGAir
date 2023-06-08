@@ -59,7 +59,7 @@ architecture rtl of I2C_byte is
     signal clock_divider_counter : natural range 0 to clock_divisor + 1 := 0;
     signal i2c_clock : STD_LOGIC := '0';
     
-    signal s_stage : integer range 0 to 10;
+    signal s_stage : integer range 0 to 7;
     signal s_bit_id : integer range 0 to 7;
 
 begin
@@ -158,7 +158,6 @@ begin
                     s_latched_ack <= sda;
                     
                 elsif s_stage = 7 and i2c_clock = '1' then
-                    s_stage <= s_stage + 1;
                     OPEN_DRAIN_SET('0', sda);
                     
                     o_data <= s_latched_data;

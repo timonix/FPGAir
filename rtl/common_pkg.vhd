@@ -4,7 +4,8 @@ use IEEE.numeric_std.all;
 
 package common_pkg is
     
-    constant c_PIXELS : integer := 65536;
+    constant c_DUMMY : integer := 65536;
+    
     
 end package common_pkg;
 
