@@ -1,6 +1,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
+use work.common_pkg.t_i2c_ctrl;
+
 entity tb_I2C_byte is
 end tb_I2C_byte;
 
@@ -16,8 +18,8 @@ architecture tb of tb_I2C_byte is
         rst       : in std_logic;
         sda       : inout std_logic;
         scl       : inout std_logic;
-        o_working : out std_logic;
-        i_ctrl    : in std_logic_vector (1 downto 0);
+        o_working : out boolean;
+        i_ctrl    : t_i2c_ctrl;
         i_ack     : in std_logic;
         i_data    : in std_logic_vector (7 downto 0);
         o_ack     : out std_logic;
@@ -28,8 +30,8 @@ signal clk       : std_logic;
 signal rst       : std_logic;
 signal sda       : std_logic;
 signal scl       : std_logic;
-signal o_working : std_logic;
-signal i_ctrl    : std_logic_vector (1 downto 0);
+signal o_working : boolean;
+signal i_ctrl    : t_i2c_ctrl;
 signal i_ack     : std_logic;
 signal i_data    : std_logic_vector (7 downto 0);
 signal o_ack     : std_logic;
@@ -62,7 +64,7 @@ begin
     stimuli : process
     begin
         -- EDIT Adapt initialization as needed
-        i_ctrl <= (others => '0');
+        i_ctrl <= NOP_E;
         i_ack <= '0';
         i_data <= (others => '0');
 
@@ -78,22 +80,25 @@ begin
 
         -- EDIT Add stimuli here
         
-        i_ctrl <= "01";
+        i_ctrl <= START;
         wait for 1 * TbPeriod;
-        i_ctrl <= "00";
-        wait until o_working = '0';
+        i_ctrl <= NOP_E;
+        
+        
+        wait until o_working = false;
         wait for 1 * TbPeriod;
-        i_ctrl <= "11";
+        i_ctrl <= RW;
         i_data <= "01010110";
         wait for 1 * TbPeriod;
-        i_ctrl <= "00";
+        i_ctrl <= NOP_E;
         i_data <= (others => '0');
-        wait until o_working = '0';
+        --wait for 10000 * TbPeriod;
+        wait until o_working = false;
         wait for 1 * TbPeriod;
-        i_ctrl <= "10";
+        i_ctrl <= STOP;
         wait for 1 * TbPeriod;
-        i_ctrl <= "00";
-        wait until o_working = '0';
+        i_ctrl <= NOP_E;
+        wait until o_working = false;
         wait for 100 * TbPeriod;
 
         -- Stop the clock and hence terminate the simulation

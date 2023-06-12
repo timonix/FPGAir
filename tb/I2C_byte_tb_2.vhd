@@ -2,14 +2,16 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+use work.common_pkg.ALL;
+
 entity I2C_byte_tb_2 is
 end I2C_byte_tb_2;
 
 architecture tb of I2C_byte_tb_2 is
     signal clk, rst: std_logic := '0';
     signal sda, scl: std_logic;
-    signal o_working: std_logic;
-    signal i_ctrl: std_logic_vector(1 downto 0);
+    signal o_working: boolean;
+    signal i_ctrl: t_i2c_ctrl;
     signal i_ack: std_logic;
     signal i_data: std_logic_vector(7 downto 0);
     signal o_ack: std_logic;
@@ -42,29 +44,31 @@ begin
     begin
         -- reset
         rst <= '1';
-        i_ctrl <= "00";
+        i_ctrl <= NOP_E;
         i_ack <= '0';
         i_data <= (others => '0');
         wait for clk_period * 2;
         rst <= '0';
 
         -- Send start condition
-        i_ctrl <= "01"; -- START
+        i_ctrl <= START;
         i_ack <= '0';
         i_data <= "00000000";
-        wait until o_working = '0';
+        wait until o_working = false;
 
-        -- Read/Write
-        i_ctrl <= "11"; -- READ/WRITE
+        --Read/Write
+        i_ctrl <= RW;
         i_ack <= '0';
         i_data <= "10101010"; -- Sample data
-        wait until o_working = '0';
+        wait until o_working = false;
 
         -- Send stop condition
-        i_ctrl <= "10"; -- STOP
+        i_ctrl <= STOP; -- STOP
         i_ack <= '0';
         i_data <= "00000000";
-        wait until o_working = '0';
+        wait until o_working = false;
+        
+        wait for clk_period * 500;
         
         TbSimEnded <= true;
         -- Finish test

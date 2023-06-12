@@ -6,6 +6,7 @@
     <Device name="GW1NR-9C" pn="GW1NR-LV9QN88PC6/I5">gw1nr9c-004</Device>
     <FileList>
         <File path="rtl/I2C_byte.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/common_pkg.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/pwm.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/pwm_top_test.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/test_02.vhd" type="file.vhdl" enable="1"/>
