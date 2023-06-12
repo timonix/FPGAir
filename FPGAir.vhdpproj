@@ -5,6 +5,7 @@
     <File Include="rtl/DCCM.vhd" />
     <File Include="rtl/I2C_byte.vhd" />
     <File Include="rtl/common_pkg.vhd" />
+    <File Include="rtl/pid.vhd" />
     <File Include="rtl/pwm.vhd" />
     <File Include="rtl/pwm_top_test.vhd" />
     <File Include="rtl/radio_channel.vhd" />
