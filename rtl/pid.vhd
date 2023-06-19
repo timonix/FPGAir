@@ -4,6 +4,8 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use ieee.fixed_pkg.all;
 
+use work.common_pkg.ALL;
+
 entity pid is
     generic (
         frequency_mhz : real := 27.0;
@@ -39,7 +41,7 @@ begin
     begin
         if rising_edge(clk) then
             
-            sample_counter <= sample_counter + 1.0;
+            sample_counter <= fixed_add(to_sfixed(2.0,sample_counter),to_sfixed(1.0,sample_counter));
             sample <= '0';
             
             if sample_counter = sample_time then

@@ -6,10 +6,8 @@ work.files = [
 	'tb/I2C_byte_tb.vhd',
 	'tb/I2C_byte_tb_2.vhd',
 	'rtl/common_pkg.vhd',
-
 	'rtl/fixed_point_pkg.vhd',
 	'rtl/mpu6050.vhd',
-
 	'rtl/pid.vhd',
 	'rtl/pwm.vhd',
 	'rtl/pwm_top_test.vhd',
@@ -38,10 +36,8 @@ files = [
 	'tb/I2C_byte_tb.vhd',
 	'tb/I2C_byte_tb_2.vhd',
 	'rtl/common_pkg.vhd',
-
 	'rtl/fixed_point_pkg.vhd',
 	'rtl/mpu6050.vhd',
-
 	'rtl/pid.vhd',
 	'rtl/pwm.vhd',
 	'rtl/pwm_top_test.vhd',
