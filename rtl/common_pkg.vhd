@@ -10,7 +10,8 @@ package common_pkg is
     
     type t_i2c_ctrl is (NOP_E, START, STOP, RW);
 
-    
+    function fixed_add (A : in sfixed; B : in sfixed) return sfixed;
+    function fixed_sub (A : in sfixed; B : in sfixed) return sfixed;
 end package common_pkg;
 
 -- Package Body Section

@@ -3,7 +3,8 @@ use ieee.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use ieee.fixed_pkg.all;
 
-use work.fixed_point_pkg.all;
+use work.common_pkg.all;
+--use work.fixed_point_pkg.all;
 
 entity tb_fixed_type is
 end tb_fixed_type;
@@ -13,19 +14,19 @@ architecture tb of tb_fixed_type is
     signal sig :unresolved_sfixed(3 downto -2);
 
     signal clk       : std_logic;
-    signal mul_a     : fixed(4-1 downto -3) := "0010100"; -- 2.5
-    signal mul_b     : fixed(2-1 downto -4) := "011000"; --1.5
-    signal real_test : fixed(5-1 downto -6) := to_fixed(1.5,5,6);
-    signal mul_res   : fixed(4+2-1 downto -7);
+    signal mul_a     : sfixed(4-1 downto -3) := "0010100"; -- 2.5
+    signal mul_b     : sfixed(2-1 downto -4) := "011000"; --1.5
+    signal real_test : sfixed(5-1 downto -6) := to_sfixed(1.5,4,-6);
+    signal mul_res   : sfixed(4+2-1 downto -7);
     
-    signal a         : fixed(4 downto -3);
-    signal b         : fixed(7 downto -3);
-    signal c         : fixed(4 downto -5);
-    signal d         : fixed(8 downto -5);
+    signal a         : sfixed(4 downto -3);
+    signal b         : sfixed(7 downto -3);
+    signal c         : sfixed(4 downto -5);
+    signal d         : sfixed(8 downto -5);
     
-    signal f         : fixed(3 downto -3);
-    signal g         : fixed(4 downto -2);
-    signal h         : fixed(3 downto -2);
+    signal f         : sfixed(3 downto -3);
+    signal g         : sfixed(4 downto -2);
+    signal h         : sfixed(3 downto -2);
     
 
     constant TbPeriod : time := 37 ns; -- EDIT Put right period here
@@ -39,11 +40,14 @@ begin
 
     -- EDIT: Check that clk is really your main clock signal
     clk <= TbClock;
+    
+    
 
     stimuli : process
     begin
         
         a <= "00001000";
+        a <= fixed_add(a,a);
         wait for 10*TbPeriod;
         b <= resize(a,b'high,b'low);
         wait for 10*TbPeriod;
