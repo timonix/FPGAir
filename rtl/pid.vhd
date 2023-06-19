@@ -2,11 +2,12 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
+use ieee.fixed_pkg.all;
 
 entity pid is
     generic (
         frequency_mhz : real := 27.0;
-        Kp : INTEGER := 1;
+        Kp : sfixed(12 downto -12) := to_sfixed(1.0, 12,-12);
         Ki : INTEGER := 1;
         Kd : INTEGER := 1;
         sample_time : INTEGER := 512        -- micro seconds
@@ -47,7 +48,7 @@ begin
     begin
         if rising_edge(clk) then
             
-            -- write stuff here. For example what happens when 
+            -- write stuff here. For example what happens when
             
         end if;
     end process;
