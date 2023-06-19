@@ -5,6 +5,8 @@
     <File Include="rtl/DCCM.vhd" />
     <File Include="rtl/I2C_byte.vhd" />
     <File Include="rtl/common_pkg.vhd" />
+    <File Include="rtl/fixed_point_pkg.vhd" />
+    <File Include="rtl/pid.vhd" />
     <File Include="rtl/pwm.vhd" />
     <File Include="rtl/pwm_top_test.vhd" />
     <File Include="rtl/radio_channel.vhd" />
@@ -15,6 +17,7 @@
     <File Include="rtl/uart_tx.vhd" />
     <File Include="tb/I2C_byte_tb.vhd" />
     <File Include="tb/I2C_byte_tb_2.vhd" />
+    <File Include="tb/tb_fixed_type.vhd" />
     <File Include="tb/tb_pwm.vhd" />
     <File Include="tb/tb_radio.vhd" />
     <File Include="tb/tb_uart_rx.vhd" />

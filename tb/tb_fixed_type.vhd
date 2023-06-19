@@ -1,0 +1,81 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use IEEE.numeric_std.all;
+use ieee.fixed_pkg.all;
+
+use work.fixed_point_pkg.all;
+
+entity tb_fixed_type is
+end tb_fixed_type;
+
+architecture tb of tb_fixed_type is
+    
+    signal sig :sfixed(3 downto -2);
+
+    signal clk       : std_logic;
+    signal mul_a     : fixed(4-1 downto -3) := "0010100"; -- 2.5
+    signal mul_b     : fixed(2-1 downto -4) := "011000"; --1.5
+    signal real_test : fixed(5-1 downto -6) := to_fixed(1.5,5,6);
+    signal mul_res   : fixed(4+2-1 downto -7);
+    
+    signal a         : fixed(4 downto -3);
+    signal b         : fixed(7 downto -3);
+    signal c         : fixed(4 downto -5);
+    signal d         : fixed(8 downto -5);
+    
+    signal f         : fixed(3 downto -3);
+    signal g         : fixed(4 downto -2);
+    signal h         : fixed(3 downto -2);
+    
+
+    constant TbPeriod : time := 37 ns; -- EDIT Put right period here
+    signal TbClock : std_logic := '0';
+    signal TbSimEnded : std_logic := '0';
+
+begin
+
+    -- Clock generation
+    TbClock <= not TbClock after TbPeriod/2 when TbSimEnded /= '1' else '0';
+
+    -- EDIT: Check that clk is really your main clock signal
+    clk <= TbClock;
+
+    stimuli : process
+    begin
+        
+        a <= "00001000";
+        wait for 10*TbPeriod;
+        b <= resize(a,b'high,b'low);
+        wait for 10*TbPeriod;
+        assert a = b(a'range) report "extend left failed";
+        
+        c <= resize(a,c'high,c'low);
+        wait for 10*TbPeriod;
+        assert a = c(a'range) report "extend right failed";
+        
+        d <= resize(a,d'high,d'low);
+        wait for 10*TbPeriod;
+        assert a = d(a'range) report "extend both failed";
+        
+        f <= resize(a,f'high,f'low);
+        wait for 10*TbPeriod;
+        assert a(f'range) = f report "shrink left failed";
+        
+        g <= resize(a,g'high,g'low);
+        wait for 10*TbPeriod;
+        assert a(g'range) = g report "shrink right failed";
+        
+        h <= resize(a,h'high,h'low);
+        wait for 10*TbPeriod;
+        assert a(h'range) = h report "shrink both failed";
+        
+        mul_res <= mul_a*mul_b;
+        
+        wait for 100*TbPeriod;
+        
+
+        TbSimEnded <= '1';
+        wait;
+    end process;
+
+end tb;
