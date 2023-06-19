@@ -1,12 +1,12 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
+use IEEE.fixed_pkg.all;
 
 package common_pkg is
     
     constant c_DUMMY : integer := 65536;
     constant c_fixed_point_width : integer := 24;
-    
     
     type t_i2c_ctrl is (NOP_E, START, STOP, RW);
 
@@ -15,6 +15,26 @@ end package common_pkg;
 
 -- Package Body Section
 package body common_pkg is
+    
+    function fixed_add (A : in sfixed; B : in sfixed) return sfixed is
+begin
+    return resize (
+        arg => A + B,
+        size_res => A,
+        overflow_style => IEEE.fixed_float_types.fixed_wrap,
+        round_style => IEEE.fixed_float_types.fixed_truncate
+    );
+end;
+
+function fixed_sub (A : in sfixed; B : in sfixed) return sfixed is
+begin
+    return resize (
+        arg => A - B,
+        size_res => A,
+        overflow_style => IEEE.fixed_float_types.fixed_wrap,
+        round_style => IEEE.fixed_float_types.fixed_truncate
+    );
+end;
 
 
 function Bitwise_AND (
