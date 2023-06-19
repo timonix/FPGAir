@@ -10,7 +10,7 @@ end tb_fixed_type;
 
 architecture tb of tb_fixed_type is
     
-    signal sig :sfixed(3 downto -2);
+    signal sig :unresolved_sfixed(3 downto -2);
 
     signal clk       : std_logic;
     signal mul_a     : fixed(4-1 downto -3) := "0010100"; -- 2.5
