@@ -6,14 +6,20 @@ work.files = [
 	'tb/I2C_byte_tb.vhd',
 	'tb/I2C_byte_tb_2.vhd',
 	'rtl/common_pkg.vhd',
+
 	'rtl/fixed_point_pkg.vhd',
 	'rtl/mpu6050.vhd',
+
 	'rtl/pid.vhd',
 	'rtl/pwm.vhd',
 	'rtl/pwm_top_test.vhd',
 	'rtl/radio_channel.vhd',
+<<<<<<< HEAD
 	'tb/tb_fixed_type.vhd',
 	'tb/tb_mpu6050.vhd',
+=======
+	'tb/tb_pid.vhd',
+>>>>>>> d4b6ac6 (Pid updates)
 	'tb/tb_pwm.vhd',
 	'tb/tb_radio.vhd',
 	'tb/tb_uart_rx.vhd',
@@ -32,14 +38,20 @@ files = [
 	'tb/I2C_byte_tb.vhd',
 	'tb/I2C_byte_tb_2.vhd',
 	'rtl/common_pkg.vhd',
+
 	'rtl/fixed_point_pkg.vhd',
 	'rtl/mpu6050.vhd',
+
 	'rtl/pid.vhd',
 	'rtl/pwm.vhd',
 	'rtl/pwm_top_test.vhd',
 	'rtl/radio_channel.vhd',
+<<<<<<< HEAD
 	'tb/tb_fixed_type.vhd',
 	'tb/tb_mpu6050.vhd',
+=======
+	'tb/tb_pid.vhd',
+>>>>>>> d4b6ac6 (Pid updates)
 	'tb/tb_pwm.vhd',
 	'tb/tb_radio.vhd',
 	'tb/tb_uart_rx.vhd',
