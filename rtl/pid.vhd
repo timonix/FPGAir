@@ -12,15 +12,16 @@ entity pid is
         Kp : sfixed(12 downto -12) := to_sfixed(1.0, 12,-12);
         Ki : sfixed(12 downto -12) := to_sfixed(1.0, 12,-12);
         Kd : sfixed(12 downto -12) := to_sfixed(1.0, 12,-12);
-        sample_time : sfixed(12 downto -12) := to_sfixed(512.0, 12,-12)        -- micro seconds
+        sample_time : sfixed(12 downto -12) := to_sfixed(0.0005, 12,-12)        -- micro seconds
     );
     port(
         clk : in STD_LOGIC;
         rst : in STD_LOGIC;
         enable : in BOOLEAN;
-        setpoint : in sfixed(12 downto -12) := to_sfixed(0.0, 12,-12);
-        input : in sfixed(12 downto -12) := to_sfixed(0.0, 12,-12);
-        output : out sfixed(12 downto -12) := to_sfixed(0.0, 12,-12)
+        sample : in STD_LOGIC;
+        setpoint : in sfixed(12 downto -12);
+        input : in sfixed(12 downto -12);
+        output : out sfixed(12 downto -12)
     );
 end entity pid;
 
@@ -28,7 +29,7 @@ architecture rtl of pid is
     
     signal sample_counter : sfixed(12 downto -12) := to_sfixed(0.0, 12,-12);
     --signal sample_time_divisor : sfixed(12 downto -12) := resize(frequency_mhz * sample_time, 12, -12);
-    signal sample : STD_LOGIC := '0';
+    
     
     signal error : sfixed(12 downto -12) := to_sfixed(0.0, 12,-12);
     signal cum_error : sfixed(12 downto -12) := to_sfixed(0.0, 12,-12);
@@ -37,20 +38,7 @@ architecture rtl of pid is
     
 begin
 
-    pwm_clock_proc : process (clk)
-    begin
-        if rising_edge(clk) then
-            
-            sample_counter <= fixed_add(to_sfixed(2.0,sample_counter),to_sfixed(1.0,sample_counter));
-            sample <= '0';
-            
-            if sample_counter = sample_time then
-                sample <= '1';
-                sample_counter <= to_sfixed(0.0, 12,-12);
-            end if;
-            
-        end if;
-    end process;
+    
     
     process (clk)
     begin
@@ -60,14 +48,25 @@ begin
             
             if sample = '1' then
                 
-                error <= setpoint - input;
-                cum_error <= cum_error + error * sample_time;
-                rate_error <= (error - last_error) / sample_time;
+                error <= fixed_sub(setpoint, input);
+                cum_error <= fixed_mul_add(error, sample_time, cum_error);
+                rate_error <= resize(error-last_error / sample_time,rate_error);
                 
-                output <= Kp * error + Ki * cum_error + Kd * rate_error;
+                
                 
                 last_error <= error;
                 
+            end if;
+            
+            output <= resize(Kp * error + Ki * cum_error + Kd * rate_error,output);
+            
+            if not enable or rst = '1' then
+                error <= (others => '0');
+                cum_error <= (others => '0');
+                rate_error <= (others => '0');
+                output <= (others => '0');
+                last_error <= (others => '0');
+                sample_counter <= (others => '0');
             end if;
             
         end if;
