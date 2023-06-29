@@ -9,6 +9,16 @@ package common_pkg is
     constant c_fixed_point_width : integer := 24;
     
     type t_i2c_ctrl is (NOP_E, START, STOP, RW);
+    
+    type dbus_master_in is record
+        ready    : boolean;
+    end record dbus_master_in;
+    
+    type dbus_master_out is record
+        address  : std_logic_vector(7 downto 0);
+        valid    : boolean;
+        data     : std_logic_vector(7 downto 0);
+    end record dbus_master_out;
 
     function fixed_add (A : in sfixed; B : in sfixed) return sfixed;
     function fixed_sub (A : in sfixed; B : in sfixed) return sfixed;
