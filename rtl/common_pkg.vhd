@@ -35,6 +35,7 @@ package common_pkg is
 
     function fixed_add (A : in sfixed; B : in sfixed) return sfixed;
     function fixed_sub (A : in sfixed; B : in sfixed) return sfixed;
+    function fixed_mul_add (A : in sfixed; B : in sfixed; C : in sfixed) return sfixed;
 end package common_pkg;
 
 -- Package Body Section
@@ -87,6 +88,16 @@ function fixed_sub (A : in sfixed; B : in sfixed) return sfixed is
 begin
     return resize (
         arg => A - B,
+        size_res => A,
+        overflow_style => IEEE.fixed_float_types.fixed_wrap,
+        round_style => IEEE.fixed_float_types.fixed_truncate
+    );
+end;
+
+function fixed_mul_add (A : in sfixed; B : in sfixed; C : in sfixed) return sfixed is
+begin
+    return resize (
+        arg => A * B + C,
         size_res => A,
         overflow_style => IEEE.fixed_float_types.fixed_wrap,
         round_style => IEEE.fixed_float_types.fixed_truncate
