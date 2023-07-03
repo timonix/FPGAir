@@ -16,6 +16,7 @@ entity mpu6050 is
         
         sda         : inout STD_LOGIC;
         scl         : inout STD_LOGIC;
+       
         
         gyro_x      : out std_logic_vector(15 downto 0);
         gyro_y      : out std_logic_vector(15 downto 0);
@@ -282,7 +283,7 @@ begin
             if s_stage = 0 then
                 s_stage <= 0;
             end if;
-        
+            
             if i_update then
                 s_stage <= 1;
             end if;

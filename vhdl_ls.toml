@@ -2,16 +2,22 @@
 [Libraries]
 work.files = [
 	'rtl/DCCM.vhd',
+	'rtl/DEPRECATED_debug_module.vhd',
 	'rtl/I2C_byte.vhd',
 	'tb/I2C_byte_tb.vhd',
 	'tb/I2C_byte_tb_2.vhd',
 	'rtl/common_pkg.vhd',
+	'rtl/debug_dbus.vhd',
 	'rtl/fixed_point_pkg.vhd',
 	'rtl/mpu6050.vhd',
+	'rtl/mpu6050_dbus.vhd',
 	'rtl/pid.vhd',
 	'rtl/pwm.vhd',
 	'rtl/pwm_top_test.vhd',
 	'rtl/radio_channel.vhd',
+	'tb/tb_debug_module.vhd',
+	'tb/tb_debug_port.vhd',
+	'tb/tb_debug_port2.vhd',
 	'tb/tb_fixed_type.vhd',
 	'tb/tb_mpu6050.vhd',
 	'tb/tb_pwm.vhd',
@@ -22,22 +28,30 @@ work.files = [
 	'tb/test_02_tb.vhd',
 	'rtl/top.vhd',
 	'rtl/uart_rx.vhd',
+	'rtl/uart_rx_dbus.vhd',
 	'rtl/uart_top.vhd',
-	'rtl/uart_tx.vhd'
+	'rtl/uart_tx.vhd',
+	'rtl/uart_tx_dbus.vhd'
 ]
 [libraries.work]
 files = [
 	'rtl/DCCM.vhd',
+	'rtl/DEPRECATED_debug_module.vhd',
 	'rtl/I2C_byte.vhd',
 	'tb/I2C_byte_tb.vhd',
 	'tb/I2C_byte_tb_2.vhd',
 	'rtl/common_pkg.vhd',
+	'rtl/debug_dbus.vhd',
 	'rtl/fixed_point_pkg.vhd',
 	'rtl/mpu6050.vhd',
+	'rtl/mpu6050_dbus.vhd',
 	'rtl/pid.vhd',
 	'rtl/pwm.vhd',
 	'rtl/pwm_top_test.vhd',
 	'rtl/radio_channel.vhd',
+	'tb/tb_debug_module.vhd',
+	'tb/tb_debug_port.vhd',
+	'tb/tb_debug_port2.vhd',
 	'tb/tb_fixed_type.vhd',
 	'tb/tb_mpu6050.vhd',
 	'tb/tb_pwm.vhd',
@@ -48,7 +62,9 @@ files = [
 	'tb/test_02_tb.vhd',
 	'rtl/top.vhd',
 	'rtl/uart_rx.vhd',
+	'rtl/uart_rx_dbus.vhd',
 	'rtl/uart_top.vhd',
-	'rtl/uart_tx.vhd'
+	'rtl/uart_tx.vhd',
+	'rtl/uart_tx_dbus.vhd'
 ]
 # auto-generated-end

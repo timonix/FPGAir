@@ -2,6 +2,8 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
+use work.common_pkg.all;
+
 entity uart_rx is
     generic (
         frequency_mhz : real := 27.0;
@@ -34,7 +36,7 @@ architecture rtl of uart_rx is
     
     
 begin
-    data <= s_data(8 downto 1);
+    data <= reverse(s_data(8 downto 1));
     
     process (clk)
     begin
