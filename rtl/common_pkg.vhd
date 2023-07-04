@@ -14,7 +14,7 @@ package common_pkg is
     
     type t_i2c_ctrl is (NOP_E, START, STOP, RW);
     
-    type dbus_command is (RD,WR,CLR);
+    type dbus_command is (RD,WR,CLR,INJECT);
     function to_dbus_command(A : std_logic_vector) return dbus_command;
 
     type dbus is record
@@ -22,12 +22,14 @@ package common_pkg is
         source_address : natural range 0 to dbus_range;
         command  : dbus_command;
         data     : std_logic_vector(7 downto 0);
+        marked_for_deletion : boolean;
     end record dbus;
     
     constant C_dbus : dbus := (data => (others => '0'),
         target_address => 0,
         source_address => 0,
-        command => RD);
+        command => RD,
+        marked_for_deletion => false);
     
     function to_natural(A : std_logic_vector) return natural;
     
@@ -41,15 +43,19 @@ end package common_pkg;
 -- Package Body Section
 package body common_pkg is
     function to_dbus_command(A : std_logic_vector) return dbus_command is
-        
+        variable tmp : std_logic_vector(1 downto 0);
     begin
-        case A is
+        
+        tmp := a;
+        case tmp is
             when "00" =>
                 return RD;
             when "01" =>
                 return WR;
             when "10" =>
                 return CLR;
+            when "11" =>
+                return INJECT;
             when others =>
                 return RD;
                 

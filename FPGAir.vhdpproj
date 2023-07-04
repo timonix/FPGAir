@@ -2,13 +2,18 @@
   <ItemGroup>
     <File Include="const/FPGAir.cst" />
     <File Include="const/FPGAir.sdc" />
+    <File Include="rtl/top_components/dbus_test_top.vhd" />
+    <File Include="rtl/dbus_components/bram_dbus.vhd" />
+    <File Include="rtl/dbus_components/buffer_dbus.vhd" />
+    <File Include="rtl/dbus_components/bus_cleaner_dbus.vhd" />
+    <File Include="rtl/dbus_components/debug_module_dbus.vhd" />
+    <File Include="rtl/dbus_components/uart_rx_dbus.vhd" />
+    <File Include="rtl/dbus_components/uart_tx_dbus.vhd" />
     <File Include="rtl/DCCM.vhd" />
     <File Include="rtl/I2C_byte.vhd" />
     <File Include="rtl/common_pkg.vhd" />
-    <File Include="rtl/debug_dbus.vhd" />
     <File Include="rtl/fixed_point_pkg.vhd" />
     <File Include="rtl/mpu6050.vhd" />
-    <File Include="rtl/mpu6050_dbus.vhd" />
     <File Include="rtl/pid.vhd" />
     <File Include="rtl/pwm.vhd" />
     <File Include="rtl/pwm_top_test.vhd" />
@@ -16,12 +21,11 @@
     <File Include="rtl/test_02.vhd" />
     <File Include="rtl/top.vhd" />
     <File Include="rtl/uart_rx.vhd" />
-    <File Include="rtl/uart_rx_dbus.vhd" />
     <File Include="rtl/uart_top.vhd" />
     <File Include="rtl/uart_tx.vhd" />
-    <File Include="rtl/uart_tx_dbus.vhd" />
     <File Include="tb/I2C_byte_tb.vhd" />
     <File Include="tb/I2C_byte_tb_2.vhd" />
+    <File Include="tb/tb_bram_dbus.vhd" />
     <File Include="tb/tb_debug_module.vhd" />
     <File Include="tb/tb_debug_port.vhd" />
     <File Include="tb/tb_debug_port2.vhd" />
@@ -33,7 +37,6 @@
     <File Include="tb/tb_uart_rx.vhd" />
     <File Include="tb/tb_uart_tx.vhd" />
     <File Include="tb/test_02_tb.vhd" />
-    <File Include="tb_pid.vcd" />
   </ItemGroup>
   <PropertyGroup>
     <HardwareStartPath>tb/tb_uart_rx.vhd</HardwareStartPath>

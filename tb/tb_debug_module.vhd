@@ -48,17 +48,17 @@ begin
             -- Sample test 1
         current_test <= 1;
         dbus_in.target_address <= 10;  -- Must be the same as the generic map register_address
-        dbus_in.command <= RD;
+        dbus_in.command <= READ;
         dbus_in.data <= "01010101";
         data_in <= "11111111";
         wait for clk_period;
-        assert dbus_out.command = WR and dbus_out.data = data_in
+        assert dbus_out.command = WRITE and dbus_out.data = data_in
         report "Test 1 Failed" severity ERROR;
         
     -- Sample test 2
         current_test <= 2;
         dbus_in.target_address <= 10;  -- Must be the same as the generic map register_address
-        dbus_in.command <= WR;
+        dbus_in.command <= WRITE;
         dbus_in.data <= "10101010";
         data_in <= "00000000";
         wait for clk_period;

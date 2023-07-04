@@ -5,10 +5,10 @@
 //Part Number: GW1NR-LV9QN88PC6/I5
 //Device: GW1NR-9C
 //Created Time: Thu 03 03 19:24:24 2022
-//IO_LOC "tx" 17;
-//IO_PORT "tx" IO_TYPE=LVCMOS33;
-//IO_LOC "rx" 18;
-//IO_PORT "rx" IO_TYPE=LVCMOS33;
+IO_LOC "tx" 17;
+IO_PORT "tx" IO_TYPE=LVCMOS33;
+IO_LOC "rx" 18;
+IO_PORT "rx" IO_TYPE=LVCMOS33;
 //IO_LOC "led[5]" 16;
 //IO_PORT "led[5]" PULL_MODE=UP DRIVE=8;
 //IO_LOC "led[4]" 15;
