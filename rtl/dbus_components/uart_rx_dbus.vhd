@@ -5,6 +5,7 @@ use work.common_pkg.all;
 
 entity uart_rx_dbus is
     generic(
+        source_address : natural range 1 to dbus_range := 1;
         frequency_mhz : real := 27.0;
         baud_rate_mhz : real := 115200.0/1000000.0
     );
@@ -27,7 +28,7 @@ architecture rtl of uart_rx_dbus is
     signal rx_buffer : dbus;
     
     
-    type t_rx_state is (WAITING_FOR_DATA, WAITING_FOR_ADDRESS);
+    type t_rx_state is (WAITING_FOR_DATA, WAITING_FOR_ADDRESS_HIGH, WAITING_FOR_ADDRESS_LOW);
     signal s_rx_state : t_rx_state := WAITING_FOR_DATA;
     signal s_rx_valid : boolean;
 
@@ -58,17 +59,20 @@ begin
             
             dbus_out <= dbus_in;
             
-            if s_rx_state = WAITING_FOR_ADDRESS and s_rx_valid then
+            if s_rx_state = WAITING_FOR_ADDRESS_HIGH and s_rx_valid then
                 rx_buffer.target_address <= to_natural(s_rx_data(5 downto 0));
                 rx_buffer.command <= to_dbus_command(s_rx_data(7 downto 6));
+                s_rx_state <= WAITING_FOR_ADDRESS_LOW;
+            elsif s_rx_state = WAITING_FOR_ADDRESS_LOW and s_rx_valid then
+                rx_buffer.target_address <= rx_buffer.target_address * 256 + to_natural(s_rx_data);
                 s_rx_state <= WAITING_FOR_DATA;
             elsif s_rx_state = WAITING_FOR_DATA and s_rx_valid then
                 rx_buffer.data <= s_rx_data;
-                rx_buffer.source_address <= 0;
-                s_rx_state <= WAITING_FOR_ADDRESS;
+                rx_buffer.source_address <= source_address;
+                s_rx_state <= WAITING_FOR_ADDRESS_HIGH;
             end if;
             
-            if rx_buffer.target_address /= 0 then
+            if rx_buffer.target_address /= 0 and s_rx_state = WAITING_FOR_DATA then
                 dbus_out <= rx_buffer;
                 rx_buffer <= c_dbus;
             end if;

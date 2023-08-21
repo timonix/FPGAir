@@ -65,7 +65,7 @@ begin
     
     rx_inst : entity work.uart_rx_dbus(rtl)
     generic map(
-        target_address => 1,
+
         frequency_mhz => frequency_mhz,
         baud_rate_mhz => baud_rate_mhz
     )

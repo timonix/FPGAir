@@ -7,6 +7,7 @@ entity mpu6050 is
     generic(
         frequency_mhz : real := 27.0;
         i2c_frequency_mhz : real := 0.4;
+        start_on_reset : boolean := true;
         simulation : boolean := true
     );
     port(
@@ -16,7 +17,7 @@ entity mpu6050 is
         
         sda         : inout STD_LOGIC;
         scl         : inout STD_LOGIC;
-       
+        
         
         gyro_x      : out std_logic_vector(15 downto 0);
         gyro_y      : out std_logic_vector(15 downto 0);
@@ -37,8 +38,8 @@ end entity mpu6050;
 architecture rtl of mpu6050 is
     
 
-    constant MPU_ADDRESS_WRITE : std_logic_vector(7 downto 0) := x"68";
-    constant MPU_ADDRESS_READ : std_logic_vector(7 downto 0) := x"69";
+    constant MPU_ADDRESS_WRITE : std_logic_vector(7 downto 0) := "11010000";
+    constant MPU_ADDRESS_READ : std_logic_vector(7 downto 0) :=  "11010001";
     constant clock_divisor : positive := positive(frequency_mhz / (4.0 * i2c_frequency_mhz));
     signal clock_divider_counter : natural range 0 to clock_divisor + 1 := 0;
     signal i2c_clock : STD_LOGIC := '0';
@@ -239,7 +240,7 @@ begin
             
             SEND_START(264,267);
             SEND_BYTE(268,303,MPU_ADDRESS_WRITE);
-            SEND_BYTE(304,339,X"43"); --
+            SEND_BYTE(304,339,X"3B"); --
             
             SEND_RESTART(340,343);
             SEND_BYTE(344,379,MPU_ADDRESS_READ);
@@ -290,7 +291,9 @@ begin
             
             if rst = '1' then
                 s_stage <= 0;
-                
+                if start_on_reset then
+                    s_stage <= 1;
+                end if;
             end if;
         end if;
     end process;

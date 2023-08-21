@@ -36,7 +36,7 @@ architecture rtl of uart_rx is
     
     
 begin
-    data <= reverse(s_data(8 downto 1));
+    data <= s_data(8 downto 1);
     
     process (clk)
     begin

@@ -71,9 +71,8 @@ begin
         wait for TbPeriod;
         assert ready = False;
         
-        data <= (others => '0');
-        data_valid <= False;
-        
+        wait for 8681*10 ns;
+        wait for 8681*10 ns;
         wait for 8681*10 ns;
 
         -- EDIT Add stimuli here

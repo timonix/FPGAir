@@ -8,7 +8,8 @@ entity uart_tx_dbus is
         register_map : natural range 1 to dbus_range := 1;
         frequency_mhz : real := 27.0;
         baud_rate_mhz : real := 115200.0/1000000.0;
-        buffer_size : positive := 2
+        boot_message : String := "FPGAir";
+        buffer_size : positive range boot_message'length to integer'high := boot_message'length
     );
     port(
         
@@ -89,6 +90,10 @@ begin
                         data => (others => '0'),
                         valid => false)
                 );
+                
+                for char in boot_message'range loop
+                    tx_buffer(char-1) <= (data => TO_STDLOGICVECTOR(boot_message(char)), valid => true);
+                end loop;
                 
             end if;
         end if;
