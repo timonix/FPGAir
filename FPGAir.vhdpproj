@@ -28,10 +28,12 @@
     <File Include="rtl/uart_tx.vhd" />
     <File Include="tb/I2C_byte_tb.vhd" />
     <File Include="tb/I2C_byte_tb_2.vhd" />
+
     <File Include="tb/tb_bram_dbus.vhd" />
     <File Include="tb/tb_debug_module.vhd" />
     <File Include="tb/tb_debug_port.vhd" />
     <File Include="tb/tb_debug_port2.vhd" />
+
     <File Include="tb/tb_fixed_type.vhd" />
     <File Include="tb/tb_mpu6050.vhd" />
     <File Include="tb/tb_pid.vhd" />

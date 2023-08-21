@@ -13,11 +13,11 @@ architecture tb of tb_pid is
     signal rst      : std_logic;
     signal enable   : boolean;
     signal sample   : STD_LOGIC;
-    signal setpoint : sfixed(12 downto -12) := to_sfixed(0.0, 12,-12);
+    signal setpoint : sfixed(15 downto -15) := to_sfixed(0.0, 15,-15);
     --signal input    : sfixed(12 downto -12) := to_sfixed(0.0, 12,-12);
-    signal output_value : sfixed(12 downto -12);
+    signal output_value : sfixed(15 downto -15);
     
-    constant TbPeriod : time := 1000 ns;
+    constant TbPeriod : time := 37 ns;
     signal TbClock : std_logic := '0';
     signal TbSimEnded : std_logic := '0';
 
@@ -26,9 +26,9 @@ begin
     pid_inst : entity work.pid(rtl)
     generic map (
         frequency_mhz => 27.0,
-        Kp => to_sfixed(0.5, 12,-12),
-        Ki => to_sfixed(0.05, 12,-12),
-        Kd => to_sfixed(0.0, 12,-12)
+        Kp => to_sfixed(0.3, 15,-15),
+        Ki => to_sfixed(0.4, 15,-15),
+        Kd => to_sfixed(0.0, 15,-15)
     )
     port map (
         clk      => clk,
@@ -52,7 +52,7 @@ begin
     begin
         -- Initialization
         enable <= False;
-        setpoint <= to_sfixed(500.0, 12,-12);
+        setpoint <= to_sfixed(500.0, 15,-15);
         sample <= '0';
 
         -- Reset generation
@@ -62,20 +62,20 @@ begin
         wait for 100 ns;
 
         -- Add stimuli here
-        wait for 100 ms;
+        wait for 10 ns;
         enable <= True;
         sample <= '1';
         wait for TbPeriod;
         sample <= '0';
         wait for TbPeriod*10;
-        for i in 0 to 100 loop
+        for i in 0 to 3000 loop
             sample <= '1';
             wait for TbPeriod;
             sample <= '0';
-            wait for TbPeriod*10;
+            wait for TbPeriod*5;
         end loop;
             
-        wait for 10 ms;
+        wait for 10 ns;
 
         -- Stop the clock and hence terminate the simulation
         TbSimEnded <= '1';
