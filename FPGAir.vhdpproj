@@ -2,15 +2,15 @@
   <ItemGroup>
     <File Include="const/FPGAir.cst" />
     <File Include="const/FPGAir.sdc" />
-    <File Include="rtl/stream_components/data_unloader.vhd" />
-    <File Include="rtl/stream_components/tb_uart_tx_stream.vhd" />
-    <File Include="rtl/stream_components/uart_tx_stream.vhd" />
     <File Include="rtl/dbus_components/bram_dbus.vhd" />
     <File Include="rtl/dbus_components/buffer_dbus.vhd" />
     <File Include="rtl/dbus_components/bus_cleaner_dbus.vhd" />
     <File Include="rtl/dbus_components/debug_module_dbus.vhd" />
     <File Include="rtl/dbus_components/uart_rx_dbus.vhd" />
     <File Include="rtl/dbus_components/uart_tx_dbus.vhd" />
+    <File Include="rtl/stream_components/data_unloader.vhd" />
+    <File Include="rtl/stream_components/tb_uart_tx_stream.vhd" />
+    <File Include="rtl/stream_components/uart_tx_stream.vhd" />
     <File Include="rtl/top_components/dbus_test_top.vhd" />
     <File Include="rtl/top_components/mpu6050_test_top.vhd" />
     <File Include="rtl/top_components/tb_dbus_test_top.vhd" />
