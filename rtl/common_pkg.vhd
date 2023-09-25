@@ -21,6 +21,7 @@ package common_pkg is
     
     type dbus_command is (RD,WR,CLR,INJECT);
     function to_dbus_command(A : std_logic_vector) return dbus_command;
+   
 
     type dbus is record
         target_address  : natural range 0 to dbus_range;

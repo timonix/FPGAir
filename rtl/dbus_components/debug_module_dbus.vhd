@@ -31,6 +31,7 @@ architecture rtl of debug_module_dbus is
 begin
     
     data_out <= force_data when s_force and enable_force else data_in;
+    data_out <= data_in;
 
     process(clk)
     begin

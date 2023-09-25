@@ -18,7 +18,6 @@ work.files = [
 	'rtl/pwm.vhd',
 	'rtl/pwm_top_test.vhd',
 	'rtl/radio_channel.vhd',
-
 	'tb/tb_bram_dbus.vhd',
 	'rtl/top_components/tb_dbus_test_top.vhd',
 	'tb/tb_debug_module.vhd',
@@ -27,15 +26,12 @@ work.files = [
 	'tb/tb_fixed_type.vhd',
 	'tb/tb_mpu6050.vhd',
 	'rtl/top_components/tb_mpu6050_test_top.vhd',
-
-	'tb/tb_fixed_type.vhd',
-	'tb/tb_mpu6050.vhd',
-
 	'tb/tb_pid.vhd',
 	'tb/tb_pwm.vhd',
 	'tb/tb_radio.vhd',
 	'tb/tb_uart_rx.vhd',
 	'tb/tb_uart_tx.vhd',
+	'rtl/stream_components/tb_uart_tx_stream.vhd',
 	'rtl/test_02.vhd',
 	'tb/test_02_tb.vhd',
 	'rtl/top.vhd',
@@ -43,7 +39,8 @@ work.files = [
 	'rtl/dbus_components/uart_rx_dbus.vhd',
 	'rtl/uart_top.vhd',
 	'rtl/uart_tx.vhd',
-	'rtl/dbus_components/uart_tx_dbus.vhd'
+	'rtl/dbus_components/uart_tx_dbus.vhd',
+	'rtl/stream_components/uart_tx_stream.vhd'
 ]
 [libraries.work]
 files = [
@@ -64,7 +61,6 @@ files = [
 	'rtl/pwm.vhd',
 	'rtl/pwm_top_test.vhd',
 	'rtl/radio_channel.vhd',
-
 	'tb/tb_bram_dbus.vhd',
 	'rtl/top_components/tb_dbus_test_top.vhd',
 	'tb/tb_debug_module.vhd',
@@ -73,15 +69,12 @@ files = [
 	'tb/tb_fixed_type.vhd',
 	'tb/tb_mpu6050.vhd',
 	'rtl/top_components/tb_mpu6050_test_top.vhd',
-
-	'tb/tb_fixed_type.vhd',
-	'tb/tb_mpu6050.vhd',
-
 	'tb/tb_pid.vhd',
 	'tb/tb_pwm.vhd',
 	'tb/tb_radio.vhd',
 	'tb/tb_uart_rx.vhd',
 	'tb/tb_uart_tx.vhd',
+	'rtl/stream_components/tb_uart_tx_stream.vhd',
 	'rtl/test_02.vhd',
 	'tb/test_02_tb.vhd',
 	'rtl/top.vhd',
@@ -89,6 +82,7 @@ files = [
 	'rtl/dbus_components/uart_rx_dbus.vhd',
 	'rtl/uart_top.vhd',
 	'rtl/uart_tx.vhd',
-	'rtl/dbus_components/uart_tx_dbus.vhd'
+	'rtl/dbus_components/uart_tx_dbus.vhd',
+	'rtl/stream_components/uart_tx_stream.vhd'
 ]
 # auto-generated-end

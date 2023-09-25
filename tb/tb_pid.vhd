@@ -13,9 +13,9 @@ architecture tb of tb_pid is
     signal rst      : std_logic;
     signal enable   : boolean;
     signal sample   : STD_LOGIC;
-    signal setpoint : sfixed(15 downto -15) := to_sfixed(0.0, 15,-15);
+    signal setpoint : sfixed(11 downto -11) := to_sfixed(0.0, 11,-11);
     --signal input    : sfixed(12 downto -12) := to_sfixed(0.0, 12,-12);
-    signal output_value : sfixed(15 downto -15);
+    signal output_value : sfixed(11 downto -11);
     
     constant TbPeriod : time := 37 ns;
     signal TbClock : std_logic := '0';
@@ -26,9 +26,9 @@ begin
     pid_inst : entity work.pid(rtl)
     generic map (
         frequency_mhz => 27.0,
-        Kp => to_sfixed(0.3, 15,-15),
-        Ki => to_sfixed(0.4, 15,-15),
-        Kd => to_sfixed(0.0, 15,-15)
+        Kp => to_sfixed(0.3, 11,-11),
+        Ki => to_sfixed(0.4, 11,-11),
+        Kd => to_sfixed(0.0, 11,-11)
     )
     port map (
         clk      => clk,
@@ -52,7 +52,7 @@ begin
     begin
         -- Initialization
         enable <= False;
-        setpoint <= to_sfixed(500.0, 15,-15);
+        setpoint <= to_sfixed(780.0, 11,-11);
         sample <= '0';
 
         -- Reset generation

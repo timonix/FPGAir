@@ -30,6 +30,7 @@ entity mpu6050 is
         temperature : out std_logic_vector(15 downto 0);
 
         o_working : out boolean;
+        i_reset_mpu : in boolean := false;
         i_update : in boolean
         
     );
@@ -238,30 +239,31 @@ begin
             
             SEND_STOP(261,264);
             
-            SEND_START(264,267);
-            SEND_BYTE(268,303,MPU_ADDRESS_WRITE);
-            SEND_BYTE(304,339,X"3B"); --
+            --Loop from here
+            SEND_START(265,268);
+            SEND_BYTE(269,304,MPU_ADDRESS_WRITE);
+            SEND_BYTE(305,340,X"3B"); --
             
-            SEND_RESTART(340,343);
-            SEND_BYTE(344,379,MPU_ADDRESS_READ);
-            READ_BYTE(380,415,acc_x(15 downto 8),'0');
-            READ_BYTE(416,451,acc_x(7 downto 0),'0');
-            READ_BYTE(452,487,acc_y(15 downto 8),'0');
-            READ_BYTE(488,523,acc_y(7 downto 0),'0');
-            READ_BYTE(524,559,acc_z(15 downto 8),'0');
-            READ_BYTE(560,595,acc_z(7 downto 0),'0');
+            SEND_RESTART(341,344);
+            SEND_BYTE(345,380,MPU_ADDRESS_READ);
+            READ_BYTE(381,416,acc_x(15 downto 8),'0');
+            READ_BYTE(417,452,acc_x(7 downto 0),'0');
+            READ_BYTE(453,488,acc_y(15 downto 8),'0');
+            READ_BYTE(489,524,acc_y(7 downto 0),'0');
+            READ_BYTE(525,560,acc_z(15 downto 8),'0');
+            READ_BYTE(561,596,acc_z(7 downto 0),'0');
             
-            READ_BYTE(596,631,temperature(15 downto 8),'0');
-            READ_BYTE(632,667,temperature(7 downto 0),'0');
+            READ_BYTE(597,632,temperature(15 downto 8),'0');
+            READ_BYTE(633,668,temperature(7 downto 0),'0');
             
-            READ_BYTE(668,703,gyro_x(15 downto 8),'0');
-            READ_BYTE(704,739,gyro_x(7 downto 0),'0');
-            READ_BYTE(740,775,gyro_y(15 downto 8),'0');
-            READ_BYTE(776,811,gyro_y(7 downto 0),'0');
-            READ_BYTE(812,847,gyro_z(15 downto 8),'0');
-            READ_BYTE(848,883,gyro_z(7 downto 0),'1');
+            READ_BYTE(669,704,gyro_x(15 downto 8),'0');
+            READ_BYTE(705,740,gyro_x(7 downto 0),'0');
+            READ_BYTE(741,776,gyro_y(15 downto 8),'0');
+            READ_BYTE(777,812,gyro_y(7 downto 0),'0');
+            READ_BYTE(813,848,gyro_z(15 downto 8),'0');
+            READ_BYTE(849,884,gyro_z(7 downto 0),'1');
             
-            SEND_STOP(884,887);
+            SEND_STOP(885,888);
             
             
         end if;
@@ -286,6 +288,10 @@ begin
             end if;
             
             if i_update then
+                s_stage <= 265;
+            end if;
+            
+            if i_reset_mpu then
                 s_stage <= 1;
             end if;
             

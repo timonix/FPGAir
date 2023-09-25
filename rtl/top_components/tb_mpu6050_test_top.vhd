@@ -39,7 +39,7 @@ begin
     clk <= not clk after clk_period / 2 when not TbSimEnded else '0';
     
 
-    mpu6050 : entity work.mpu6050(rtl) generic map (frequency_mhz, i2c_frequency_mhz,true, false) port map (clk, rst, sda, scl, gyro_x, gyro_y, gyro_z, acc_x, acc_y, acc_z, temperature, mpu_working, update_mpu);
+    mpu6050 : entity work.mpu6050(rtl) generic map (frequency_mhz, i2c_frequency_mhz,true, false) port map (clk, rst, sda, scl, gyro_x, gyro_y, gyro_z, acc_x, acc_y, acc_z, temperature, mpu_working,open, update_mpu);
     
     cleaner : entity work.bus_cleaner_dbus(rtl) port map (clk, rst, dbus14, dbus0);
     gx0 : entity work.debug_module_dbus generic map (15,false) port map (clk, rst, gyro_x(7 downto 0),open,dbus0,dbus1);
