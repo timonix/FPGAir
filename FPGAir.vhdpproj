@@ -17,7 +17,10 @@
     <File Include="rtl/top_components/tb_mpu6050_test_top.vhd" />
     <File Include="rtl/DCCM.vhd" />
     <File Include="rtl/I2C_byte.vhd" />
+    <File Include="rtl/acc_angles.vhd" />
+    <File Include="rtl/atan_arr.vhd" />
     <File Include="rtl/common_pkg.vhd" />
+    <File Include="rtl/cordic_acc.vhd" />
     <File Include="rtl/fixed_point_pkg.vhd" />
     <File Include="rtl/gyro_rot.vhd" />
     <File Include="rtl/mpu6050.vhd" />
@@ -32,6 +35,7 @@
     <File Include="rtl/uart_tx.vhd" />
     <File Include="tb/I2C_byte_tb.vhd" />
     <File Include="tb/I2C_byte_tb_2.vhd" />
+    <File Include="tb/atan_arr_tb.vhd" />
     <File Include="tb/tb_bram_dbus.vhd" />
     <File Include="tb/tb_debug_module.vhd" />
     <File Include="tb/tb_debug_port.vhd" />

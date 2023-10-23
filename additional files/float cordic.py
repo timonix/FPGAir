@@ -48,6 +48,7 @@ def vector_mode(initial_x, initial_y, initial_z, num_iterations):
     x, y, z = initial_x, initial_y, initial_z
     for i in range(num_iterations):
         x, y, z = vector_mode_next(x, y, z, i)
+        #print(z)
 
     return x, y, z
 
@@ -70,7 +71,7 @@ x, y, z = -0.1, 0.1, 0.01
 ax, ay, az = 1, 1, 98
 
 
-roll, pitch = find_pitch_roll_test(ax, ay, az, 12)
+roll, pitch = find_pitch_roll_test(ax, ay, az, 20)
 print(f"Roll: {math.degrees(roll*2*math.pi)} degrees")
 print(f"Pitch: {math.degrees(pitch*2*math.pi)} degrees")
 
