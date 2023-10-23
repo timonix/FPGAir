@@ -19,6 +19,7 @@
     <File Include="rtl/I2C_byte.vhd" />
     <File Include="rtl/common_pkg.vhd" />
     <File Include="rtl/fixed_point_pkg.vhd" />
+    <File Include="rtl/gyro_rot.vhd" />
     <File Include="rtl/mpu6050.vhd" />
     <File Include="rtl/pid.vhd" />
     <File Include="rtl/pwm.vhd" />
@@ -36,6 +37,7 @@
     <File Include="tb/tb_debug_port.vhd" />
     <File Include="tb/tb_debug_port2.vhd" />
     <File Include="tb/tb_fixed_type.vhd" />
+    <File Include="tb/tb_gyro_rot.vhd" />
     <File Include="tb/tb_mpu6050.vhd" />
     <File Include="tb/tb_pid.vhd" />
     <File Include="tb/tb_pwm.vhd" />
