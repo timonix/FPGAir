@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.fixed_pkg.all;
 
 entity tb_atan_arr is
 end tb_atan_arr;
@@ -8,16 +9,16 @@ architecture tb of tb_atan_arr is
 
 
 
-signal clk         : std_logic;
-signal rst         : std_logic;
-signal i_update    : boolean;
-signal i_iteration : positive;
-signal i_d         : boolean;
-signal o_z         : boolean;
+    signal clk         : std_logic;
+    signal rst         : std_logic;
+    signal i_update    : boolean;
+    signal i_iteration : positive;
+    signal i_d         : boolean;
+    signal o_z         : sfixed(0 downto -16);
 
-constant TbPeriod : time := 1000 ns; -- EDIT Put right period here
-signal TbClock : std_logic := '0';
-signal TbSimEnded : std_logic := '0';
+    constant TbPeriod : time := 1000 ns; -- EDIT Put right period here
+    signal TbClock : std_logic := '0';
+    signal TbSimEnded : std_logic := '0';
 
 begin
 

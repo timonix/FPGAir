@@ -1,5 +1,6 @@
 # System Overview
 
+
 ```mermaid
 ---
 title: Components
@@ -29,3 +30,4 @@ classDiagram
         acc_angles <|-- cordic_acc
 
     class cordic_acc
+```

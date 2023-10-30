@@ -32,10 +32,10 @@ def sine_test_simple():
 
 
 def get_next_state(x, y, z, d, i):
-    print(math.atan(2 ** -i)/(2*math.pi))
+    #print(math.atan(2 ** -i)/(2*math.pi))
     x_new = x - y * d * 2 ** -i
     y_new = y + x * d * 2 ** -i
-    z_new = z - d * math.atan(2 ** -i)/(2*math.pi)
+    z_new = z - d * math.atan(2 ** -i)
     return x_new, y_new, z_new
 
 
@@ -48,43 +48,96 @@ def vector_mode(initial_x, initial_y, initial_z, num_iterations):
     x, y, z = initial_x, initial_y, initial_z
     for i in range(num_iterations):
         x, y, z = vector_mode_next(x, y, z, i)
-        #print(z)
 
     return x, y, z
 
 
-def find_pitch_roll_test(a_x, a_y, a_z, iterations):
-
+def atan2_est(x, y, iterations):
     scale = 1 / calculate_scale(iterations)
 
-    mag_yz, _, theta = vector_mode(a_y, a_z, 0, iterations)
-    mag_yz *= scale
+    mag, _, atan = vector_mode(abs(y), x, 0, iterations)
 
-    mag_xyz, _, phi = vector_mode(-a_x, mag_yz, 0, iterations)
-    mag_xyz *= scale
+    if y < 0 and x > 0:
+        atan = math.pi - atan
+
+    if y < 0 and x < 0:
+        atan = - atan - math.pi
+
+    return mag*scale, atan
+
+
+def find_pitch_roll_test(a_x, a_y, a_z, iterations):
+
+    mag_yz, theta = atan2_est(a_y, a_z, iterations)
+    mag_xyz, phi = atan2_est(a_x, mag_yz, iterations)
 
     return theta, phi
 
 
 # sine_test_simple()
-x, y, z = -0.1, 0.1, 0.01
-ax, ay, az = 1, 1, 98
+x, y, z = 1, 2, 3
 
 
-roll, pitch = find_pitch_roll_test(ax, ay, az, 20)
-print(f"Roll: {math.degrees(roll*2*math.pi)} degrees")
+roll, pitch = find_pitch_roll_test(x, y, z, 50)
 print(f"Pitch: {math.degrees(pitch*2*math.pi)} degrees")
+print(f"Roll: {math.degrees(roll*2*math.pi)} degrees")
 
-print(f"Roll: {roll} bin degrees")
-print(f"Pitch: {pitch} bin degrees")
+print(f"Roll: {roll* 57.3} bin degrees")
+print(f"Pitch: {pitch* 57.3} bin degrees")
 
+print("-------")
 
 r = math.sqrt(x * x + y * y + z * z)
 theta = math.atan2(y, x)
-phi = math.atan2(math.sqrt(x * x + y * y), z)
+phi = math.atan2(math.sqrt(x * x + y * y), z) # pitch
+
+roll = math.atan2(y, z)
+pitch = math.atan2((- x), math.sqrt(y * y + z * z))
 
 print("................")
-print(r)
+#print(r)
+print(theta * 57.3)
+print(phi * 57.3)
+
+print("---------")
+print(roll*57.3)
+print(pitch* 57.3)
+
+print("----JOPP---")
+acc_total_vector = math.sqrt((x * x) + (y * y) + (z * z))
+angle_roll_acc = math.asin(x/acc_total_vector) * -57.296
+angle_pitch_acc = math.asin(y/acc_total_vector) * 57.296
+
+print(angle_roll_acc)
+print(angle_pitch_acc)
+
+print("my EST")
+print(math.atan2(x, math.sqrt(z*z+y*y)) * -57.296)
+print(math.atan2(y, math.sqrt(z*z+x*x)) * 57.296)
+
+print("CORDIC")
+
+iterations = 20
+scale = 1 / calculate_scale(iterations)
+
+mag_yz, _, _ = vector_mode(y, z, 0, iterations)
+mag_yz *= scale
+
+mag_xz, _, _ = vector_mode(x, z, 0, iterations)
+mag_xz *= scale
+
+_, _, theta = vector_mode(x, mag_yz, 0, iterations)
+_, _, phi = vector_mode(y, mag_xz, 0, iterations)
+
+
 print(theta)
 print(phi)
+
+print("MAG")
+print(mag_yz)
+print(mag_xz)
+print("TRUE MAG")
+print(math.sqrt((y * y) + (z * z)))
+print(math.sqrt((x * x) + (z * z)))
+
 

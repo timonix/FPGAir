@@ -45,3 +45,4 @@ mem_init/
 
 ## Python
 *__pycache__*
+.idea/
