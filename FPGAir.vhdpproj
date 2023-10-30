@@ -13,6 +13,7 @@
     <File Include="rtl/stream_components/uart_tx_stream.vhd" />
     <File Include="rtl/top_components/dbus_test_top.vhd" />
     <File Include="rtl/top_components/mpu6050_test_top.vhd" />
+    <File Include="rtl/top_components/radio_servo_gyro_top.vhd" />
     <File Include="rtl/top_components/tb_dbus_test_top.vhd" />
     <File Include="rtl/top_components/tb_mpu6050_test_top.vhd" />
     <File Include="rtl/DCCM.vhd" />
