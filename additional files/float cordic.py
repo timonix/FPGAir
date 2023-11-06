@@ -78,15 +78,6 @@ def find_pitch_roll_test(a_x, a_y, a_z, iterations):
 x, y, z = 1, 2, 3
 
 
-roll, pitch = find_pitch_roll_test(x, y, z, 50)
-print(f"Pitch: {math.degrees(pitch*2*math.pi)} degrees")
-print(f"Roll: {math.degrees(roll*2*math.pi)} degrees")
-
-print(f"Roll: {roll* 57.3} bin degrees")
-print(f"Pitch: {pitch* 57.3} bin degrees")
-
-print("-------")
-
 r = math.sqrt(x * x + y * y + z * z)
 theta = math.atan2(y, x)
 phi = math.atan2(math.sqrt(x * x + y * y), z) # pitch
@@ -110,11 +101,6 @@ angle_pitch_acc = math.asin(y/acc_total_vector) * 57.296
 
 print(angle_roll_acc)
 print(angle_pitch_acc)
-
-print("my EST")
-print(math.atan2(x, math.sqrt(z*z+y*y)) * -57.296)
-print(math.atan2(y, math.sqrt(z*z+x*x)) * 57.296)
-
 print("CORDIC")
 
 iterations = 20
@@ -132,12 +118,5 @@ _, _, phi = vector_mode(y, mag_xz, 0, iterations)
 
 print(theta)
 print(phi)
-
-print("MAG")
-print(mag_yz)
-print(mag_xz)
-print("TRUE MAG")
-print(math.sqrt((y * y) + (z * z)))
-print(math.sqrt((x * x) + (z * z)))
 
 

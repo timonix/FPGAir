@@ -11,9 +11,9 @@ entity radio_channel is
     port (
         clk : in std_logic;
         rst : in STD_LOGIC;
-        ch1 : in STD_LOGIC;
         enable : in BOOLEAN;
-        channel_data : out UNSIGNED(9 downto 0)
+        channel_pwm : in STD_LOGIC;
+        channel_data : out UNSIGNED(10 downto 0)
     );
 end entity radio_channel;
 
@@ -26,7 +26,7 @@ architecture rtl of radio_channel is
     
     -- Signal 1
     
-    signal ch1_counter : unsigned (9 downto 0);
+    signal ch1_counter : unsigned (10 downto 0);
     signal ch1_last_val : STD_LOGIC;
     
 begin
@@ -47,22 +47,23 @@ begin
     begin
         if rising_edge(clk) then
 
-            ch1_counter <= (others => '0');
-            if radio_clock = '1' and ch1 = '1' then
+            if radio_clock = '1' and channel_pwm = '1' then
                 ch1_counter <= ch1_counter + 1;
             end if;
             
-            if ch1_last_val = '1' and ch1 = '0' then
+            if ch1_last_val = '1' and channel_pwm = '0' then
                 channel_data <= ch1_counter;
+                ch1_counter <= (others => '0');
             end if;
             
             if not enable then
                 channel_data <= (others => '0');
             end if;
             
-            ch1_last_val <= ch1;
+            ch1_last_val <= channel_pwm;
 
             if rst = '1' then
+                ch1_counter <= (others => '0');
                 channel_data <= (others => '0');
             end if;
             

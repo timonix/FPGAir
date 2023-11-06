@@ -38,9 +38,9 @@ def atan2_est(x, y, iterations):
 
     return atan
 
-B = 1
+B = 0
 
-X = np.arange(-15, 15, 0.01)
+X = np.arange(-15, 15, 0.001)
 y0 = []
 y1 = []
 for x in X:

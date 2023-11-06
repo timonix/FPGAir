@@ -46,3 +46,4 @@ mem_init/
 ## Python
 *__pycache__*
 .idea/
+**/additional\ files/**/.hypothesis
