@@ -54,7 +54,7 @@ begin
                 error <= fixed_sub(setpoint, input);
                 cum_error <= cum_mul(error, sample_time, cum_error);
                 rate_error <= resize((error-last_error) / sample_time,rate_error);
-                
+
                 last_error <= error;
                 
             end if;
@@ -63,6 +63,12 @@ begin
             tmp0 := resize(Kp * error ,output);
             tmp1 := resize(Ki * cum_error, output);
             tmp2 := resize( Kd * rate_error,output);
+            
+            if output > 1000 then
+                output <= to_sfixed(1000, output'left, output'right);
+            elsif output < -1000 then
+                output <= to_sfixed(-1000, output'left, output'right);
+            end if;
             
             if not enable or rst = '1' then
                 error <= (others => '0');
