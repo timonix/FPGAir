@@ -55,6 +55,6 @@
     <File Include="tb/test_02_tb.vhd" />
   </ItemGroup>
   <PropertyGroup>
-    <HardwareStartPath>tb/tb_uart_rx.vhd</HardwareStartPath>
+    <HardwareStartPath>tb/tb_mixer.vhd</HardwareStartPath>
   </PropertyGroup>
 </Project>

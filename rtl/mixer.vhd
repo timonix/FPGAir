@@ -4,6 +4,7 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use ieee.fixed_pkg.all;
 
+
 use work.common_pkg.ALL;
 
 entity mixer is
@@ -25,10 +26,10 @@ end entity mixer;
 architecture rtl of mixer is
     
     --signals
-    signal tmp1 : sfixed(11 downto -11);
-    signal tmp2 : sfixed(11 downto -11);
-    signal tmp3 : sfixed(11 downto -11);
-    signal tmp4 : sfixed(11 downto -11);
+    signal tmp1 : sfixed(14 downto -11);
+    signal tmp2 : sfixed(14 downto -11);
+    signal tmp3 : sfixed(14 downto -11);
+    signal tmp4 : sfixed(14 downto -11);
     
 begin
 
@@ -37,6 +38,11 @@ begin
         if rising_edge(clk) then
             
             -- Mix the throttle and PID values
+            report "throttle_i value: " & to_string(throttle_i);
+            report "roll_pid_i value: " & to_string(roll_pid_i);
+            report "pitch_pid_i value: " & to_string(pitch_pid_i);
+            report "yaw_pid_i value: " & to_string(yaw_pid_i);
+            
             tmp1 <= throttle_i - roll_pid_i - pitch_pid_i + yaw_pid_i;
             tmp2 <= throttle_i + roll_pid_i - pitch_pid_i - yaw_pid_i;
             tmp3 <= throttle_i - roll_pid_i + pitch_pid_i - yaw_pid_i;

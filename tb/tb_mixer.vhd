@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.fixed_pkg.all;
 
 entity tb_mixer is
 end tb_mixer;
@@ -8,20 +9,20 @@ use work.common_pkg.ALL;
 architecture tb of tb_mixer is
 
 
-signal clk             : std_logic;
-signal rst             : std_logic;
-signal enable          : boolean;
-signal throttle_i      : sfixed (11 downto -11);
-signal roll_pid_i      : sfixed (11 downto -11);
-signal pitch_pid_i     : sfixed (11 downto -11);
-signal yaw_pid_i       : sfixed (11 downto -11);
-signal motor1_signal_o : sfixed (11 downto -11);
-signal motor2_signal_o : sfixed (11 downto -11);
-signal motor3_signal_o : sfixed (11 downto -11);
+    signal clk             : std_logic;
+    signal rst             : std_logic;
+    signal enable          : boolean;
+    signal throttle_i      : sfixed (11 downto -11);
+    signal roll_pid_i      : sfixed (11 downto -11);
+    signal pitch_pid_i     : sfixed (11 downto -11);
+    signal yaw_pid_i       : sfixed (11 downto -11);
+    signal motor1_signal_o : sfixed (11 downto -11);
+    signal motor2_signal_o : sfixed (11 downto -11);
+    signal motor3_signal_o : sfixed (11 downto -11);
 
-constant TbPeriod : time := 1000 ns; -- EDIT Put right period here
-signal TbClock : std_logic := '0';
-signal TbSimEnded : std_logic := '0';
+    constant TbPeriod : time := 1000 ns; -- EDIT Put right period here
+    signal TbClock : std_logic := '0';
+    signal TbSimEnded : std_logic := '0';
 
 begin
 
@@ -46,7 +47,7 @@ begin
     stimuli : process
     begin
         -- EDIT Adapt initialization as needed
-        enable <= '0';
+        enable <= True;
         throttle_i <= (others => '0');
         roll_pid_i <= (others => '0');
         pitch_pid_i <= (others => '0');
@@ -61,8 +62,8 @@ begin
 
         -- EDIT Add stimuli here
         wait for 5 * TbPeriod;
-        
-        throttle_i <= to_sfixed(500, throttle_i'length);
+        report "this is a message"; -- severity note
+        throttle_i <= to_sfixed(500, 11,-11);
         roll_pid_i <= (others => '0');
         pitch_pid_i <= (others => '0');
         yaw_pid_i <= (others => '0');
@@ -70,7 +71,7 @@ begin
         wait for 5 * TbPeriod;
         
         throttle_i <= (others => '0');
-        roll_pid_i <= to_sfixed(500, throttle_i'length);
+        roll_pid_i <=  to_sfixed(500, 11,-11);
         pitch_pid_i <= (others => '0');
         yaw_pid_i <= (others => '0');
         
@@ -79,7 +80,7 @@ begin
         
         throttle_i <= (others => '0');
         roll_pid_i <= (others => '0');
-        pitch_pid_i <= to_sfixed(500, throttle_i'length);
+        pitch_pid_i <=  to_sfixed(500, 11,-11);
         yaw_pid_i <= (others => '0');
 
         
@@ -88,7 +89,7 @@ begin
         throttle_i <= (others => '0');
         roll_pid_i <= (others => '0');
         pitch_pid_i <= (others => '0');
-        yaw_pid_i <= to_sfixed(500, throttle_i'length);
+        yaw_pid_i <=  to_sfixed(500, 11,-11);
 
         wait for 5 * TbPeriod;
         
