@@ -1,4 +1,11 @@
 # System Overview
+
+## TODO
+- Test mixer
+- Convert signals from Gyro to -1000 to 1000
+- Work with radio_servo_gyro_top.vhd
+- Test PID
+
 Board: Tang Nano 9
 ![Alt text](Tang_nano_9_image.png)
 

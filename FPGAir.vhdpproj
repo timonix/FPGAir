@@ -24,6 +24,7 @@
     <File Include="rtl/cordic_acc.vhd" />
     <File Include="rtl/fixed_point_pkg.vhd" />
     <File Include="rtl/gyro_rot.vhd" />
+    <File Include="rtl/mixer.vhd" />
     <File Include="rtl/mpu6050.vhd" />
     <File Include="rtl/pid.vhd" />
     <File Include="rtl/pwm.vhd" />
