@@ -47,6 +47,7 @@
     <File Include="tb/tb_pid.vhd" />
     <File Include="tb/tb_pwm.vhd" />
     <File Include="tb/tb_radio.vhd" />
+    <File Include="tb/tb_radio_servo_gyro_top.vhd" />
     <File Include="tb/tb_uart_rx.vhd" />
     <File Include="tb/tb_uart_tx.vhd" />
     <File Include="tb/test_02_tb.vhd" />

@@ -21,7 +21,7 @@ architecture rtl of radio_channel is
     
     constant micro_second : real := 1.0;
     constant clock_divisor : positive := positive(frequency_mhz / micro_second);
-    signal clock_divider_counter : integer range 0 to clock_divisor + 1 := 0;
+    signal clock_divider_counter : integer range 0 to clock_divisor := 0;
     signal radio_clock : STD_LOGIC := '0';
     
     -- Signal 1
@@ -35,7 +35,7 @@ begin
         if rising_edge(clk) then
             clock_divider_counter <= clock_divider_counter + 1;
             radio_clock <= '0';
-            if clock_divider_counter = clock_divisor then
+            if clock_divider_counter = clock_divisor - 1 then
                 clock_divider_counter <= 0;
                 radio_clock <= '1';
             end if;
@@ -48,11 +48,16 @@ begin
         if rising_edge(clk) then
 
             if radio_clock = '1' and channel_pwm = '1' then
-                ch1_counter <= ch1_counter + 1;
+                if not (ch1_counter = 2000) then
+                    ch1_counter <= ch1_counter + 1;
+                end if;
             end if;
             
             if ch1_last_val = '1' and channel_pwm = '0' then
                 channel_data <= ch1_counter;
+                if ch1_counter < 1000 then
+                    channel_data <= to_unsigned(1000, channel_data'length);
+                end if;
                 ch1_counter <= (others => '0');
             end if;
             

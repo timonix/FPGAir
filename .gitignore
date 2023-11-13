@@ -47,3 +47,5 @@ mem_init/
 *__pycache__*
 .idea/
 **/additional\ files/**/.hypothesis
+
+_hdl_checker/
