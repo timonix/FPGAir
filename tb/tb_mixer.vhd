@@ -31,16 +31,6 @@ architecture tb of tb_mixer is
     constant TbPeriod : time := 1000 ns; -- EDIT Put right period here
     signal TbClock : std_logic := '0';
     signal TbSimEnded : std_logic := '0';
-    
-    procedure wait_and_set_to_0 is
-    begin
-        wait for 5 * TbPeriod;
-        throttle_i <= (others => '0');
-        roll_pid_i <= (others => '0');
-        pitch_pid_i <= (others => '0');
-        yaw_pid_i <= (others => '0');
-        wait for 1 ps;
-    end procedure;
 
 begin
 
@@ -64,6 +54,17 @@ begin
     clk <= TbClock;
 
     stimuli : process
+    
+    procedure wait_and_set_to_0 is
+    begin
+        wait for 5 * TbPeriod;
+        throttle_i <= (others => '0');
+        roll_pid_i <= (others => '0');
+        pitch_pid_i <= (others => '0');
+        yaw_pid_i <= (others => '0');
+        wait for 1 ps;
+    end procedure;
+    
     begin
         -- EDIT Adapt initialization as needed
         enable <= True;
@@ -94,7 +95,7 @@ begin
         pitch_pid_i <= (others => '0');
         yaw_pid_i <= (others => '0');
         
-        wait for 1 * TbPeriod;
+        wait for 2 * TbPeriod;
         
         assert motor1_signal_o > 0 report "unexpected value. i = " & to_string(motor1_signal_o);
         
@@ -105,7 +106,7 @@ begin
         pitch_pid_i <=  to_sfixed(300, 11,-11);
         yaw_pid_i <= (others => '0');
         
-        wait for 1 * TbPeriod;
+        wait for 2 * TbPeriod;
         
         assert motor1_signal_o > 0 report "unexpected value. i = " & to_string(motor1_signal_o);
         
@@ -125,7 +126,7 @@ begin
         pitch_pid_i <= (others => '0');
         yaw_pid_i <=  (others => '0');
 
-        wait for 1 * TbPeriod;
+        wait for 2 * TbPeriod;
         
         assert motor1_signal_o = 1000 report "unexpected value. i = " & to_string(motor1_signal_o);
         assert motor2_signal_o < 1000 report "unexpected value. i = " & to_string(motor2_signal_o);
@@ -141,7 +142,7 @@ begin
         pitch_pid_i <= to_sfixed(400, 11,-11);
         yaw_pid_i <= (others => '0');
 
-        wait for 1 * TbPeriod;
+        wait for 2 * TbPeriod;
         
         assert motor1_signal_o = 1000 report "unexpected value. i = " & to_string(motor1_signal_o);
         assert motor2_signal_o = 1000 report "unexpected value. i = " & to_string(motor2_signal_o);
@@ -157,7 +158,7 @@ begin
         pitch_pid_i <= (others => '0');
         yaw_pid_i <=  to_sfixed(400, 11,-11);
 
-        wait for 1 * TbPeriod;
+        wait for 2 * TbPeriod;
         
         assert motor1_signal_o < 1000 report "unexpected value. i = " & to_string(motor1_signal_o);
         assert motor2_signal_o = 1000 report "unexpected value. i = " & to_string(motor2_signal_o);
