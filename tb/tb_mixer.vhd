@@ -62,7 +62,7 @@ begin
         roll_pid_i <= (others => '0');
         pitch_pid_i <= (others => '0');
         yaw_pid_i <= (others => '0');
-        wait for 1 ps;
+        wait for 1 * TbPeriod;
     end procedure;
     
     begin
@@ -165,7 +165,7 @@ begin
         assert motor3_signal_o = 1000 report "unexpected value. i = " & to_string(motor3_signal_o);
         assert motor4_signal_o < 1000 report "unexpected value. i = " & to_string(motor4_signal_o);
         
-        
+        wait for 2 * TbPeriod;
         
         
         

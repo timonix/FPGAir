@@ -1,7 +1,7 @@
 # System Overview
 
 ## TODO
-- Test mixer
+- Test mixer more
 - Convert signals from Gyro to -1000 to 1000
 - Work with radio_servo_gyro_top.vhd
 - Test PID
