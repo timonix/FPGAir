@@ -2,9 +2,13 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.fixed_pkg.all;
 
+use ieee.fixed_pkg.all;
+
+use work.common_pkg.ALL;
+
 entity tb_mixer is
 end tb_mixer;
-use work.common_pkg.ALL;
+
 
 architecture tb of tb_mixer is
 
