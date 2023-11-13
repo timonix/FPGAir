@@ -7,18 +7,6 @@ use work.common_pkg.ALL;
 
 architecture tb of tb_mixer is
 
-    component mixer
-    port (clk             : in std_logic;
-        rst             : in std_logic;
-        enable          : in boolean;
-        throttle_i      : in sfixed (11 downto -11);
-        roll_pid_i      : in sfixed (11 downto -11);
-        pitch_pid_i     : in sfixed (11 downto -11);
-        yaw_pid_i       : in sfixed (11 downto -11);
-        motor1_signal_o : out sfixed (11 downto -11);
-        motor2_signal_o : out sfixed (11 downto -11);
-        motor3_signal_o : out sfixed (11 downto -11));
-end component;
 
 signal clk             : std_logic;
 signal rst             : std_logic;
@@ -37,7 +25,7 @@ signal TbSimEnded : std_logic := '0';
 
 begin
 
-    dut : mixer
+    dut : entity work.mixer(rtl)
     port map (clk             => clk,
         rst             => rst,
         enable          => enable,
@@ -72,8 +60,46 @@ begin
         wait for 100 ns;
 
         -- EDIT Add stimuli here
-        wait for 100 * TbPeriod;
+        wait for 5 * TbPeriod;
+        
+        throttle_i <= to_sfixed(500, throttle_i'length);
+        roll_pid_i <= (others => '0');
+        pitch_pid_i <= (others => '0');
+        yaw_pid_i <= (others => '0');
+        
+        wait for 5 * TbPeriod;
+        
+        throttle_i <= (others => '0');
+        roll_pid_i <= to_sfixed(500, throttle_i'length);
+        pitch_pid_i <= (others => '0');
+        yaw_pid_i <= (others => '0');
+        
 
+        wait for 5 * TbPeriod;
+        
+        throttle_i <= (others => '0');
+        roll_pid_i <= (others => '0');
+        pitch_pid_i <= to_sfixed(500, throttle_i'length);
+        yaw_pid_i <= (others => '0');
+
+        
+        wait for 5 * TbPeriod;
+        
+        throttle_i <= (others => '0');
+        roll_pid_i <= (others => '0');
+        pitch_pid_i <= (others => '0');
+        yaw_pid_i <= to_sfixed(500, throttle_i'length);
+
+        wait for 5 * TbPeriod;
+        
+
+        
+        
+
+        
+        
+        
+        
         -- Stop the clock and hence terminate the simulation
         TbSimEnded <= '1';
         wait;

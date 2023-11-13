@@ -17,7 +17,7 @@ entity mixer is
         yaw_pid_i : in sfixed(11 downto -11);
         motor1_signal_o : out sfixed(11 downto -11);
         motor2_signal_o : out sfixed(11 downto -11);
-        motor3_signal_o : out sfixed(11 downto -11)
+        motor3_signal_o : out sfixed(11 downto -11);
         motor4_signal_o : out sfixed(11 downto -11)
     );
 end entity mixer;
@@ -56,7 +56,21 @@ begin
                 tmp4 <= to_sfixed(1000, tmp4'length);
             end if;
             
-            -- Cut all negative bits
+            -- Limit the signals min value
+            if tmp1 < 0 then
+                tmp1 <= (others => '0');
+            end if;
+            if tmp2 < 0 then
+                tmp2 <= (others => '0');
+            end if;
+            if tmp3 < 0 then
+                tmp3 <= (others => '0');
+            end if;
+            if tmp4 < 0 then
+                tmp4 <= (others => '0');
+            end if;
+            
+            -- Cut all decimal bits
             motor1_signal_o(11 downto 0) <= tmp1(11 downto 0);
             motor2_signal_o(11 downto 0) <= tmp2(11 downto 0);
             motor3_signal_o(11 downto 0) <= tmp3(11 downto 0);
