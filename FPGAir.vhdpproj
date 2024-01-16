@@ -16,6 +16,7 @@
     <File Include="rtl/top_components/radio_servo_gyro_top.vhd" />
     <File Include="rtl/top_components/tb_dbus_test_top.vhd" />
     <File Include="rtl/top_components/tb_mpu6050_test_top.vhd" />
+    <File Include="rtl/top_components/uart_top.vhd" />
     <File Include="rtl/DCCM.vhd" />
     <File Include="rtl/I2C_byte.vhd" />
     <File Include="rtl/acc_angles.vhd" />
@@ -32,8 +33,9 @@
     <File Include="rtl/radio_channel.vhd" />
     <File Include="rtl/test_02.vhd" />
     <File Include="rtl/top.vhd" />
+    <File Include="rtl/uart_adapter.vhd" />
     <File Include="rtl/uart_rx.vhd" />
-    <File Include="rtl/uart_top.vhd" />
+    <File Include="rtl/uart_top_old.vhd" />
     <File Include="rtl/uart_tx.vhd" />
     <File Include="tb/I2C_byte_tb.vhd" />
     <File Include="tb/I2C_byte_tb_2.vhd" />

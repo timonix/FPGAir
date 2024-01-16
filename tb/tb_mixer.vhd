@@ -31,6 +31,11 @@ architecture tb of tb_mixer is
     constant TbPeriod : time := 1000 ns; -- EDIT Put right period here
     signal TbClock : std_logic := '0';
     signal TbSimEnded : std_logic := '0';
+    
+    signal throttle_i_value : sfixed(11 downto -11);
+    signal roll_pid_i_value : sfixed(11 downto -11);
+    signal pitch_pid_i_value : sfixed(11 downto -11);
+    signal yaw_pid_i_value : sfixed(11 downto -11);
 
 begin
 
@@ -55,24 +60,55 @@ begin
 
     stimuli : process
     
-    procedure wait_and_set_to_0 is
+    procedure set_values_and_wait (
+        throttle_i_input : in sfixed (11 downto -11);
+        roll_pid_i_input : in sfixed (11 downto -11);
+        pitch_pid_i_input : in sfixed (11 downto -11);
+        yaw_pid_i_input : in sfixed (11 downto -11)
+    ) is
     begin
-        wait for 5 * TbPeriod;
+
         throttle_i <= (others => '0');
         roll_pid_i <= (others => '0');
         pitch_pid_i <= (others => '0');
         yaw_pid_i <= (others => '0');
+        
         wait for 1 * TbPeriod;
+        
+        report "throttle = " & to_string(throttle_i_input);
+        
+        throttle_i <= throttle_i_input;
+        roll_pid_i <= roll_pid_i_input;
+        pitch_pid_i <= pitch_pid_i_input;
+        yaw_pid_i <= yaw_pid_i_input;
+        
+        
+        
+        wait for 5 * TbPeriod;
+        report "throttle = " & to_string(motor1_signal_o);
     end procedure;
     
+    procedure set_to_0_and_wait is
     begin
-        -- EDIT Adapt initialization as needed
-        enable <= True;
+
         throttle_i <= (others => '0');
         roll_pid_i <= (others => '0');
         pitch_pid_i <= (others => '0');
         yaw_pid_i <= (others => '0');
 
+        wait for 1 * TbPeriod;
+
+    end procedure;
+    
+    begin
+        -- EDIT Adapt initialization as needed
+        enable <= True;
+        
+        throttle_i <= (others => '0');
+        roll_pid_i <= (others => '0');
+        pitch_pid_i <= (others => '0');
+        yaw_pid_i <= (others => '0');
+        
         -- Reset generation
         -- EDIT: Check that rst is really your reset signal
         rst <= '1';
@@ -81,15 +117,41 @@ begin
         wait for 100 ns;
 
         -- EDIT Add stimuli here
-        wait for 5 * TbPeriod;
+        wait for 2 * TbPeriod;
         report "this is a message"; -- severity note
+        
+        -- Throttle ------------------------------------------------------
+        --throttle_i_value <= to_sfixed(100, 11,-11);
+        --roll_pid_i_value <= to_sfixed(0, 11,-11);
+        --pitch_pid_i_value <= to_sfixed(0, 11,-11);
+        --yaw_pid_i_value <= to_sfixed(0, 11,-11);
+        --
+        --set_values_and_wait(to_sfixed(100, 11,-11), roll_pid_i_value, pitch_pid_i_value, yaw_pid_i_value);
+        --
+        --assert motor1_signal_o = 100 report "unexpected value. i = " & to_string(motor1_signal_o);
+        --assert motor2_signal_o = 100 report "unexpected value. i = " & to_string(motor2_signal_o);
+        --assert motor3_signal_o = 100 report "unexpected value. i = " & to_string(motor3_signal_o);
+        --assert motor4_signal_o = 100 report "unexpected value. i = " & to_string(motor4_signal_o);
+        ----------------------------------------------------------------
+        
+        -- Throttle -----------------------------------------------
+        set_to_0_and_wait;
+
         throttle_i <= to_sfixed(100, 11,-11);
-        roll_pid_i <= (others => '0');
+        roll_pid_i <=  (others => '0');
         pitch_pid_i <= (others => '0');
         yaw_pid_i <= (others => '0');
         
-        wait_and_set_to_0;
+        wait for 2 * TbPeriod;
         
+        assert motor1_signal_o = 100 report "unexpected value. i = " & to_string(motor1_signal_o);
+        assert motor2_signal_o = 100 report "unexpected value. i = " & to_string(motor2_signal_o);
+        assert motor3_signal_o = 100 report "unexpected value. i = " & to_string(motor3_signal_o);
+        assert motor4_signal_o = 100 report "unexpected value. i = " & to_string(motor4_signal_o);
+        
+        -- Roll right ---------------------------------------------------------
+        set_to_0_and_wait;
+
         throttle_i <= (others => '0');
         roll_pid_i <=  to_sfixed(200, 11,-11);
         pitch_pid_i <= (others => '0');
@@ -97,75 +159,111 @@ begin
         
         wait for 2 * TbPeriod;
         
-        assert motor1_signal_o > 0 report "unexpected value. i = " & to_string(motor1_signal_o);
+        assert motor1_signal_o = 200 report "unexpected value. i = " & to_string(motor1_signal_o);
+        assert motor2_signal_o = 0 report "unexpected value. i = " & to_string(motor2_signal_o);
+        assert motor3_signal_o = 200 report "unexpected value. i = " & to_string(motor3_signal_o);
+        assert motor4_signal_o = 0 report "unexpected value. i = " & to_string(motor4_signal_o);
         
-        wait_and_set_to_0;
-        
+        -- Roll left ---------------------------------------------------------
+        set_to_0_and_wait;
+
         throttle_i <= (others => '0');
-        roll_pid_i <= (others => '0');
-        pitch_pid_i <=  to_sfixed(300, 11,-11);
+        roll_pid_i <=  to_sfixed(-200, 11,-11);
+        pitch_pid_i <= (others => '0');
         yaw_pid_i <= (others => '0');
         
         wait for 2 * TbPeriod;
         
-        assert motor1_signal_o > 0 report "unexpected value. i = " & to_string(motor1_signal_o);
+        assert motor1_signal_o = 0 report "unexpected value. i = " & to_string(motor1_signal_o);
+        assert motor2_signal_o = 200 report "unexpected value. i = " & to_string(motor2_signal_o);
+        assert motor3_signal_o = 0 report "unexpected value. i = " & to_string(motor3_signal_o);
+        assert motor4_signal_o = 200 report "unexpected value. i = " & to_string(motor4_signal_o);
         
-        wait_and_set_to_0;
-        
+        -- Pitch up ---------------------------------------------------------
+        set_to_0_and_wait;
+
         throttle_i <= (others => '0');
-        roll_pid_i <= (others => '0');
-        pitch_pid_i <= (others => '0');
-        yaw_pid_i <=  to_sfixed(400, 11,-11);
-        
-        
-        -- Full throttle and roll
-        wait_and_set_to_0;
-        
-        throttle_i <= to_sfixed(1000, 11,-11);
-        roll_pid_i <= to_sfixed(400, 11,-11);
-        pitch_pid_i <= (others => '0');
-        yaw_pid_i <=  (others => '0');
-
-        wait for 2 * TbPeriod;
-        
-        assert motor1_signal_o = 1000 report "unexpected value. i = " & to_string(motor1_signal_o);
-        assert motor2_signal_o < 1000 report "unexpected value. i = " & to_string(motor2_signal_o);
-        assert motor3_signal_o = 1000 report "unexpected value. i = " & to_string(motor3_signal_o);
-        assert motor4_signal_o < 1000 report "unexpected value. i = " & to_string(motor4_signal_o);
-        
-        
-        -- Full throttle and putch
-        wait_and_set_to_0;
-        
-        throttle_i <= to_sfixed(1000, 11,-11);
-        roll_pid_i <= (others => '0');
-        pitch_pid_i <= to_sfixed(400, 11,-11);
+        roll_pid_i <=  (others => '0');
+        pitch_pid_i <= to_sfixed(300, 11,-11);
         yaw_pid_i <= (others => '0');
-
-        wait for 2 * TbPeriod;
-        
-        assert motor1_signal_o = 1000 report "unexpected value. i = " & to_string(motor1_signal_o);
-        assert motor2_signal_o = 1000 report "unexpected value. i = " & to_string(motor2_signal_o);
-        assert motor3_signal_o < 1000 report "unexpected value. i = " & to_string(motor3_signal_o);
-        assert motor4_signal_o < 1000 report "unexpected value. i = " & to_string(motor4_signal_o);
-        
-
-        -- Full throttle and yaw
-        wait_and_set_to_0;
-        
-        throttle_i <= to_sfixed(1000, 11,-11);
-        roll_pid_i <= (others => '0');
-        pitch_pid_i <= (others => '0');
-        yaw_pid_i <=  to_sfixed(400, 11,-11);
-
-        wait for 2 * TbPeriod;
-        
-        assert motor1_signal_o < 1000 report "unexpected value. i = " & to_string(motor1_signal_o);
-        assert motor2_signal_o = 1000 report "unexpected value. i = " & to_string(motor2_signal_o);
-        assert motor3_signal_o = 1000 report "unexpected value. i = " & to_string(motor3_signal_o);
-        assert motor4_signal_o < 1000 report "unexpected value. i = " & to_string(motor4_signal_o);
         
         wait for 2 * TbPeriod;
+        
+        assert motor1_signal_o = 300 report "unexpected value. i = " & to_string(motor1_signal_o);
+        assert motor2_signal_o = 300 report "unexpected value. i = " & to_string(motor2_signal_o);
+        assert motor3_signal_o = 0 report "unexpected value. i = " & to_string(motor3_signal_o);
+        assert motor4_signal_o = 0 report "unexpected value. i = " & to_string(motor4_signal_o);
+        
+        -----------------------------------------------------------
+        
+        
+        --set_to_0_and_wait;
+        --
+        --throttle_i <= (others => '0');
+        --roll_pid_i <= (others => '0');
+        --pitch_pid_i <=  to_sfixed(300, 11,-11);
+        --yaw_pid_i <= (others => '0');
+        --
+        --wait for 2 * TbPeriod;
+        --
+        --assert motor1_signal_o > 0 report "unexpected value. i = " & to_string(motor1_signal_o);
+        --
+        --set_to_0_and_wait;
+        --
+        --throttle_i <= (others => '0');
+        --roll_pid_i <= (others => '0');
+        --pitch_pid_i <= (others => '0');
+        --yaw_pid_i <=  to_sfixed(400, 11,-11);
+        --
+        --
+        ---- Full throttle and roll
+        --set_to_0_and_wait;
+        --
+        --throttle_i <= to_sfixed(1000, 11,-11);
+        --roll_pid_i <= to_sfixed(400, 11,-11);
+        --pitch_pid_i <= (others => '0');
+        --yaw_pid_i <=  (others => '0');
+--
+        --wait for 2 * TbPeriod;
+        --
+        --assert motor1_signal_o = 1000 report "unexpected value. i = " & to_string(motor1_signal_o);
+        --assert motor2_signal_o < 1000 report "unexpected value. i = " & to_string(motor2_signal_o);
+        --assert motor3_signal_o = 1000 report "unexpected value. i = " & to_string(motor3_signal_o);
+        --assert motor4_signal_o < 1000 report "unexpected value. i = " & to_string(motor4_signal_o);
+        --
+        --
+        ---- Full throttle and putch
+        --set_to_0_and_wait;
+        --
+        --throttle_i <= to_sfixed(1000, 11,-11);
+        --roll_pid_i <= (others => '0');
+        --pitch_pid_i <= to_sfixed(400, 11,-11);
+        --yaw_pid_i <= (others => '0');
+--
+        --wait for 2 * TbPeriod;
+        --
+        --assert motor1_signal_o = 1000 report "unexpected value. i = " & to_string(motor1_signal_o);
+        --assert motor2_signal_o = 1000 report "unexpected value. i = " & to_string(motor2_signal_o);
+        --assert motor3_signal_o < 1000 report "unexpected value. i = " & to_string(motor3_signal_o);
+        --assert motor4_signal_o < 1000 report "unexpected value. i = " & to_string(motor4_signal_o);
+        --
+--
+        ---- Full throttle and yaw
+        --set_to_0_and_wait;
+        --
+        --throttle_i <= to_sfixed(1000, 11,-11);
+        --roll_pid_i <= (others => '0');
+        --pitch_pid_i <= (others => '0');
+        --yaw_pid_i <=  to_sfixed(400, 11,-11);
+--
+        --wait for 2 * TbPeriod;
+        --
+        --assert motor1_signal_o < 1000 report "unexpected value. i = " & to_string(motor1_signal_o);
+        --assert motor2_signal_o = 1000 report "unexpected value. i = " & to_string(motor2_signal_o);
+        --assert motor3_signal_o = 1000 report "unexpected value. i = " & to_string(motor3_signal_o);
+        --assert motor4_signal_o < 1000 report "unexpected value. i = " & to_string(motor4_signal_o);
+        --
+        --wait for 2 * TbPeriod;
         
         
         
