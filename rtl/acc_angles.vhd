@@ -19,7 +19,7 @@ entity acc_angles is
         o_accelerometer_estimate : out attitude;
         o_done : out BOOLEAN
     );
-end entity acc_angles
+end entity acc_angles;
 
 architecture rtl of acc_angles is
     --[signals]
@@ -33,7 +33,7 @@ begin
         
         if rising_edge(clk) then
             
-            if i_update = '1' then
+            if i_update then
                 update_active <= true;
             end if;
             

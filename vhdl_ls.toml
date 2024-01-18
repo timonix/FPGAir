@@ -27,6 +27,7 @@ work.files = [
 	'rtl/radio_channel.vhd',
 	'rtl/top_components/radio_servo_gyro_top.vhd',
 	'tb/tb_bram_dbus.vhd',
+	'rtl/stream_components/tb_data_unloader.vhd',
 	'rtl/top_components/tb_dbus_test_top.vhd',
 	'tb/tb_debug_module.vhd',
 	'tb/tb_debug_port.vhd',
@@ -46,11 +47,16 @@ work.files = [
 	'rtl/test_02.vhd',
 	'tb/test_02_tb.vhd',
 	'rtl/top.vhd',
+	'rtl/uart_adapter.vhd',
+	'rtl/uart_adapter_small.vhd',
 	'rtl/uart_rx.vhd',
 	'rtl/dbus_components/uart_rx_dbus.vhd',
-	'rtl/uart_top.vhd',
+	'rtl/top_components/uart_top.vhd',
+	'rtl/top_components/uart_top_2.vhd',
+	'rtl/uart_top_old.vhd',
 	'rtl/uart_tx.vhd',
 	'rtl/dbus_components/uart_tx_dbus.vhd',
+	'rtl/uart_tx_small.vhd',
 	'rtl/stream_components/uart_tx_stream.vhd'
 ]
 [libraries.work]
@@ -81,6 +87,7 @@ files = [
 	'rtl/radio_channel.vhd',
 	'rtl/top_components/radio_servo_gyro_top.vhd',
 	'tb/tb_bram_dbus.vhd',
+	'rtl/stream_components/tb_data_unloader.vhd',
 	'rtl/top_components/tb_dbus_test_top.vhd',
 	'tb/tb_debug_module.vhd',
 	'tb/tb_debug_port.vhd',
@@ -100,11 +107,16 @@ files = [
 	'rtl/test_02.vhd',
 	'tb/test_02_tb.vhd',
 	'rtl/top.vhd',
+	'rtl/uart_adapter.vhd',
+	'rtl/uart_adapter_small.vhd',
 	'rtl/uart_rx.vhd',
 	'rtl/dbus_components/uart_rx_dbus.vhd',
-	'rtl/uart_top.vhd',
+	'rtl/top_components/uart_top.vhd',
+	'rtl/top_components/uart_top_2.vhd',
+	'rtl/uart_top_old.vhd',
 	'rtl/uart_tx.vhd',
 	'rtl/dbus_components/uart_tx_dbus.vhd',
+	'rtl/uart_tx_small.vhd',
 	'rtl/stream_components/uart_tx_stream.vhd'
 ]
 # auto-generated-end

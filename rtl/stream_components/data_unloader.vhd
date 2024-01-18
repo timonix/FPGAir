@@ -9,7 +9,7 @@ entity data_unloader is
         baud_rate_mhz : real := 115200.0/1000000.0;
         boot_message : String := "unload.";
         delimiter : character := 'D';
-        num_bytes : positive := 3*3
+        num_bytes : positive := 2
 
     );
     port(
@@ -19,7 +19,7 @@ entity data_unloader is
         
         o_ready       : out boolean;
         i_valid       : in boolean;
-        i_data        : in std_logic_vector(0 to num_bytes*8-1);
+        i_data        : in std_logic_vector(num_bytes*8-1 downto 0);
         
         o_tx         : out STD_LOGIC
 
@@ -36,7 +36,7 @@ architecture rtl of data_unloader is
     end record uart_element;
     
     type t_uart_buffer is array (natural range <>) of uart_element;
-    signal tx_buffer : t_uart_buffer(0 to num_bytes);
+    signal tx_buffer : t_uart_buffer(0 to maximum(num_bytes,boot_message'length));
     
     signal s_tx_valid : boolean;
     signal s_tx_ready : boolean;
@@ -44,7 +44,7 @@ architecture rtl of data_unloader is
     
 begin
     
-    tx_module : entity work.uart_tx(rtl)
+    tx_module : entity work.uart_tx_small(rtl)
     generic map(
         frequency_mhz => frequency_mhz,
         baud_rate_mhz => baud_rate_mhz
@@ -80,9 +80,9 @@ begin
             
             if i_valid and s_ready then
 
-                for i in 0 to tx_buffer'high-1 loop
+                for i in 0 to num_bytes-1 loop
                     tx_buffer(i+1).valid <= true;
-                    tx_buffer(i+1).data <= i_data(i*8 to i*8+7);
+                    tx_buffer(i+1).data <= i_data(i*8+7 downto i*8);
                 end loop;
                 
                 tx_buffer(0).valid <= true;

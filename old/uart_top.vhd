@@ -58,8 +58,21 @@ architecture Behavioral of uart_system is
     -- Signal Declarations
     signal adapter_to_tx_data : STD_LOGIC_VECTOR(7 downto 0);
     signal data_valid_signal, ready_signal : boolean;
+    
+    signal data : unsigned(15 downto 0);
+    signal ready : boolean;
 
 begin
+    
+    process (clk)
+    begin
+        if rising_edge(clk) then
+            if ready then
+                data <= data +1;
+            end if;
+        end if;
+
+    end process;
 
     -- UART Adapter Instance
     adapter_instance : uart_adapter
@@ -72,9 +85,9 @@ begin
         clk => clk,
         rst => rst,
         enable => true, -- connect as needed,
-        data_in => x"1718", -- connect as needed,
+        data_in => x"AB2F", -- connect as needed,
         data_valid_in => true, -- connect as needed,
-        ready => open,
+        ready => ready,
         data_out => adapter_to_tx_data,
         data_valid_out => data_valid_signal,
         uart_ready => ready_signal -- connect as needed

@@ -4,9 +4,6 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use ieee.fixed_pkg.all;
 
-
-use work.common_pkg.ALL;
-
 entity mixer is
     port(
         clk : in STD_LOGIC;

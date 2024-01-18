@@ -10,7 +10,7 @@ end tb_uart_tx;
 
 architecture tb of tb_uart_tx is
 
-    component uart_tx
+    component uart_tx_small
     port (clk        : in std_logic;
         rst        : in std_logic;
         enable     : in boolean;
@@ -34,7 +34,7 @@ signal TbSimEnded : std_logic := '0';
 
 begin
 
-    dut : uart_tx
+    dut : uart_tx_small
     port map (clk        => clk,
         rst        => rst,
         enable     => enable,

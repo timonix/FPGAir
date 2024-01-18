@@ -21,7 +21,7 @@ architecture tb of debug_module_tb is
     
 begin
     -- Instantiate the debug_module
-    uut: entity work.debug_module generic map(
+    uut: entity work.debug_module_dbus generic map(
         register_address => 10,
         enable_force => true
     ) port map(
