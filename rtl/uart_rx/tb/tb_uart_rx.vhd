@@ -10,15 +10,6 @@ end tb_uart_rx;
 
 architecture tb of tb_uart_rx is
 
-    component uart_rx
-    port (clk        : in std_logic;
-        rst        : in std_logic;
-        enable     : in boolean;
-        rx         : in std_logic;
-        data       : out std_logic_vector (7 downto 0);
-        data_valid : out boolean);
-end component;
-
 signal clk        : std_logic;
 signal rst        : std_logic;
 signal enable     : boolean;
@@ -33,7 +24,11 @@ signal TbSimEnded : std_logic := '0';
 
 begin
 
-    dut : uart_rx
+    DUT: entity work.uart_rx_small(rtl)
+    generic map (
+        frequency_mhz => 27.0,
+        baud_rate_mhz => 115200.0/1000000.0
+    )
     port map (clk        => clk,
         rst        => rst,
         enable     => enable,

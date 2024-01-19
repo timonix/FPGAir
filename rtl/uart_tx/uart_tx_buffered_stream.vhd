@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 
 use work.common_pkg.all;
 
-entity uart_tx_stream is
+entity uart_tx_buffered_stream is
     generic(
         frequency_mhz : real := 27.0;
         baud_rate_mhz : real := 115200.0/1000000.0;
@@ -22,9 +22,9 @@ entity uart_tx_stream is
         o_tx         : out STD_LOGIC
 
     );
-end uart_tx_stream;
+end uart_tx_buffered_stream;
 
-architecture rtl of uart_tx_stream is
+architecture rtl of uart_tx_buffered_stream is
     
     signal s_tx_data : STD_LOGIC_VECTOR(7 downto 0);
     

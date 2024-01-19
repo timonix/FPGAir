@@ -7,6 +7,11 @@
     <FileList>
         <File path="rtl/DCCM.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/I2C_byte.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/Uart/data_unloader.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/Uart/uart_rx.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/Uart/uart_rx_small.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/Uart/uart_tx.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/Uart/uart_tx_stream.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/common_pkg.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/dbus_components/bram_dbus.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/dbus_components/buffer_dbus.vhd" type="file.vhdl" enable="1"/>
@@ -20,18 +25,12 @@
         <File path="rtl/pwm.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/pwm_top_test.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/radio_channel.vhd" type="file.vhdl" enable="1"/>
-        <File path="rtl/stream_components/data_unloader.vhd" type="file.vhdl" enable="1"/>
-        <File path="rtl/stream_components/uart_tx_stream.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/test_02.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/top.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/top_components/data_unloader_test_top.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/top_components/dbus_test_top.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/top_components/mpu6050_test_top.vhd" type="file.vhdl" enable="1"/>
-        <File path="rtl/uart_adapter.vhd" type="file.vhdl" enable="1"/>
-        <File path="rtl/uart_rx.vhd" type="file.vhdl" enable="1"/>
-        <File path="rtl/uart_top_old.vhd" type="file.vhdl" enable="1"/>
-        <File path="rtl/uart_tx.vhd" type="file.vhdl" enable="1"/>
-        <File path="rtl/uart_tx_small.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/top_components/uart_test_top.vhd" type="file.vhdl" enable="1"/>
         <File path="const/FPGAir.cst" type="file.cst" enable="1"/>
         <File path="const/FPGAir.sdc" type="file.sdc" enable="1"/>
         <File path="pwm_test_top.ghw" type="file.other" enable="1"/>

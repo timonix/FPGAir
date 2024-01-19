@@ -2,6 +2,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
+
 entity uart_tx is
     generic (
         frequency_mhz : real := 27.0;
@@ -23,22 +24,18 @@ end entity uart_tx;
 
 architecture rtl of uart_tx is
     
-    type state_t is (idle_E, working_E);
-    signal state : state_t;
-    
     constant period_time : natural := integer(frequency_mhz/baud_rate_mhz);
-    constant half_period : natural := period_time/2;
-    
     signal period_counter : natural range 0 to period_time + 1;
     
-    signal s_data : STD_LOGIC_VECTOR(9 downto 0);
+    signal s_data : STD_LOGIC_VECTOR(8 downto 0) := (others => '1');
     
-    signal bit_counter : NATURAL range 0 to 10;
+    signal s_ready : boolean;
     
 begin
-    --s_data(7 downto 0) <= data;
     
-    ready <= state = idle_E;
+    
+    ready <= s_ready;
+    tx <= s_data(0);
     
     process (clk)
     begin
@@ -48,29 +45,20 @@ begin
                 period_counter <= period_counter - 1;
             end if;
             
-            if state = idle_E and data_valid then
-                bit_counter <= 0;
-                s_data(9) <= '1';
+            if s_ready and data_valid then
                 s_data(0) <= '0';
                 s_data(8 downto 1) <= data;
-                state <= working_E;
+                s_ready <= false;
             end if;
             
-            if state = working_E and period_counter = 0 and not (bit_counter = 10) then
-                tx <= s_data(0);
-                s_data(8 downto 0) <= s_data(9 downto 1);
+            if period_counter = 0 then
+                s_ready <= (and s_data) = '1';
+                s_data(8 downto 0) <= '1' & s_data(8 downto 1);
                 period_counter <= period_time;
-                bit_counter <= bit_counter + 1;
-            end if;
-            
-            if state = working_E and period_counter = 0 and bit_counter = 10 then
-                state <= idle_E;
             end if;
             
             if rst = '1' then
-                state <= idle_E;
-                period_counter <= 0;
-                tx <= '1';
+                s_data <= (others => '1');
             end if;
             
         end if;

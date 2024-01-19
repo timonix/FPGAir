@@ -2,16 +2,16 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity uart_top is
+entity uart_top_old is
     port(
         sys_clk         : in  std_logic;
         sys_rst_n       : in  std_logic;
         tx              : out STD_LOGIC;
         rx              : in STD_LOGIC
     );
-end entity uart_top;
+end entity uart_top_old;
 
-architecture rtl of uart_top is
+architecture rtl of uart_top_old is
     
     signal uart_data : STD_LOGIC_VECTOR(7 downto 0);
     signal uart_data_valid : BOOLEAN;

@@ -44,7 +44,7 @@ architecture rtl of data_unloader is
     
 begin
     
-    tx_module : entity work.uart_tx_small(rtl)
+    tx_module : entity work.uart_tx(rtl)
     generic map(
         frequency_mhz => frequency_mhz,
         baud_rate_mhz => baud_rate_mhz
