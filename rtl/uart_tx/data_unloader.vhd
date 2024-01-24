@@ -1,6 +1,5 @@
 library ieee;
 use ieee.std_logic_1164.all;
-
 use work.common_pkg.all;
 
 entity data_unloader is
@@ -27,80 +26,94 @@ entity data_unloader is
 end data_unloader;
 
 architecture rtl of data_unloader is
-    
-    signal s_tx_data : STD_LOGIC_VECTOR(7 downto 0);
-    
-    type uart_element is record
-        data : STD_LOGIC_VECTOR(7 downto 0);
-        valid : boolean;
-    end record uart_element;
-    
-    type t_uart_buffer is array (natural range <>) of uart_element;
-    signal tx_buffer : t_uart_buffer(0 to maximum(num_bytes,boot_message'length));
-    
-    signal s_tx_valid : boolean;
-    signal s_tx_ready : boolean;
+
+    constant bits_per_message : POSITIVE := 10;
+    constant buffer_size : POSITIVE := maximum(num_bytes+1, boot_message'length)+1;
+
+    signal s_data : STD_LOGIC_VECTOR(buffer_size*bits_per_message-1 downto 0);
     signal s_ready : boolean;
+
+    constant period_time : natural := integer(frequency_mhz/baud_rate_mhz);
+    signal period_counter : natural range 0 to period_time + 1;
+    signal set_ready : boolean;
     
+
+
 begin
     
-    tx_module : entity work.uart_tx(rtl)
-    generic map(
-        frequency_mhz => frequency_mhz,
-        baud_rate_mhz => baud_rate_mhz
-    )
-    port map (
-        clk           => clk,
-        rst           => rst,
-        enable        => TRUE,
-        tx            => o_tx,
-        data          => s_tx_data,
-        data_valid    => s_tx_valid,
-        ready         => s_tx_ready
-    );
-    
     o_ready <= s_ready;
-    s_ready <= not (tx_buffer(0).valid or tx_buffer(1).valid);
+    
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            o_tx <= s_data(0);
+            if rst = '1' then
+                o_tx <= '1';
+            end if;
+        end if;
+    end process;
     
     process(clk)
     begin
         if rising_edge(clk) then
             
-            s_tx_valid <= false;
-            if tx_buffer(tx_buffer'low).valid and s_tx_ready then
-                s_tx_valid <= true;
-                s_tx_data <= tx_buffer(tx_buffer'low).data;
-                tx_buffer(tx_buffer'low).valid <= false;
+            if set_ready and period_counter = 0 then
+                s_ready <= true;
             end if;
             
-            if not tx_buffer(tx_buffer'low).valid then
-                tx_buffer(0 to tx_buffer'high-1) <= tx_buffer(1 to tx_buffer'high);
-                tx_buffer(tx_buffer'high).valid <= false;
+            if (and s_data) = '1' then
+                set_ready <= true;
             end if;
             
             if i_valid and s_ready then
-
-                for i in 0 to num_bytes-1 loop
-                    tx_buffer(i+1).valid <= true;
-                    tx_buffer(i+1).data <= i_data(i*8+7 downto i*8);
-                end loop;
-                
-                tx_buffer(0).valid <= true;
-                tx_buffer(0).data <= TO_STDLOGICVECTOR(delimiter);
+                set_ready <= false;
+                s_ready <= false;
             end if;
             
             if rst = '1' then
-                tx_buffer <= (others => (
-                        data => (others => '0'),
-                        valid => false)
-                );
-                
-                for char in boot_message'range loop
-                    tx_buffer(char-1) <= (data => TO_STDLOGICVECTOR(boot_message(char)), valid => true);
-                end loop;
-                
+                s_ready <= false;
             end if;
         end if;
     end process;
 
-end rtl;
+    process (clk)
+    begin
+        if rising_edge(clk) then
+            
+            if not (period_counter = 0) then
+                period_counter <= period_counter - 1;
+            end if;
+            
+            --load data
+            if s_ready and i_valid then
+                s_data(0+10) <= '0';
+                s_data(8+10 downto 1+10) <= TO_STDLOGICVECTOR(delimiter);
+                s_data(9+10) <= '1';
+                
+                for i in 2 to num_bytes+1 loop
+                    s_data(i*bits_per_message) <= '0';
+                    s_data(i*bits_per_message+8 downto i*bits_per_message+1) <= i_data((i-2)*8+7 downto (i-2)*8);
+                    s_data(i*bits_per_message+9) <= '1';
+                end loop;
+            end if;
+            
+            
+            if period_counter = 0 then
+                s_data(buffer_size*bits_per_message-1 downto 0) <= '1' & s_data(buffer_size*bits_per_message-1 downto 1);
+                period_counter <= period_time;
+            end if;
+            
+            if rst = '1' then
+                s_data <= (others => '1');
+                for i in boot_message'range loop
+                    s_data(i*bits_per_message) <= '0';
+                    s_data(i*bits_per_message+8 downto i*bits_per_message+1) <= TO_STDLOGICVECTOR(boot_message(i));
+                    s_data(i*bits_per_message+9) <= '1';
+                end loop;
+            end if;
+            
+        end if;
+
+    end process;
+
+end architecture rtl;

@@ -50,6 +50,7 @@ architecture rtl of mpu6050 is
 
 begin
     
+    
     i2c_clock_proc: process(clk)
     
     begin
@@ -63,7 +64,7 @@ begin
         end if;
     end process;
     
-    process(clk)
+    process(clk,i2c_clock)
     procedure OPEN_DRAIN_SDA(constant value : in STD_LOGIC) is
     begin
         if value = '1' then
@@ -218,28 +219,29 @@ begin
             end if;
         end loop;
 
-        
-        
     end procedure READ_BYTE;
-
+    
     begin
         if rising_edge(clk) and i2c_clock = '1' then
             
+            -- setup
             SEND_START(1 ,4);
             SEND_BYTE(5, 40,MPU_ADDRESS_WRITE); -- send address
             SEND_BYTE(41, 76,X"6B");
             SEND_BYTE(77, 112,X"00"); -- reset device
             
+            SEND_STOP(113,116);
+            --SEND_RESTART(113,116);
+            --SEND_BYTE(117,152,MPU_ADDRESS_WRITE);
+            --SEND_BYTE(153,188,X"1B"); -- CONFIG
+            --SEND_BYTE(189,224,X"10"); -- 00010000 (+/- 8g full scale range)
+            --SEND_BYTE(225,260,X"10"); -- 00010000 (1000deg/s full scale)
             
-            SEND_RESTART(113,116);
-            SEND_BYTE(117,152,MPU_ADDRESS_WRITE);
-            SEND_BYTE(153,188,X"1B"); -- CONFIG
-            SEND_BYTE(189,224,X"10"); -- 00010000 (+/- 8g full scale range)
-            SEND_BYTE(225,260,X"10"); -- 00010000 (1000deg/s full scale)
+            --SEND_STOP(261,264);
             
-            SEND_STOP(261,264);
+            --STOPS HERE
             
-            --Loop from here
+            --Loop
             SEND_START(265,268);
             SEND_BYTE(269,304,MPU_ADDRESS_WRITE);
             SEND_BYTE(305,340,X"3B"); --
@@ -276,7 +278,7 @@ begin
         if rising_edge(clk) then
             
             if i2c_clock = '1' then
-                if s_stage=1023 then
+                if s_stage=1023 or s_stage=264 then
                     s_stage <= 0;
                 else
                     s_stage <= s_stage+1;

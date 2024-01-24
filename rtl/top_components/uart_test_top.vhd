@@ -22,7 +22,7 @@ architecture Behavioral of uart_test_top is
 begin
     
 
-    DUT: entity work.uart_rx_small(rtl)
+    DUT: entity work.uart_rx(rtl)
     generic map (
         frequency_mhz => 27.0,
         baud_rate_mhz => 115200.0/1000000.0

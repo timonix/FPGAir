@@ -1,10 +1,10 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity tb_data_unloader_2 is
-end tb_data_unloader_2;
+entity tb_data_unloader is
+end tb_data_unloader;
 
-architecture sim of tb_data_unloader_2 is
+architecture sim of tb_data_unloader is
 
     -- Instantiate the DUT (Device Under Test)
     signal clk         : std_logic := '0';
@@ -25,7 +25,7 @@ architecture sim of tb_data_unloader_2 is
     
 begin
 
-    
+    -- DUT
     DUT: entity work.data_unloader_2(rtl)
     generic map (
         frequency_mhz => 27.0,
@@ -59,13 +59,10 @@ begin
         -- Send some data
         i_data <= x"42AA";  -- Example byte
         i_valid <= true;
-        wait for 2 * clk_period;
-        assert o_ready = false;
-        
+        wait for 1 * clk_period;
         i_valid <= false;
-        
         wait until o_ready = true;
-        --wait for 10000 * clk_period;
+        wait for 10000 * clk_period;
 
         --i_data <= "00110011";  -- Another example byte
         --i_valid <= true;

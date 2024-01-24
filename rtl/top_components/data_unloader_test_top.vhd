@@ -9,18 +9,25 @@ entity data_unloader_test_top is
         -- Define the external ports for the uart_system
         clk : in STD_LOGIC;
         rst : in STD_LOGIC;
-        tx : out STD_LOGIC
+        tx : out STD_LOGIC;
+        tx_2 : out STD_LOGIC
         -- other ports as required
     );
 end entity data_unloader_test_top;
+
+
 
 architecture Behavioral of data_unloader_test_top is
     
     signal data : UNSIGNED(15 downto 0);
     signal ready : boolean;
 
+    signal s_tx : std_logic;
+
 begin
-    
+
+    tx <= s_tx;
+    tx_2 <= s_tx;
     process(clk)
     begin
         if rising_edge(clk) then
@@ -35,7 +42,7 @@ begin
     DUT: entity work.data_unloader(rtl)
     generic map (
         frequency_mhz => 27.0,
-        baud_rate_mhz => 1000000.0/1000000.0,
+        baud_rate_mhz => 100000.0/1000000.0,
         boot_message  => "FPGAir data unload test:",
         delimiter     => 'D',
         num_bytes     => 2
@@ -46,7 +53,7 @@ begin
         o_ready => ready,
         i_valid => true,
         i_data  => std_logic_vector(data),
-        o_tx    => tx
+        o_tx    => s_tx
     );
 
 end Behavioral;

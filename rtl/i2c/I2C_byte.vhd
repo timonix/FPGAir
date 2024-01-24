@@ -110,6 +110,7 @@ begin
                     OPEN_DRAIN_SET('1', sda);
                     s_stage <= 4;
                 elsif s_stage = 4 and i2c_clock = '1' then
+                    OPEN_DRAIN_SET('1', sda);
                     s_stage <= 0;
                 end if;
             end if;
@@ -124,7 +125,9 @@ begin
                     s_stage <= 2;
                 elsif s_stage = 2 and i2c_clock = '1' then
                     OPEN_DRAIN_SET('1', scl);
-                    s_stage <= 3;
+                    if scl = '1' or scl = 'H' then -- clock stretch
+                        s_stage <= 3;
+                    end if;
                 elsif s_stage = 3 and i2c_clock = '1' then
                     OPEN_DRAIN_SET('0', scl);
                     
