@@ -17,6 +17,8 @@
         <File path="rtl/i2c/I2C_byte.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/mixer.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/motor/pwm.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/mpu6050/mpu_seperated.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/mpu6050/mpu_seperated_test_top.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/mpu6050/mpu_using_comp.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/mpu6050/mpu_using_fifo.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/pid/pid.vhd" type="file.vhdl" enable="1"/>
