@@ -5,8 +5,9 @@ import matplotlib.animation as animation
 from collections import deque
 
 # Open serial port
-ser = serial.Serial('COM6', 1000000, timeout=1)
+ser = serial.Serial('COM4', 115200, timeout=1)
 
+print("Usig ser´´´´ thignsasd")
 
 # Read data from the serial port
 try:

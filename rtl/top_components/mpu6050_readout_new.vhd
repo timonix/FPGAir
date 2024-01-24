@@ -7,7 +7,7 @@ entity mpu6050_redout_new is
     generic(
         frequency_mhz : real := 27.0;
         i2c_frequency_mhz : real := 1.0;
-        baud_rate_mhz : real := 1000000.0/1000000.0;
+        baud_rate_mhz : real := 115200.0/1000000.0;
         sample_rate_mhz : real := 50.0/1000000.0
     );
     port(
