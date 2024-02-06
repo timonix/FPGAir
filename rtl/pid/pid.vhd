@@ -18,7 +18,8 @@ entity pid is
         clk : in STD_LOGIC;
         rst : in STD_LOGIC;
         enable : in BOOLEAN;
-        sample : in STD_LOGIC;
+        sample : in boolean;
+        data_valid : out boolean;
         setpoint : in sfixed(11 downto -11);
         input : in sfixed(11 downto -11);
         output : out sfixed(11 downto -11)
@@ -36,6 +37,8 @@ architecture rtl of pid is
     signal rate_error : sfixed(11 downto -11) := to_sfixed(0.0, 11,-11);
     signal last_error : sfixed(11 downto -11) := to_sfixed(0.0, 11,-11);
     
+    signal output_valid_q : boolean;
+    
 begin
 
     
@@ -48,9 +51,9 @@ begin
         if rising_edge(clk) then
             
             -- write stuff here. For example what happens when
-            
-            if sample = '1' then
-                
+            output_valid_q <= false;
+            if sample then
+                output_valid_q <= true;
                 error <= fixed_sub(setpoint, input);
                 cum_error <= cum_mul(error, sample_time, cum_error);
                 rate_error <= resize((error-last_error) / sample_time,rate_error);
@@ -58,6 +61,7 @@ begin
                 last_error <= error;
                 
             end if;
+            data_valid <= output_valid_q;
             
             output <= resize(tmp0+tmp1+tmp2,output);
             tmp0 := resize(Kp * error ,output);

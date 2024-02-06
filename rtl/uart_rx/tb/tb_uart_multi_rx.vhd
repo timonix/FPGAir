@@ -5,16 +5,16 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity tb_uart_rx is
-end tb_uart_rx;
+entity tb_uart_multi_rx is
+end tb_uart_multi_rx;
 
-architecture tb of tb_uart_rx is
+architecture tb of tb_uart_multi_rx is
 
 signal clk        : std_logic;
 signal rst        : std_logic;
 signal enable     : boolean;
 signal rx         : std_logic;
-signal data       : std_logic_vector (7 downto 0);
+signal data       : std_logic_vector (15 downto 0);
 signal data_valid : boolean;
 signal ready      : boolean;
 
@@ -24,7 +24,7 @@ signal TbSimEnded : std_logic := '0';
 
 begin
 
-    DUT: entity work.uart_rx(rtl)
+    DUT: entity work.uart_multi_rx(rtl)
     generic map (
         frequency_mhz => 27.0,
         baud_rate_mhz => 115200.0/1000000.0
@@ -52,26 +52,47 @@ begin
         
         wait for 1000 ns;
         rx <= '0';
+        wait for 8681 ns;
+        rx <= '1';
+        wait for 8681 ns;
+        rx <= '1';
+        wait for 8681 ns;
+        rx <= '0';
+        wait for 8681 ns;
+        rx <= '1';
+        wait for 8681 ns;
+        rx <= '1';
+        wait for 8681 ns;
+        rx <= '0';
+        wait for 8681 ns;
+        rx <= '1';
+        wait for 8681 ns;
+        rx <= '0';
+        wait for 8681 ns;
+        wait for 8681 ns;
         
+        wait for 1000 ns;
+        rx <= '0';
+        wait for 8681 ns;
+        rx <= '1';
+        wait for 8681 ns;
+        rx <= '1';
+        wait for 8681 ns;
+        rx <= '0';
+        wait for 8681 ns;
+        rx <= '1';
+        wait for 8681 ns;
+        rx <= '1';
+        wait for 8681 ns;
+        rx <= '0';
+        wait for 8681 ns;
+        rx <= '1';
+        wait for 8681 ns;
+        rx <= '0';
+        wait for 8681 ns;
         wait for 8681 ns;
         
-        rx <= '1';
-        wait for 8681 ns;
-        rx <= '1';
-        wait for 8681 ns;
-        rx <= '0';
-        wait for 8681 ns;
-        rx <= '1';
-        wait for 8681 ns;
-        rx <= '1';
-        wait for 8681 ns;
-        rx <= '0';
-        wait for 8681 ns;
-        rx <= '1';
-        wait for 8681 ns;
-        rx <= '0';
-        wait for 8681 ns;
-        wait for 8681 ns;
+        
         
         wait for 100 * TbPeriod;
 
@@ -80,9 +101,3 @@ begin
     end process;
 
 end tb;
-
-
-configuration cfg_tb_uart_rx of tb_uart_rx is
-    for tb
-end for;
-end cfg_tb_uart_rx;

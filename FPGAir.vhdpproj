@@ -40,11 +40,15 @@
     <File Include="rtl/top_components/mpu6050_readout_new.vhd" />
     <File Include="rtl/top_components/pwm_top_test.vhd" />
     <File Include="rtl/top_components/radio_servo_gyro_top.vhd" />
+    <File Include="rtl/top_components/rx_multi_feedback_top.vhd" />
+    <File Include="rtl/top_components/rx_to_pid_to_tx_top.vhd" />
     <File Include="rtl/top_components/tb_dbus_test_top.vhd" />
     <File Include="rtl/top_components/tb_mpu6050_test_top.vhd" />
     <File Include="rtl/top_components/tb_redout.vhd" />
     <File Include="rtl/top_components/uart_test_top.vhd" />
+    <File Include="rtl/uart_rx/tb/tb_uart_multi_rx.vhd" />
     <File Include="rtl/uart_rx/tb/tb_uart_rx.vhd" />
+    <File Include="rtl/uart_rx/uart_multi_rx.vhd" />
     <File Include="rtl/uart_rx/uart_rx.vhd" />
     <File Include="rtl/uart_tx/tb/tb_data_unloader.vhd" />
     <File Include="rtl/uart_tx/tb/tb_data_unloader_B.vhd" />
