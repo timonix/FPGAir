@@ -71,7 +71,7 @@ begin
         end if;
     end process;
     
-    o_data <= s_latched_data;
+    --o_data <= s_latched_data;
     o_ack <= s_latched_ack;
     o_working <= not (s_stage = 0);
     
@@ -121,7 +121,7 @@ begin
                     
                     OPEN_DRAIN_SET(s_latched_data(7), sda);
                     s_latched_data(7 downto 1) <= s_latched_data(6 downto 0);
-                    s_latched_data(0) <= sda;
+                    --s_latched_data(0) <= sda;
                     s_stage <= 2;
                 elsif s_stage = 2 and i2c_clock = '1' then
                     OPEN_DRAIN_SET('1', scl);
@@ -130,7 +130,7 @@ begin
                     end if;
                 elsif s_stage = 3 and i2c_clock = '1' then
                     OPEN_DRAIN_SET('0', scl);
-                    
+                    s_latched_data(0) <= sda;
                     if s_bit_id = 0 then
                         s_stage <= 4;
                     else
@@ -152,6 +152,7 @@ begin
                 elsif s_stage = 7 and i2c_clock = '1' then
                     OPEN_DRAIN_SET('0', sda);
                     s_stage <= 0;
+                    o_data <= s_latched_data;
                     
                 end if;
             end if;

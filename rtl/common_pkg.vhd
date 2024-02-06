@@ -58,6 +58,9 @@ package common_pkg is
     function muladd(a : attitude; x:attitude; b: attitude) return attitude;
     
     function "+" (a : attitude; b: attitude) return attitude;
+    
+    function "*" (a : real; b: integer) return integer;
+    function "*" (a : real; b: integer) return real;
 
     function fixed_add (A : in sfixed; B : in sfixed) return sfixed;
     function fixed_sub (A : in sfixed; B : in sfixed) return sfixed;
@@ -74,6 +77,18 @@ begin
     res.pitch := a.pitch*x.pitch+b.pitch;
     res.yaw := a.yaw*x.yaw+b.yaw;
     return res;
+end function;
+
+function "*" (a : real; b: integer) return integer is
+variable res : attitude;
+begin
+    return integer(real(b)*a);
+end function;
+
+function "*" (a : real; b: integer) return real is
+variable res : attitude;
+begin
+    return real(b)*a;
 end function;
 
 function "+"(a : attitude; b: attitude) return attitude is

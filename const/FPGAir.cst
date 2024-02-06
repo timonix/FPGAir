@@ -4,11 +4,11 @@
 IO_LOC  "tx" 17;
 IO_PORT "tx" IO_TYPE=LVCMOS33;
 
-IO_LOC  "debug" 70;
+IO_LOC  "debug" 27;
 IO_PORT "debug" IO_TYPE=LVCMOS33;
 
-//IO_LOC  "mpu_interrupt" 26;
-//IO_PORT "mpu_interrupt" IO_TYPE=LVCMOS33;
+IO_LOC  "mpu_interrupt" 26;
+IO_PORT "mpu_interrupt" IO_TYPE=LVCMOS33;
 
 //
 //IO_LOC  "rx" 18;

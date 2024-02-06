@@ -23,9 +23,9 @@ entity mpu_seperated is
         y           : out std_logic_vector(15 downto 0);
         z           : out std_logic_vector(15 downto 0);
         
-        temperature : out std_logic_vector(15 downto 0);
+        accelerometer_data_valid     : out boolean;
+        gyroscope_data_valid : out boolean;
         
-        data_valid     : out boolean;
         reciever_ready : in boolean;
         
         -- input stream
@@ -50,7 +50,7 @@ architecture rtl of mpu_seperated is
     signal s_ack_from_byte    : std_logic;
     signal s_data_from_byte    : std_logic_vector (7 downto 0);
 
-    constant last_stage :natural := 1023;
+    constant last_stage :natural := 255;
     signal s_stage : natural range 0 to last_stage;
     
     constant mpu_addr_W : std_logic_vector (7 downto 0) := "11010000";
@@ -68,10 +68,14 @@ architecture rtl of mpu_seperated is
     constant accelerometer_data_reg : std_logic_vector (7 downto 0) := x"3B";
     constant gyroscope_data_reg : std_logic_vector (7 downto 0) := x"43";
     
-    signal s_data_valid : boolean := false;
+    signal s_gyro_data_valid : boolean := false;
+    signal s_acc_data_valid : boolean := false;
     
 
 begin
+    
+    accelerometer_data_valid <= s_acc_data_valid;
+    gyroscope_data_valid <= s_gyro_data_valid;
 
     dut : entity work.I2C_byte(rtl)
     generic map (
@@ -126,7 +130,7 @@ begin
                 when 7 => next_stage(not s_byte_working);
                     s_ctrl <= RW;
                     s_ack_to_byte <= '0';
-                    s_data_to_byte <= "10000000";
+                    s_data_to_byte <= "00000000";
                 when 8 => next_stage(true);
                 when 9 => next_stage(not s_byte_working);
                     s_ctrl <= STOP;
@@ -225,6 +229,8 @@ begin
                     s_ctrl <= RW;
                     s_ack_to_byte <= '1';
                     s_data_to_byte <= (others => '1');
+                    s_acc_data_valid <= false;
+                    s_gyro_data_valid <= false;
                     x(7 downto 0) <= s_data_from_byte;
                 when 124 => next_stage(true);
                 when 125 => next_stage(not s_byte_working);
@@ -269,7 +275,8 @@ begin
                 when 167 => next_stage(not s_byte_working);
                     s_ctrl <= STOP;
                 when 168 => s_stage <= last_stage;
-                    s_data_valid <= true;
+                    s_acc_data_valid <= true;
+                    s_gyro_data_valid <= false;
                     
                 ------------------ GYROSCOPE START --------------------------
                 ----------------SET ADDRESS GYROSCOPE------------------------
@@ -311,11 +318,16 @@ begin
                     s_ctrl <= RW;
                     s_ack_to_byte <= '1';
                     s_data_to_byte <= (others => '1');
-                    x(7 downto 0) <= s_data_from_byte;
+                    s_acc_data_valid <= false;
+                    s_gyro_data_valid <= false;
+                    
+                    --x(7 downto 0) <= s_data_from_byte;
                 when 204 => next_stage(true);
+                    x(7 downto 0) <= s_data_from_byte;
                 when 205 => next_stage(not s_byte_working);
-                    x(15 downto 8) <= s_data_from_byte;
+                    --x(15 downto 8) <= s_data_from_byte;
                 when 206 => next_stage(true);
+                    x(15 downto 8) <= s_data_from_byte;
                 when 207 => next_stage(not s_byte_working);
                 when 208 to 210 => next_stage(true);
                     
@@ -355,7 +367,7 @@ begin
                 when 227 => next_stage(not s_byte_working);
                     s_ctrl <= STOP;
                 when 228 => s_stage <= last_stage;
-                    s_data_valid <= true;
+                    s_gyro_data_valid <= true;
                     
                     
                 when others =>
@@ -365,8 +377,10 @@ begin
                     
             end case;
             
-            if s_data_valid and reciever_ready then
-                s_data_valid <= false;
+            
+            if (s_gyro_data_valid or s_acc_data_valid) and reciever_ready then
+                s_gyro_data_valid <= false;
+                s_acc_data_valid <= false;
             end if;
             
             if command_valid and mpu_ready then
@@ -385,7 +399,8 @@ begin
             end if;
             
             if rst = '1' then
-                s_data_valid <= false;
+                s_gyro_data_valid <= false;
+                s_acc_data_valid <= false;
                 mpu_ready <= false;
                 s_ctrl <= NOP_E;
                 s_stage <= last_stage;

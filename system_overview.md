@@ -45,7 +45,7 @@ Ports used:
 |76|Radio 7|1
 |77|Radio 8|1
 |26|mpu interrupt|2
-|||
+|24|debug|2
 |||
 |||
 
