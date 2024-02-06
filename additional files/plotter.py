@@ -3,8 +3,10 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from collections import deque
 
+from scipy.signal import firwin, lfilter
+
 # Open serial port
-ser = serial.Serial('COM6', 1000000, timeout=1)
+ser = serial.Serial('COM4', 115200, timeout=1)
 
 fig, ax = plt.subplots()
 num_lines = 6  # Number of lines you want to plot
@@ -33,7 +35,7 @@ def update_plot(frame):
                 data_queues[i].append(data)
                 lines[i].set_data(range(len(data_queues[i])), data_queues[i])
 
-
+                
             #data_queue.append(data)
             #line.set_data(range(len(data_queue)), data_queue)
     return tuple(lines)
