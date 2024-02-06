@@ -55,8 +55,8 @@ begin
     pid_inst : entity work.pid(rtl)
     generic map (
         frequency_mhz => 27.0,
-        Kp => to_sfixed(0.3, 11,-11),
-        Ki => to_sfixed(0.001, 11,-11),
+        Kp => to_sfixed(0.5, 11,-11),
+        Ki => to_sfixed(0.0, 11,-11),
         Kd => to_sfixed(0.0, 11,-11)
     )
     port map (
