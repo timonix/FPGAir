@@ -42,7 +42,7 @@ def read_serial_data():
                     data = -(2**24 - data)
 
                 pid_signal_raw = data
-                pid_signal = float(data) / 2**13
+                #pid_signal = float(data) / 2**13
     except Exception as e:
         print(f"Serial read error: {e}")
 
@@ -58,10 +58,22 @@ def send_serial_data(out_data):
         print(f"Serial send error: {e}")
 
 def update_plot(i):
-    print(f"PID_Signal before: {pid_signal}")
+    print("----------")
+        
+    # Read/send data from/to FPGA
     read_serial_data()
+    print(f"PID_Signal from FPGA: {pid_signal_raw}")
     send_serial_data(pid_signal_raw)
     
+    # Plot stuff
+    draw_plot()
+
+
+def submit(text):
+    global pid_target
+    pid_target = int(text)
+
+def draw_plot():
     current_x = next(x_iter)
     x.append(current_x)
     ax.set_xlim(current_x-100, current_x)
@@ -72,10 +84,7 @@ def update_plot(i):
     ax.plot(x, y1, color="red")
     ax.plot(x, y2, color="blue")
 
-def submit(text):
-    global pid_target
-    pid_target = int(text)
-
+    
 # Create the animation
 ani = animation.FuncAnimation(fig, update_plot, interval=0.1)
 
@@ -88,3 +97,10 @@ plt.show()
 
 # Close the serial port
 ser.close()
+
+
+# fpga -> python : 23 bitar
+# 
+# 
+# 
+# 
