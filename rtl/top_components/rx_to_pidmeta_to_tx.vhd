@@ -3,7 +3,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use ieee.fixed_pkg.all;
 
-entity rx_to_pid_to_tx_top is
+entity rx_to_pidmeta_to_tx_top is
     port (
         -- Define the external ports for the uart_system
         clk : in STD_LOGIC;
@@ -12,11 +12,11 @@ entity rx_to_pid_to_tx_top is
         rx : in STD_LOGIC
         -- other ports as required
     );
-end entity rx_to_pid_to_tx_top;
+end entity rx_to_pidmeta_to_tx_top;
 
 
 
-architecture Behavioral of rx_to_pid_to_tx_top is
+architecture Behavioral of rx_to_pidmeta_to_tx_top is
     
     signal data : STD_LOGIC_VECTOR(15 downto 0);
     signal ready : boolean;
@@ -68,22 +68,29 @@ begin
         data       => rx_data,
         data_valid => rx_valid);
     
-    pid_inst : entity work.pid(rtl)
+    pid_inst : entity work.pid_meta(rtl)
     generic map (
-        frequency_mhz => 27.0,
-        Kp => to_sfixed(0.3, 11,-11),
-        Ki => to_sfixed(0.001, 11,-11),
-        Kd => to_sfixed(0.0, 11,-11)
+        integer_bits => 11,
+        fractional_bits => 11,
+        Kp => 0.005,
+        Ki => 0.001,
+        Kd => 0.002
     )
     port map (
-        clk      => clk,
-        rst      => rst,
-        enable   => true,
-        sample   => rx_valid and header = x"55",
+        clk  => clk,
+        rst => rst,
+        enable => true,
+        update => rx_valid,
+        
         data_valid => pid_data_valid,
-        setpoint => setpoint,
-        input    => data_to_pid,
-        output   => pid_data
+        
+        A_setpoint => setpoint,
+        A_measured => (others => '0'),
+        A_output =>open,--output_value,
+        
+        B_setpoint =>setpoint,
+        B_measured =>measured_value,
+        B_output   =>output_value
     );
 
     DUT: entity work.data_unloader(rtl)

@@ -15,6 +15,7 @@
         <File path="rtl/fixed_point_pkg.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/gyro_rot.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/i2c/I2C_byte.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/math/mac.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/mixer.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/motor/pwm.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/mpu6050/mpu_seperated.vhd" type="file.vhdl" enable="1"/>
@@ -22,6 +23,8 @@
         <File path="rtl/mpu6050/mpu_using_comp.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/mpu6050/mpu_using_fifo.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/pid/pid.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/pid/pid_fixed.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/pid/pid_meta.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/radio/radio_channel.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/top_components/data_unloader_test_top.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/top_components/dbus_test_top.vhd" type="file.vhdl" enable="1"/>

@@ -23,6 +23,7 @@
     <File Include="rtl/i2c/tb/I2C_byte_tb.vhd" />
     <File Include="rtl/i2c/tb/I2C_byte_tb_2.vhd" />
     <File Include="rtl/i2c/I2C_byte.vhd" />
+    <File Include="rtl/math/mac.vhd" />
     <File Include="rtl/motor/tb/tb_pwm.vhd" />
     <File Include="rtl/motor/pwm.vhd" />
     <File Include="rtl/mpu6050/tb/tb_mpu6050.vhd" />
@@ -30,8 +31,12 @@
     <File Include="rtl/mpu6050/mpu_seperated_test_top.vhd" />
     <File Include="rtl/mpu6050/mpu_using_comp.vhd" />
     <File Include="rtl/mpu6050/mpu_using_fifo.vhd" />
+    <File Include="rtl/pid/tb/tb_pid_meta.vhd" />
     <File Include="rtl/pid/tb/tb_pid.vhd" />
+    <File Include="rtl/pid/tb/tb_pid_fixed.vhd" />
     <File Include="rtl/pid/pid.vhd" />
+    <File Include="rtl/pid/pid_fixed.vhd" />
+    <File Include="rtl/pid/pid_meta.vhd" />
     <File Include="rtl/radio/tb/tb_radio.vhd" />
     <File Include="rtl/radio/radio_channel.vhd" />
     <File Include="rtl/top_components/data_unloader_test_top.vhd" />
@@ -42,6 +47,7 @@
     <File Include="rtl/top_components/radio_servo_gyro_top.vhd" />
     <File Include="rtl/top_components/rx_multi_feedback_top.vhd" />
     <File Include="rtl/top_components/rx_to_pid_to_tx_top.vhd" />
+    <File Include="rtl/top_components/rx_to_pidmeta_to_tx.vhd" />
     <File Include="rtl/top_components/tb_dbus_test_top.vhd" />
     <File Include="rtl/top_components/tb_mpu6050_test_top.vhd" />
     <File Include="rtl/top_components/tb_redout.vhd" />
@@ -70,6 +76,7 @@
     <File Include="tb/tb_debug_port2.vhd" />
     <File Include="tb/tb_fixed_type.vhd" />
     <File Include="tb/tb_gyro_rot.vhd" />
+    <File Include="tb/tb_map.vhd" />
     <File Include="tb/tb_mixer.vhd" />
     <File Include="tb/tb_radio_servo_gyro_top.vhd" />
     <File Include="tb/test_02_tb.vhd" />

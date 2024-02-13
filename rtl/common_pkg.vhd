@@ -64,7 +64,9 @@ package common_pkg is
 
     function fixed_add (A : in sfixed; B : in sfixed) return sfixed;
     function fixed_sub (A : in sfixed; B : in sfixed) return sfixed;
+    function fixed_mul (A : in sfixed; B : in sfixed) return sfixed;
     function cum_mul (A : in sfixed; B : in sfixed; C : in sfixed) return sfixed;
+    function map_onto(source : in sfixed; target : in sfixed) return sfixed;
 end package common_pkg;
 
 -- Package Body Section
@@ -235,12 +237,27 @@ begin
     
 end;
 
+function map_onto(source : in sfixed; target : in sfixed) return sfixed is
+    variable tmp : sfixed(target'range);
+    --variable i : natural range source'range;
+begin
+    tmp := (others => source(source'high)); -- Initialize tmp with zeros
+    tmp(source'low downto target'low) := (others => '0');
+    
+    for i in source'range loop
+        tmp(i) := source(i); -- Copy source to tmp
+    end loop;
+    return tmp;
+end function;
+
+
 function fixed_add (A : in sfixed; B : in sfixed) return sfixed is
 begin
+
     return resize (
         arg => A + B,
         size_res => A,
-        overflow_style => IEEE.fixed_float_types.fixed_wrap,
+        overflow_style => IEEE.fixed_float_types.fixed_saturate,
         round_style => IEEE.fixed_float_types.fixed_truncate
     );
 end;
@@ -262,12 +279,26 @@ begin
     
 end;
 
-function fixed_sub (A : in sfixed; B : in sfixed) return sfixed is
+function fixed_mul (A : in sfixed; B : in sfixed) return sfixed is
+
 begin
+    
+    return resize (
+        arg => A * B,
+        size_res => A,
+        overflow_style => IEEE.fixed_float_types.fixed_saturate,
+        round_style => IEEE.fixed_float_types.fixed_truncate
+    );
+end;
+
+function fixed_sub (A : in sfixed; B : in sfixed) return sfixed is
+    variable result : sfixed(A'high + 1 downto A'low);
+begin
+    
     return resize (
         arg => A - B,
         size_res => A,
-        overflow_style => IEEE.fixed_float_types.fixed_wrap,
+        overflow_style => IEEE.fixed_float_types.fixed_saturate,
         round_style => IEEE.fixed_float_types.fixed_truncate
     );
 end;
@@ -276,7 +307,7 @@ function cum_mul (A : in sfixed; B : in sfixed; C : in sfixed) return sfixed is
 begin
     return resize (
         arg => A * B + C,
-        size_res => A,
+        size_res => C,
         overflow_style => IEEE.fixed_float_types.fixed_saturate,
         round_style => IEEE.fixed_float_types.fixed_truncate
     );

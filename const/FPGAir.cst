@@ -1,8 +1,8 @@
 //IO_LOC  "Motor_1" 51;
 //IO_PORT "Motor_1" DRIVE=8 IO_TYPE=SSTL25_I PULL_MODE=UP;
 //
-IO_LOC  "tx" 17;
-IO_PORT "tx" IO_TYPE=LVCMOS33;
+//IO_LOC  "tx" 17;
+//IO_PORT "tx" IO_TYPE=LVCMOS33;
 
 //IO_LOC  "debug" 27;
 //IO_PORT "debug" IO_TYPE=LVCMOS33;
@@ -11,8 +11,8 @@ IO_PORT "tx" IO_TYPE=LVCMOS33;
 //IO_PORT "mpu_interrupt" IO_TYPE=LVCMOS33;
 
 //
-IO_LOC  "rx" 18;
-IO_PORT "rx" IO_TYPE=LVCMOS33;
+//IO_LOC  "rx" 18;
+//IO_PORT "rx" IO_TYPE=LVCMOS33;
 //
 //IO_LOC  "led[5]" 16;
 //IO_PORT "led[5]" DRIVE=8 PULL_MODE=UP;
