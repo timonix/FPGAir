@@ -51,9 +51,9 @@ begin
     generic map (
         integer_bits => 11,
         fractional_bits => 11,
-        Kp => 0.005,
-        Ki => 0.001,
-        Kd => 0.002
+        Kp => 1.000,
+        Ki => 0.000,
+        Kd => 0.000
     )
     port map (
         clk  => clk,

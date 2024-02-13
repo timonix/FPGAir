@@ -14,7 +14,7 @@ from scipy.signal import firwin, lfilter
 from itertools import count
 
 # Open serial port
-ser = serial.Serial('COM8', 115200, timeout=1)
+ser = serial.Serial('COM4', 115200, timeout=1)
 
 fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -36,10 +36,10 @@ def read_serial_data():
             delimiter = int.from_bytes(raw_data, byteorder='little')
             if chr(delimiter) == 'D':
 
-                raw_data = ser.read(3)
+                raw_data = ser.read(2)
                 data = int.from_bytes(raw_data, byteorder='big')
-                if data > 2**23:
-                    data = -(2**24 - data)
+                if data > 2**15:
+                    data = -(2**16 - data)
 
                 pid_signal_raw = data
                 #pid_signal = float(data) / 2**13
@@ -47,9 +47,8 @@ def read_serial_data():
         print(f"Serial read error: {e}")
 
 def send_serial_data(out_data):
-    print(f"PID_Signal raw: {out_data}")
-    out_data = out_data >> 8
-    print(f"PID_Signal after: {out_data}")
+    #out_data = out_data >> 8
+    #print(f"PID_Signal after: {out_data}")
     #print(float(data)/2**11)
     out_data = 1000 << 5
     try:
@@ -66,23 +65,20 @@ def update_plot(i):
     send_serial_data(pid_signal_raw)
     
     # Plot stuff
-    draw_plot()
+    current_x = next(x_iter)
+    x.append(current_x)
+    ax.set_xlim(current_x-100, current_x)
+
+    y1.append((pid_signal_raw))
+    y2.append((pid_target))
+ 
+    ax.plot(x, y1, color="red")
+    ax.plot(x, y2, color="blue")
 
 
 def submit(text):
     global pid_target
     pid_target = int(text)
-
-def draw_plot():
-    current_x = next(x_iter)
-    x.append(current_x)
-    ax.set_xlim(current_x-100, current_x)
-
-    y1.append((pid_signal))
-    y2.append((pid_target))
- 
-    ax.plot(x, y1, color="red")
-    ax.plot(x, y2, color="blue")
 
     
 # Create the animation
