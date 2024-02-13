@@ -20,7 +20,7 @@ architecture rtl of rx_to_pid_meta_to_tx is
     signal update_pid   : boolean;
 
     signal pid_valid: BOOLEAN;
-    signal setpoint : sfixed(10 downto -11) := to_sfixed(50.0, 10,-11);
+    signal setpoint : sfixed(10 downto -11) := to_sfixed(-500.0, 10,-11);
     signal pid_output : sfixed(10 downto -11);
     signal pid_input : sfixed(10 downto -11):= to_sfixed(0.0, 10,-11);
     
@@ -51,9 +51,9 @@ begin
     generic map (
         integer_bits => 11,
         fractional_bits => 11,
-        Kp => 1.000,
-        Ki => 0.000,
-        Kd => 0.000
+        Kp => 0.005,
+        Ki => 0.001,
+        Kd => 0.002
     )
     port map (
         clk  => clk,
