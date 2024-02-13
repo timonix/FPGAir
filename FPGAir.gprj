@@ -22,6 +22,7 @@
         <File path="rtl/mpu6050/mpu_seperated_test_top.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/mpu6050/mpu_using_comp.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/mpu6050/mpu_using_fifo.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/pid/hardware/rx_to_pid_meta_to_tx.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/pid/pid.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/pid/pid_fixed.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/pid/pid_meta.vhd" type="file.vhdl" enable="1"/>
@@ -32,8 +33,6 @@
         <File path="rtl/top_components/mpu6050_readout_new.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/top_components/pwm_top_test.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/top_components/radio_servo_gyro_top.vhd" type="file.vhdl" enable="1"/>
-        <File path="rtl/top_components/rx_multi_feedback_top.vhd" type="file.vhdl" enable="1"/>
-        <File path="rtl/top_components/rx_to_pid_to_tx_top.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/top_components/uart_test_top.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/uart_rx/uart_multi_rx.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/uart_rx/uart_rx.vhd" type="file.vhdl" enable="1"/>

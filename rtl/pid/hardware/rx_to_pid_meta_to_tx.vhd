@@ -28,7 +28,7 @@ architecture rtl of rx_to_pid_meta_to_tx is
     signal rx_data : std_logic_vector(15 downto 0);
 
 begin
-    pid_input(-4 downto -11) <= (others => '0');
+    pid_input(-6 downto -11) <= (others => '0');
     pid_input(10 downto -5) <= sfixed(rx_data(15 downto 0));
     
     update_pid <= rx_valid;

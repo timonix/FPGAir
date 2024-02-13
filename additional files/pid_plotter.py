@@ -14,7 +14,7 @@ from scipy.signal import firwin, lfilter
 from itertools import count
 
 # Open serial port
-ser = serial.Serial('COM4', 115200, timeout=1)
+ser = serial.Serial('COM8', 115200, timeout=1)
 
 fig, ax = plt.subplots(figsize=(10, 6))
 
