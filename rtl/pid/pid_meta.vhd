@@ -57,7 +57,7 @@ architecture rtl of pid_meta is
     constant Ki_C : sfixed(dsp_small_word-fractional_bits-1 downto -fractional_bits) := to_sfixed(Ki, dsp_small_word-fractional_bits-1,-fractional_bits);
     constant Kd_C : sfixed(dsp_small_word-fractional_bits-1 downto -fractional_bits) := to_sfixed(Kd, dsp_small_word-fractional_bits-1,-fractional_bits);
     
-    constant integrator_max  : real := (2.0 ** (integer_bits-1)) / Ki;
+    constant integrator_max  : real := (2.0 ** (integer_bits-1)) / (Ki+1.0);
     constant integrator_bits : integer := integer(ceil(log2(integrator_max + 1.0)));
     
     type pid_channel is record
