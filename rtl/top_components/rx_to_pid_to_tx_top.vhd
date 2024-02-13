@@ -38,22 +38,6 @@ architecture Behavioral of rx_to_pid_to_tx_top is
 
 begin
     
-    data_to_pid(11 downto -4) <= to_sfixed(rx_data(15 downto 0), 11, -4);
-    data_to_tx(23 downto 0) <= result_type(pid_data)&"0";
-    
-    header <= rx_data(23 downto 16);
-    
-    process(clk)
-    begin
-        if rising_edge(clk) then
-            if header = x"66" and rx_valid then
-                setpoint(11 downto -4) <= to_sfixed(rx_data(15 downto 0), 11, -4);
-            end if;
-            if rst = '1' then
-                setpoint <= to_sfixed(0.0, 11,-11);
-            end if;
-        end if;
-    end process;
 
     rx_inst: entity work.uart_multi_rx(rtl)
     generic map (
@@ -68,7 +52,7 @@ begin
         data       => rx_data,
         data_valid => rx_valid);
     
-    pid_inst : entity work.pid(rtl)
+    pid_inst : entity work.pid_meta(rtl)
     generic map (
         frequency_mhz => 27.0,
         Kp => to_sfixed(0.5, 11,-11),
