@@ -28,7 +28,8 @@ entity mpu_using_comp is
         acc_z      : out std_logic_vector(15 downto 0);
         
         temperature : out std_logic_vector(15 downto 0);
-
+        
+        data_valid : out boolean;
         o_working : out boolean;
         i_reset_mpu : in boolean := false;
         i_update : in boolean
@@ -91,6 +92,7 @@ begin
             --    s_stage <= s_stage + 1;
             --end if;
             s_ctrl <= NOP_E;
+            data_valid <= false;
             
             case s_stage is
                 when 0 => next_stage(true);
@@ -153,10 +155,10 @@ begin
                     s_ctrl <= RW;
                     s_ack_to_byte <= '1';
                     s_data_to_byte <= (others => '1');
-                    acc_x(7 downto 0) <= s_data_from_byte;
+                    acc_x(15 downto 8) <= s_data_from_byte;
                 when 32 => next_stage(true);
                 when 33 => next_stage(not s_byte_working);
-                    acc_x(15 downto 8) <= s_data_from_byte;
+                    acc_x(7 downto 0) <= s_data_from_byte;
                 when 34 => next_stage(true);
                 when 35 => next_stage(not s_byte_working);
                 when 36 to 40 => next_stage(true);
@@ -171,10 +173,10 @@ begin
                     s_ctrl <= RW;
                     s_ack_to_byte <= '1';
                     s_data_to_byte <= (others => '1');
-                    acc_y(7 downto 0) <= s_data_from_byte;
+                    acc_y(15 downto 0) <= s_data_from_byte;
                 when 44 => next_stage(true);
                 when 45 => next_stage(not s_byte_working);
-                    acc_y(15 downto 8) <= s_data_from_byte;
+                    acc_y(7 downto 0) <= s_data_from_byte;
                 when 46 => next_stage(true);
                 when 47 => next_stage(not s_byte_working);
                 when 48 to 60 => next_stage(true);
@@ -189,10 +191,10 @@ begin
                     s_ctrl <= RW;
                     s_ack_to_byte <= '1';
                     s_data_to_byte <= (others => '1');
-                    acc_z(7 downto 0) <= s_data_from_byte;
+                    acc_z(15 downto 8) <= s_data_from_byte;
                 when 64 => next_stage(true);
                 when 65 => next_stage(not s_byte_working);
-                    acc_z(15 downto 8) <= s_data_from_byte;
+                    acc_z(7 downto 0) <= s_data_from_byte;
                 when 66 => next_stage(true);
                 when 67 => next_stage(not s_byte_working);
                 when 68 to 70 => next_stage(true);
@@ -207,10 +209,10 @@ begin
                     s_ctrl <= RW;
                     s_ack_to_byte <= '1';
                     s_data_to_byte <= (others => '1');
-                    temperature(7 downto 0) <= s_data_from_byte;
+                    temperature(15 downto 8) <= s_data_from_byte;
                 when 74 => next_stage(true);
                 when 75 => next_stage(not s_byte_working);
-                    temperature(15 downto 8) <= s_data_from_byte;
+                    temperature(7 downto 0) <= s_data_from_byte;
                 when 76 => next_stage(true);
                 when 77 => next_stage(not s_byte_working);
                 when 78 to 90 => next_stage(true);
@@ -225,10 +227,10 @@ begin
                     s_ctrl <= RW;
                     s_ack_to_byte <= '1';
                     s_data_to_byte <= (others => '1');
-                    gyro_x(7 downto 0) <= s_data_from_byte;
+                    gyro_x(15 downto 8) <= s_data_from_byte;
                 when 94 => next_stage(true);
                 when 95 => next_stage(not s_byte_working);
-                    gyro_x(15 downto 8) <= s_data_from_byte;
+                    gyro_x(7 downto 0) <= s_data_from_byte;
                 when 96 => next_stage(true);
                 when 97 => next_stage(not s_byte_working);
                 when 98 to 100 => next_stage(true);
@@ -243,10 +245,10 @@ begin
                     s_ctrl <= RW;
                     s_ack_to_byte <= '1';
                     s_data_to_byte <= (others => '1');
-                    gyro_y(7 downto 0) <= s_data_from_byte;
+                    gyro_y(15 downto 8) <= s_data_from_byte;
                 when 104 => next_stage(true);
                 when 105 => next_stage(not s_byte_working);
-                    gyro_y(15 downto 8) <= s_data_from_byte;
+                    gyro_y(7 downto 0) <= s_data_from_byte;
                 when 106 => next_stage(true);
                 when 107 => next_stage(not s_byte_working);
                 when 108 to 120 => next_stage(true);
@@ -261,17 +263,16 @@ begin
                     s_ctrl <= RW;
                     s_ack_to_byte <= '0';
                     s_data_to_byte <= (others => '1');
-                    gyro_z(7 downto 0) <= s_data_from_byte;
+                    gyro_z(15 downto 8) <= s_data_from_byte;
                 when 124 => next_stage(true);
                 when 125 => next_stage(not s_byte_working);
-                    gyro_z(15 downto 8) <= s_data_from_byte;
+                    gyro_z(7 downto 0) <= s_data_from_byte;
                     s_ctrl <= STOP;
+                    data_valid <= true;
                 when 126 => next_stage(true);
                 when 127 => next_stage(not s_byte_working);
                 when 128 to 140 => next_stage(true);
 
-                    
-                    
                 when others =>
                     o_working <= false;
                     s_stage <= last_stage;

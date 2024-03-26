@@ -14,6 +14,14 @@
     <File Include="old/uart_adapter_old.vhd" />
     <File Include="old/uart_top_old.vhd" />
     <File Include="old/uart_tx_old.vhd" />
+    <File Include="rtl/Filters/low_pass_filter.vhd" />
+    <File Include="rtl/attitude_module/testbench_attitude_model.vhd" />
+    <File Include="rtl/cordic/tb/atan_tb.vhd" />
+    <File Include="rtl/cordic/tb/cordic_rotation_tb.vhd" />
+    <File Include="rtl/cordic/tb/cordic_vector_tb.vhd" />
+    <File Include="rtl/cordic/atan_table.vhd" />
+    <File Include="rtl/cordic/cordic.vhd" />
+    <File Include="rtl/cordic/cordic_vector.vhd" />
     <File Include="rtl/dbus_components/bram_dbus.vhd" />
     <File Include="rtl/dbus_components/buffer_dbus.vhd" />
     <File Include="rtl/dbus_components/bus_cleaner_dbus.vhd" />
@@ -33,9 +41,9 @@
     <File Include="rtl/mpu6050/mpu_using_fifo.vhd" />
     <File Include="rtl/pid/hardware/mpu6050_to_pid_meta_to_tx.vhd" />
     <File Include="rtl/pid/hardware/rx_to_pid_meta_to_tx.vhd" />
-    <File Include="rtl/pid/tb/tb_pid_meta.vhd" />
     <File Include="rtl/pid/tb/tb_pid.vhd" />
     <File Include="rtl/pid/tb/tb_pid_fixed.vhd" />
+    <File Include="rtl/pid/tb/tb_pid_meta.vhd" />
     <File Include="rtl/pid/pid.vhd" />
     <File Include="rtl/pid/pid_fixed.vhd" />
     <File Include="rtl/pid/pid_meta.vhd" />
@@ -85,6 +93,6 @@
     <File Include="tb/test_02_tb.vhd" />
   </ItemGroup>
   <PropertyGroup>
-    <HardwareStartPath>tb/tb_mixer.vhd</HardwareStartPath>
+    <HardwareStartPath>rtl/cordic/tb/cordic_rotation_tb.vhd</HardwareStartPath>
   </PropertyGroup>
 </Project>

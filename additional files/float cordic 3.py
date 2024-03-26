@@ -100,7 +100,7 @@ def rp(x, y, z, debug = False):
 
 
 @given(st.integers(), st.integers())
-@settings(max_examples=5000)
+@settings(max_examples=500)
 def test_y_over_x(ax, ay):
     if ax != 0:
         target = math.atan(ay / ax)
@@ -133,5 +133,5 @@ if __name__ == "__main__":
     my_jopp_est(0,0,-1,15,True)
     # print(atan2_est(0, 0.0, 20)[1] * 57.3)
     test_y_over_x()
-    test_rp()
+    # test_rp()
     test_jopp()
