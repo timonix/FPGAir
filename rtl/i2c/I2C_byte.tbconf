@@ -1,0 +1,4 @@
+{
+  "Simulator": "GHDL",
+  "VhdlStandard": "08"
+}

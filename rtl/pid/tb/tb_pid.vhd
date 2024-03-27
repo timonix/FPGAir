@@ -2,20 +2,25 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.fixed_pkg.all;
 
-entity tb_pid is
-end tb_pid;
+use work.common_pkg.ALL;
 
-architecture tb of tb_pid is
+entity tb_pid_meta is
+end tb_pid_meta;
+
+architecture tb of tb_pid_meta is
 
     
 
     signal clk      : std_logic;
     signal rst      : std_logic;
     signal enable   : boolean;
-    signal sample   : STD_LOGIC;
-    signal setpoint : sfixed(11 downto -11) := to_sfixed(0.0, 11,-11);
-    --signal input    : sfixed(12 downto -12) := to_sfixed(0.0, 12,-12);
-    signal output_value : sfixed(11 downto -11);
+    signal update   : boolean;
+    signal data_valid: boolean;
+    signal setpoint : sfixed(10 downto -11) := to_sfixed(0.0, 10,-11);
+    signal output_value : sfixed(10 downto -11);
+    signal measured_value : sfixed(10 downto -11):= to_sfixed(0.0, 10,-11);
+    
+    signal last_measured : sfixed(10 downto -11) := to_sfixed(0.0, 10,-11);
     
     constant TbPeriod : time := 37 ns;
     signal TbClock : std_logic := '0';
@@ -25,24 +30,35 @@ begin
 
     pid_inst : entity work.pid(rtl)
     generic map (
-        frequency_mhz => 27.0,
-        Kp => to_sfixed(0.3, 11,-11),
-        Ki => to_sfixed(0.4, 11,-11),
-        Kd => to_sfixed(0.0, 11,-11)
+        integer_bits => 11,
+        fractional_bits => 11,
+        Kp => 0.005,
+        Ki => 0.001,
+        Kd => 0.002
     )
     port map (
-        clk      => clk,
-        rst      => rst,
-        enable   => enable,
-        sample   => sample,
-        setpoint => setpoint,
-        input    => output_value,
-        output   => output_value
+        clk  => clk,
+        rst => rst,
+        enable => true,
+        update => update,
+        
+        data_valid => data_valid,
+        
+        A_setpoint => (others => '0'),
+        A_measured => (others => '0'),
+        A_output =>open,--output_value,
+        
+        B_setpoint =>setpoint,
+        B_measured =>measured_value,
+        B_output   =>output_value
     );
 
     -- Clock generation
     TbClock <= not TbClock after TbPeriod/2 when TbSimEnded /= '1' else '0';
-
+    
+    
+    
+    
     --output_real <= to_real(output_value);
     
     -- Connect main clock signal
@@ -52,8 +68,11 @@ begin
     begin
         -- Initialization
         enable <= False;
-        setpoint <= to_sfixed(780.0, 11,-11);
-        sample <= '0';
+        setpoint <= to_sfixed(50.0, 10,-11);
+        update <= false;
+        measured_value <= to_sfixed(1.0, 10,-11);
+        last_measured <= to_sfixed(0.0, 10,-11);
+        
 
         -- Reset generation
         rst <= '1';
@@ -64,15 +83,23 @@ begin
         -- Add stimuli here
         wait for 10 ns;
         enable <= True;
-        sample <= '1';
+        update <= true;
         wait for TbPeriod;
-        sample <= '0';
+        update <= false;
         wait for TbPeriod*10;
-        for i in 0 to 3000 loop
-            sample <= '1';
+        for i in 0 to 2000 loop
+            --last_measured <= measured_value;
+            --measured_value <= fixed_add(last_measured, output_value);
             wait for TbPeriod;
-            sample <= '0';
-            wait for TbPeriod*5;
+            update <= true;
+            wait for TbPeriod;
+            update <= false;
+            wait for TbPeriod * 100;
+            last_measured <= measured_value;
+            TbSimEnded <= '1';
+            wait for 0.01 ms;
+            measured_value <= fixed_add(last_measured, output_value);
+            TbSimEnded <= '0';
         end loop;
             
         wait for 10 ns;

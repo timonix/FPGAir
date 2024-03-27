@@ -21,7 +21,7 @@ architecture tb of tb_mpu6050 is
 
 begin
 
-    dut : entity work.mpu_using_comp(rtl)
+    dut : entity work.mpu(rtl)
     port map (clk       => clk,
         rst       => rst,
         sda       => sda,

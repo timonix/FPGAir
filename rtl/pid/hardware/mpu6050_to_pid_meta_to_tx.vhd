@@ -72,12 +72,12 @@ begin
         end if;
     end process;
     
-    mpu6050 : entity work.mpu_using_comp(rtl)
+    mpu6050 : entity work.mpu(rtl)
     generic map (frequency_mhz, i2c_frequency_mhz, true, false)
     port map (clk, rst, sda, scl, gyro_x, gyro_y, gyro_z, acc_x, acc_y, acc_z, temperature, mpu_working, open ,update_mpu);
     
 
-    pid_inst : entity work.pid_meta(rtl)
+    pid_inst : entity work.pid(rtl)
     generic map (
         integer_bits => 11,
         fractional_bits => 11,
