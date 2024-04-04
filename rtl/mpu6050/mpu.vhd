@@ -70,7 +70,7 @@ begin
         sda       => sda,
         scl       => scl,
         o_working => s_byte_working,
-        i_ctrl    => s_ctrl,
+       i_ctrl    => s_ctrl,
         i_ack     => s_ack_to_byte,
         i_data    => s_data_to_byte,
         o_ack     => s_ack_from_byte,
@@ -173,7 +173,7 @@ begin
                     s_ctrl <= RW;
                     s_ack_to_byte <= '1';
                     s_data_to_byte <= (others => '1');
-                    acc_y(15 downto 0) <= s_data_from_byte;
+                    acc_y(15 downto 8) <= s_data_from_byte;
                 when 44 => next_stage(true);
                 when 45 => next_stage(not s_byte_working);
                     acc_y(7 downto 0) <= s_data_from_byte;

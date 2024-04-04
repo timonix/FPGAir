@@ -57,14 +57,21 @@ package common_pkg is
     
     function muladd(a : attitude; x:attitude; b: attitude) return attitude;
     
+    function addmul(A : in sfixed; B : in sfixed; C : in sfixed; output_size: in sfixed ) return sfixed;
+    function muladd(A : in sfixed; B : in sfixed; C : in sfixed; output_size: in sfixed ) return sfixed;
+    function mulsub(A : in sfixed; B : in sfixed; C : in sfixed; output_size: in sfixed ) return sfixed;
+    
     function "+" (a : attitude; b: attitude) return attitude;
     
     function "*" (a : real; b: integer) return integer;
     function "*" (a : real; b: integer) return real;
 
     function fixed_add (A : in sfixed; B : in sfixed) return sfixed;
+    function fixed_add (A : in sfixed; B : in sfixed; output_size: in sfixed) return sfixed;
     function fixed_sub (A : in sfixed; B : in sfixed) return sfixed;
+    function fixed_sub (A : in sfixed; B : in sfixed; output_size: in sfixed) return sfixed;
     function fixed_mul (A : in sfixed; B : in sfixed) return sfixed;
+    function fixed_mul (A : in sfixed; B : in sfixed; output_size: in sfixed) return sfixed;
     function cum_mul (A : in sfixed; B : in sfixed; C : in sfixed) return sfixed;
     function map_onto(source : in sfixed; target : in sfixed) return sfixed;
 end package common_pkg;
@@ -238,7 +245,7 @@ begin
 end;
 
 function map_onto(source : in sfixed; target : in sfixed) return sfixed is
-    variable tmp : sfixed(target'range);
+variable tmp : sfixed(target'range);
     --variable i : natural range source'range;
 begin
     tmp := (others => source(source'high)); -- Initialize tmp with zeros
@@ -253,10 +260,19 @@ end function;
 
 function fixed_add (A : in sfixed; B : in sfixed) return sfixed is
 begin
-
     return resize (
         arg => A + B,
         size_res => A,
+        overflow_style => IEEE.fixed_float_types.fixed_saturate,
+        round_style => IEEE.fixed_float_types.fixed_truncate
+    );
+end;
+
+function fixed_add (A : in sfixed; B : in sfixed; output_size : in sfixed) return sfixed is
+begin
+    return resize (
+        arg => A + B,
+        size_res => output_size,
         overflow_style => IEEE.fixed_float_types.fixed_saturate,
         round_style => IEEE.fixed_float_types.fixed_truncate
     );
@@ -291,13 +307,67 @@ begin
     );
 end;
 
+function fixed_mul (A : in sfixed; B : in sfixed; output_size : in sfixed) return sfixed is
+
+begin
+    
+    return resize (
+        arg => A * B,
+        size_res => output_size,
+        overflow_style => IEEE.fixed_float_types.fixed_saturate,
+        round_style => IEEE.fixed_float_types.fixed_truncate
+    );
+end;
+
 function fixed_sub (A : in sfixed; B : in sfixed) return sfixed is
-    variable result : sfixed(A'high + 1 downto A'low);
+variable result : sfixed(A'high + 1 downto A'low);
 begin
     
     return resize (
         arg => A - B,
         size_res => A,
+        overflow_style => IEEE.fixed_float_types.fixed_saturate,
+        round_style => IEEE.fixed_float_types.fixed_truncate
+    );
+end;
+
+function fixed_sub (A : in sfixed; B : in sfixed; output_size : in sfixed) return sfixed is
+variable result : sfixed(A'high + 1 downto A'low);
+begin
+    
+    return resize (
+        arg => A - B,
+        size_res => output_size,
+        overflow_style => IEEE.fixed_float_types.fixed_saturate,
+        round_style => IEEE.fixed_float_types.fixed_truncate
+    );
+end;
+
+function addmul (A : in sfixed; B : in sfixed; C : in sfixed; output_size: in sfixed ) return sfixed is
+begin
+    return resize (
+        arg => (A + B) * C,
+        size_res => output_size,
+        overflow_style => IEEE.fixed_float_types.fixed_saturate,
+        round_style => IEEE.fixed_float_types.fixed_truncate
+    );
+end;
+
+function muladd (A : in sfixed; B : in sfixed; C : in sfixed; output_size: in sfixed ) return sfixed is
+begin
+    return resize (
+        arg => (A * B) + C,
+        size_res => output_size,
+        overflow_style => IEEE.fixed_float_types.fixed_saturate,
+        round_style => IEEE.fixed_float_types.fixed_truncate
+    );
+end;
+
+function mulsub (A : in sfixed; B : in sfixed; C : in sfixed; output_size: in sfixed ) return sfixed is
+begin
+    return resize (
+        arg => (A * B) - C,
+        size_res => output_size,
         overflow_style => IEEE.fixed_float_types.fixed_saturate,
         round_style => IEEE.fixed_float_types.fixed_truncate
     );

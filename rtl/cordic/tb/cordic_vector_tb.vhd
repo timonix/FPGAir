@@ -28,8 +28,8 @@ architecture sim of cordic_vector_tb is
     signal deg_90 : unsigned(15 downto 0) := shift_left(one,16-3);
     signal deg_45 : unsigned(15 downto 0) := shift_left(one,16-4);
     
-    signal deg_270 : unsigned(15 downto 0) := deg_180 or deg_90; -- minus 90
-    signal deg_315 : unsigned(15 downto 0) := deg_180 or deg_90 or deg_45; -- minus 90
+    --signal deg_270 : unsigned(15 downto 0) := deg_180 or deg_90; -- minus 90
+    --signal deg_315 : unsigned(15 downto 0) := deg_180 or deg_90 or deg_45; -- minus 90
     
     
     
@@ -70,10 +70,11 @@ begin
         rst_tb <= '0';
         wait for 100 ns;
         -- Apply inputs
-        i_x_tb <= to_signed(10, i_x_tb'length);
-        i_y_tb <= to_signed(10, i_y_tb'length);
-        --i_angle_tb <= to_unsigned(0, i_angle_tb'length);
-        i_angle_tb <= deg_45;
+
+        i_x_tb <= to_signed(16384, i_x_tb'length);
+        i_y_tb <= to_signed(16384, i_y_tb'length);
+        i_angle_tb <= to_unsigned(0, i_angle_tb'length);
+        --i_angle_tb <= deg_45;
         
         wait for TbPeriod*5;
         
@@ -85,6 +86,7 @@ begin
         report "Output X: " & to_string(o_x_tb);
         report "Output Y: " & to_string(o_y_tb);
         report "Output Angle: " & to_string(o_angle_tb);
+        report "45 degrees: " & to_string(deg_45);
         wait for 100 ns;
         TbSimEnded <= '1';
         wait;

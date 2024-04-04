@@ -35,8 +35,8 @@ architecture rtl of cordic is
     
     type direction_t is (UP, DOWN);
     type t_cordic_data is record
-        x     : signed(i_x'high+iterations downto 0);
-        y     : signed(i_y'high+iterations downto 0);
+        x     : signed(i_x'high+iterations+1 downto 0);
+        y     : signed(i_y'high+iterations+1 downto 0);
         angle : unsigned(i_angle'range);
     end record;
     
@@ -44,7 +44,7 @@ architecture rtl of cordic is
     
     type lookup_table_type is array (0 to iterations-1) of unsigned(o_angle'range);
 
-    function generate_lookup_table(angle_range: unsigned) return lookup_table_type is
+    function generate_lookup_table return lookup_table_type is
         variable table: lookup_table_type;
         constant scale_factor: real := 2.0 ** (data_width_angle) / (2.0 * MATH_PI);
     begin
@@ -53,8 +53,8 @@ architecture rtl of cordic is
         end loop;
         return table;
     end function generate_lookup_table;
-
-    constant lookup_table: lookup_table_type := generate_lookup_table(o_angle);
+    
+    constant lookup_table: lookup_table_type := generate_lookup_table;
 
     constant one : unsigned(data_width_angle-1 downto 0) := (1 => '1', others => '0');
     signal deg_180 : unsigned(data_width_angle-1 downto 0) := shift_left(one,data_width_angle-2);
@@ -63,27 +63,27 @@ architecture rtl of cordic is
     
 
     function rotate(input: t_cordic_data; index: natural; direction: direction_t) return t_cordic_data is
-        variable data_out: t_cordic_data;
-    begin
-        if direction = UP then
-            data_out.angle := input.angle - lookup_table(index);
-            data_out.x := input.x - shift_right(input.y, index);
-            data_out.y := input.y + shift_right(input.x, index);
-        else -- DOWN
-            data_out.angle := input.angle + lookup_table(index);
-            data_out.x := input.x + shift_right(input.y, index);
-            data_out.y := input.y - shift_right(input.x, index);
-        end if;
-        
+    variable data_out: t_cordic_data;
+begin
+    if direction = UP then
+        data_out.angle := input.angle - lookup_table(index);
+        data_out.x := input.x - shift_right(input.y, index);
+        data_out.y := input.y + shift_right(input.x, index);
+    else -- DOWN
+        data_out.angle := input.angle + lookup_table(index);
+        data_out.x := input.x + shift_right(input.y, index);
+        data_out.y := input.y - shift_right(input.x, index);
+    end if;
+    
     return data_out;
-    end function rotate;
-    
-    signal index : integer range 0 to iterations;
-    
-    signal s_ready_to_recieve : boolean;
+end function rotate;
 
-    signal s_quadrant : boolean_vector(0 to 1);
-    
+signal index : integer range 0 to iterations;
+
+signal s_ready_to_recieve : boolean;
+
+signal s_quadrant : boolean_vector(0 to 1);
+
 begin
     
     assert (mode = "vector" or mode = "rotation")
@@ -91,8 +91,6 @@ begin
     severity failure;
     
     ready_to_recieve <= s_ready_to_recieve;
-    computation_done <= s_ready_to_recieve;
-    
 
     o_x <= s_cordic_data.x(i_x'high+iterations downto iterations);
     o_y <= s_cordic_data.y(i_y'high+iterations downto iterations);
@@ -101,7 +99,8 @@ begin
     process(clk)
     begin
         if rising_edge(clk) then
-
+            computation_done <= false;
+            
             if index < iterations and mode = "vector" then
                 index <= index + 1;
                 if s_cordic_data.y(s_cordic_data.y'high) = '1' then
@@ -121,11 +120,11 @@ begin
             end if;
             
             if index = iterations and s_quadrant(0) then
-                    s_cordic_data.x <= -s_cordic_data.x;
+                s_cordic_data.x <= -s_cordic_data.x;
             end if;
             
             if index = iterations and s_quadrant(1) then
-                    s_cordic_data.y <= -s_cordic_data.y;
+                s_cordic_data.y <= -s_cordic_data.y;
             end if;
             
             if index = iterations then
@@ -138,11 +137,14 @@ begin
                 end if;
                 s_quadrant <= (others => false);
                 s_ready_to_recieve <= true;
+                if not s_ready_to_recieve then
+                    computation_done <= true;
+                end if;
             end if;
             
             if update_data and s_ready_to_recieve then
-                s_cordic_data.x <= abs(i_x) & zero_extend;
-                s_cordic_data.y <= abs(i_y) & zero_extend;
+                s_cordic_data.x <= i_x(i_x'high) & abs(i_x) & zero_extend;
+                s_cordic_data.y <= i_y(i_y'high) & abs(i_y) & zero_extend;
                 s_cordic_data.angle <= i_angle;
                 
                 s_quadrant <= (i_x < 0) & (i_y < 0);
@@ -159,7 +161,7 @@ begin
                 s_ready_to_recieve <= true;
                 index <= iterations;
             end if;
-                
+            
         end if;
     end process;
     

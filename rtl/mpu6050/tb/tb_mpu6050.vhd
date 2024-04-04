@@ -21,13 +21,13 @@ architecture tb of tb_mpu6050 is
 
 begin
 
-    dut : entity work.mpu(rtl)
-    port map (clk       => clk,
-        rst       => rst,
-        sda       => sda,
-        scl       => scl,
-        o_working => o_working,
-        i_update  => i_update);
+   dut : entity work.mpu(rtl)
+   port map (clk       => clk,
+       rst       => rst,
+       sda       => sda,
+       scl       => scl,
+       o_working => o_working,
+       i_update  => i_update);
 
     -- Clock generation
     TbClock <= not TbClock after TbPeriod/2 when TbSimEnded /= '1' else '0';
@@ -37,22 +37,19 @@ begin
 
     stimuli : process
     begin
-        -- EDIT Adapt initialization as needed
+
         i_update <= false;
 
-        -- Reset generation
-        -- EDIT: Check that rst is really your reset signal
         rst <= '1';
         wait for 100 ns;
+        
         rst <= '0';
         wait for 100 ns;
         i_update <= true;
         wait for 1 * TbPeriod;
         i_update <= false;
-
-
-        -- EDIT Add stimuli here
-        --wait until not o_working;
+        
+        wait until not o_working;
         wait for 50000 * TbPeriod;
 
         -- Stop the clock and hence terminate the simulation

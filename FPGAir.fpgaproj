@@ -12,6 +12,13 @@
     "old"
   ],
   "TestBenches": [
-    "rtl/i2c/tb/tb_I2C_byte.vhd"
+    "rtl/i2c/tb/tb_I2C_byte.vhd",
+    "rtl/mpu6050/tb/tb_mpu6050.vhd",
+    "rtl/uart_rx/tb/tb_uart_rx.vhd",
+    "rtl/attitude module/tb/tb_attitude_module.vhd",
+    "rtl/cordic/tb/cordic_rotation_tb.vhd",
+    "rtl/cordic/tb/cordic_vector_tb.vhd",
+    "rtl/filters/tb/tb_rolling_average_filter.vhd",
+    "rtl/gyro estimator/tb/tb_gyro_estimator.vhd"
   ]
 }
