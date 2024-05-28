@@ -11,7 +11,7 @@ entity pulser is
         rst : in STD_LOGIC;
         
         input_valid : in boolean;
-        pulse_len_ms : in UNSIGNED(10 downto 0);
+        pulse_len_us : in UNSIGNED(10 downto 0);
         pulser_ready : out boolean;
         
         output : out STD_LOGIC
@@ -22,67 +22,47 @@ end entity pulser;
 
 
 architecture rtl of pulser is
+    constant clk_cycles_per_us : integer := integer(frequency_mhz);
+    signal us_counter : integer range 0 to clk_cycles_per_us;
+    signal us_pulse : std_logic := '0';
     
-    type my_type_T is (Init_E, asd_E);
-    
-    constant micro_second : real := 1.0;
-    constant clock_divisor : positive := positive(frequency_mhz / micro_second) - 1;
-    constant period_time : INTEGER := 2500 * 8 - 1; -- 2500 for 400Hz
+    signal pulse_counter : UNSIGNED(10 downto 0) := (others => '0');
 
-    signal clock_divider_counter : natural range 0 to clock_divisor + 1 := 0;
-    signal micro_clock : STD_LOGIC := '0'; -- 1 DFF
-    
-    signal period_counter : NATURAL range 0 to period_time + 1 := 0;  --
-    signal pulse_time : unsigned(10 downto 0); -- Time of pulse
-    
     
 begin
-    
-    radio_clock_proc : process (clk)
+
+    ms_clock : process(clk)
     begin
         if rising_edge(clk) then
-            clock_divider_counter <= clock_divider_counter + 1;
-            micro_clock <= '0';
-            if clock_divider_counter = clock_divisor then
-                clock_divider_counter <= 0;
-                micro_clock <= '1';
+
+            us_pulse <= '0';
+            if us_counter = clk_cycles_per_us then
+                us_counter <= 0;
+                us_pulse <= '1';
+            else
+                us_counter <= us_counter + 1;
             end if;
-            
         end if;
     end process;
     
+    output <= '1' when pulse_counter /= 0 else '0';
+    
     process(clk)
     begin
-        
         if rising_edge(clk) then
-            
-            sync <= '0';
-            
-            -- Add to period counter each micro second
-            if micro_clock = '1' then
-                period_counter <= period_counter + 1;
+            if pulse_counter /= 0 and us_pulse = '1' then
+                pulse_counter <= pulse_counter - 1;
             end if;
             
-            -- While signal is active
-            if period_counter < pulse_time then
-                output <= '1';
+            if pulse_counter = 0 then
+                pulser_ready <= true;
             end if;
             
-            -- End of period, reset and fetch new speed time value
-            if period_counter > period_time then
-                sync <= '1';
-                period_counter <= 0;
-                pulse_time <= speed + 1000;
+            if input_valid and pulser_ready then
+                pulse_counter <= pulse_len_us;
+                pulser_ready <= false;
             end if;
-            
-            if not enable or rst = '1' then
-                pulse_time <= (others => '0');
-                output <= '0';
-                period_counter <= 0;
-            end if;
-            
         end if;
-        
     end process;
 
 end architecture rtl;
