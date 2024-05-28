@@ -2,7 +2,7 @@ LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.NUMERIC_STD.ALL;
 
-ENTITY attitude_module_roll IS
+ENTITY attitude_module IS
     GENERIC (
         data_width : POSITIVE := 16
     );
@@ -18,9 +18,9 @@ ENTITY attitude_module_roll IS
         roll : OUT unsigned(data_width - 1 DOWNTO 0);
         pitch : OUT unsigned(data_width - 1 DOWNTO 0)
     );
-END ENTITY attitude_module_roll;
+END ENTITY attitude_module;
 
-ARCHITECTURE rtl OF attitude_module_roll IS
+ARCHITECTURE rtl OF attitude_module IS
 
     -- Internal signals
     SIGNAL cordic_x : signed(data_width - 1 DOWNTO 0);
