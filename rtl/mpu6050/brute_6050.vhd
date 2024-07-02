@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity I2C_brute is
+entity brute_6050 is
     generic(
         frequency_mhz : real := 27.0;
         i2c_frequency_mhz : real := 0.4;
@@ -34,9 +34,9 @@ entity I2C_brute is
         mpu_ready  : out boolean;
         update_mpu : in boolean
     );
-end entity I2C_brute;
+end entity brute_6050;
 
-architecture rtl of I2C_brute is
+architecture rtl of brute_6050 is
     
     procedure OPEN_DRAIN_SET(constant value : in STD_LOGIC;
         signal   sig : out STD_LOGIC) is
