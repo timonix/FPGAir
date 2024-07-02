@@ -1,4 +1,4 @@
 {
   "Simulator": "GHDL",
-  "VhdlStandard": "19"
+  "VhdlStandard": "08"
 }

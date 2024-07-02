@@ -8,7 +8,6 @@ entity pulser is
     );
     port(
         clk : in STD_LOGIC;
-        rst : in STD_LOGIC;
         
         input_valid : in boolean;
         pulse_len_us : in UNSIGNED(10 downto 0);

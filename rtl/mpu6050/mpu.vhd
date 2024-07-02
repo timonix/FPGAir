@@ -40,7 +40,6 @@ end mpu;
 architecture rtl of mpu is
 
     signal s_byte_working : boolean;
-
     signal s_ctrl    : t_i2c_ctrl;
 
     signal s_ack_to_byte     : std_logic;

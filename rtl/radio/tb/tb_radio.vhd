@@ -51,8 +51,12 @@ begin
         channel_1 <= '1';
         wait for 1500 us;
         channel_1 <= '0';
-        
         wait for 500 us;
+        
+        channel_1 <= '1';
+        wait for 1750 us;
+        channel_1 <= '0';
+        wait for 250 us;
 
         -- EDIT Add stimuli here
         wait for 100 * TbPeriod;

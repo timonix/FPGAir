@@ -4,7 +4,9 @@
     "*.vhdl",
     "*.v",
     "*.vcd",
-    ".gitignore"
+    ".gitignore",
+    "*.sdc",
+    "*.cst"
   ],
   "Exclude": [
     "additional files",
@@ -13,7 +15,7 @@
   ],
   "TestBenches": [
     "rtl/i2c/tb/tb_I2C_byte.vhd",
-    "rtl/mpu6050/tb/tb_mpu6050.vhd",
+    "rtl/mpu6050/tb/tb_mpu_input_unit.vhd",
     "rtl/uart_rx/tb/tb_uart_rx.vhd",
     "rtl/cordic/tb/cordic_rotation_tb.vhd",
     "rtl/cordic/tb/cordic_vector_tb.vhd",
@@ -21,6 +23,11 @@
     "rtl/gyro estimator/tb/tb_gyro_estimator.vhd",
     "rtl/pid/hardware/rx_to_pid_meta_to_tx.vhd",
     "rtl/filters/tb/tb_rolling_average_filter_sfixed.vhd",
-    "rtl/motor/tb/tb_pulser.vhd"
+    "rtl/motor/tb/tb_pulser.vhd",
+    "rtl/mpu6050/tb/tb_mpu6050.vhd",
+    "rtl/spi/tb/tb_spi_byte.vhd",
+    "rtl/radio/tb/tb_radio.vhd",
+    "rtl/top modules/tb_top_moss.vhd",
+    "rtl/attitude module/tb/tb_attitude_module_roll.vhd"
   ]
 }

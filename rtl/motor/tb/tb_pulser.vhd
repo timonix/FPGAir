@@ -11,7 +11,6 @@ architecture tb of tb_pulser is
     signal TbSimEnded : std_logic := '0';
 
     signal clk : std_logic;
-    signal rst : std_logic;
     signal input_valid : boolean;
     signal pulse_len_us : unsigned(10 downto 0);
     signal pulser_ready : boolean;
@@ -29,7 +28,6 @@ begin
     )
     port map (
         clk => clk,
-        rst => rst,
         input_valid => input_valid,
         pulse_len_us => pulse_len_us,
         pulser_ready => pulser_ready,
@@ -40,11 +38,8 @@ begin
     stim_proc: process
     begin
         -- Initialize inputs
-        rst <= '1';
         input_valid <= false;
         pulse_len_us <= (others => '0');
-        wait for 100 ns;
-        rst <= '0';
         wait for 100 ns;
 
         -- Test case 1: Generate a pulse of 5 ms
