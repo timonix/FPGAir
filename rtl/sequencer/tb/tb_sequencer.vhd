@@ -62,7 +62,7 @@ begin
         
         -- Enable the UUT
         enable <= TRUE;
-        wait for 6 ms;
+        wait for 4 ms;
 
         -- Disable the UUT
         enable <= FALSE;

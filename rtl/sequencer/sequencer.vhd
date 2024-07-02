@@ -46,6 +46,7 @@ begin
                 update_pid <= FALSE;
                 update_mpu <= FALSE;
                 send_pulse <= FALSE;
+                calculate_attitude <= FALSE;
                 if clock = '1' then
                     if counter < 2000 then
                         counter <= counter + 1;
