@@ -29,6 +29,8 @@
     "rtl/radio/tb/tb_radio.vhd",
     "rtl/top modules/tb_top_moss.vhd",
     "rtl/attitude module/tb/tb_attitude_module_roll.vhd",
-    "rtl/top modules/tb_top_aurora.vhd"
+    "rtl/top modules/tb_top_aurora.vhd",
+    "rtl/mpu6050/tb/tb_brute_6050.vhd",
+    "rtl/sequencer/tb/tb_sequencer.vhd"
   ]
 }

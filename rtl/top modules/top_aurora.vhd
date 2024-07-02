@@ -5,7 +5,8 @@ use ieee.fixed_pkg.all;
 
 entity top_aurora is
     generic (
-        frequency_mhz : real := 27.0
+        frequency_mhz : real := 27.0;
+        simulation : boolean := false
     );
     port (
         clk : in std_logic;
@@ -50,6 +51,21 @@ architecture rtl of top_aurora is
     signal system_armed : boolean;
     
 begin
+    
+    
+    sequencer_inst : entity work.sequencer
+    generic map (
+        frequency_mhz => 27.0
+    )
+    port map (
+        clk => clk,
+        rst => rst,
+        enable => true,
+        update_pid => update_pid,
+        update_mpu => read_mpu,
+        send_pulse => send_pulse,
+        calculate_attitude => calculate_attitude
+    );
 
     mpu6050_inst : entity work.brute_6050
     generic map (
@@ -57,7 +73,7 @@ begin
         i2c_frequency_mhz => 0.4,
         reset_on_reset => false,
         start_on_reset => true,
-        simulation => false
+        simulation => simulation
     )
     port map (
         clk => clk,

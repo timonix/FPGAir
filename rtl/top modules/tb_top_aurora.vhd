@@ -10,7 +10,8 @@ architecture behavior of tb_top_aurora is
     -- Component Declaration for the Unit Under Test (UUT)
     component top_aurora
     generic (
-        frequency_mhz : real := 27.0
+        frequency_mhz : real := 27.0;
+        simulation : boolean := true
     );
     port (
         clk : in std_logic;
@@ -46,7 +47,8 @@ begin
     -- Instantiate the Unit Under Test (UUT)
     uut: top_aurora
     generic map (
-        frequency_mhz => 27.0
+        frequency_mhz => 27.0,
+        simulation => true
     )
     port map (
         clk => TbClock,
@@ -61,7 +63,7 @@ begin
 
     -- Clock generation
     TbClock <= not TbClock after TbPeriod/2 when TbSimEnded /= '1' else '0';
-
+    
     -- Stimulus process
     stim_proc: process
     begin
@@ -70,17 +72,8 @@ begin
         wait for 100 ns;
         rst <= '0';
         wait for 100 ns;
-
-        -- Start button press
-        start_btn <= '1';
-        wait for 100 ns;
-        start_btn <= '0';
-
-        -- Simulate some radio channel inputs
-        radio_channels <= "101010";
-        wait for 1000 ns;
-        radio_channels <= "010101";
-        wait for 1000 ns;
+        
+        wait for 20 ms;
 
         -- Add more test scenarios here
 
