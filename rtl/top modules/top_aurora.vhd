@@ -11,6 +11,8 @@ entity top_aurora is
         rst : in std_logic;
         sda : inout std_logic;
         scl : inout std_logic;
+        radio_channels : in std_logic_vector(5 downto 0);
+        
         pulse_out : out std_logic;
         led_out : out std_logic;
         start_btn : in std_logic
@@ -27,7 +29,7 @@ architecture rtl of top_aurora is
     signal filtered_acc_y : SIGNED(15 downto 0);
     signal filtered_acc_z : SIGNED(15 downto 0);
     
-        type channel_data_array is array (1 to 6) of unsigned(10 downto 0);
+    type channel_data_array is array (1 to 6) of unsigned(10 downto 0);
     signal channel_data : channel_data_array;
     signal channel : unsigned (10 downto 0);
     
@@ -105,7 +107,7 @@ begin
             clk => clk,
             rst => rst,
             enable => true,
-            channel_pwm => radio_channel_ext(i),
+            channel_pwm => radio_channels(i),
             channel_data => channel_data(i)
         );
     end generate;

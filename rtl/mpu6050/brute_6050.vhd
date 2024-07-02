@@ -165,10 +165,10 @@ begin
 
     procedure send_stop(start_state : natural) is
     begin
-        if s_stage = start_state + 1 then OPEN_DRAIN_SET('0', sda); end if;
-        if s_stage = start_state + 2 then OPEN_DRAIN_SET('0', scl); end if;
-        if s_stage = start_state + 3 then OPEN_DRAIN_SET('1', scl); end if;
-        if s_stage = start_state + 4 then OPEN_DRAIN_SET('1', sda); end if;
+        if s_stage = start_state + 0 then OPEN_DRAIN_SET('0', sda); end if;
+        if s_stage = start_state + 1 then OPEN_DRAIN_SET('0', scl); end if;
+        if s_stage = start_state + 2 then OPEN_DRAIN_SET('1', scl); end if;
+        if s_stage = start_state + 3 then OPEN_DRAIN_SET('1', sda); end if;
     end procedure;
     begin
         if rising_edge(clk) then
