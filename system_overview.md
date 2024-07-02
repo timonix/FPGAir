@@ -10,8 +10,8 @@ Board: Tang Nano 9
 ![Alt text](Tang_nano_9_image.png)
 
 Ports used:
-|Port |Function | Bank
---- | --- | --- |
+|Port |Function | Bank | Comment
+--- | --- | --- | --- |
 |4|Reset|
 |10|Builtin LED|
 |11|Builtin LED|
@@ -36,14 +36,14 @@ Ports used:
 |57|Motor 6|1
 |68|Motor 7|1
 |69|Motor 8|1
-|70|Radio 1|1
-|71|Radio 2|1
-|72|Radio 3|1
-|73|Radio 4|1
-|74|Radio 5|1
-|75|Radio 6|1
-|76|Radio 7|1
-|77|Radio 8|1
+|70|Radio 8|1|Extra
+|71|Radio 7|1|Extra
+|72|Radio 6|1|Left Knob [CCW 1017 - CW 1976]
+|73|Radio 5|1|Right Knob [CCW 1016 - CW 1976]
+|74|Radio 4|1|Right Horizontal [Left 1155 - Right 1872]
+|75|Radio 3|1|Right Stick Vertical [Down 1850 - Up 1195]
+|76|Radio 2|1|Left Stick Vertical [Down 1080 -  Up 1870]
+|77|Radio 1|1|Left Stick Horizontal [Left 1058 - Right 1957]
 |26|mpu interrupt|2
 |24|debug|2
 |||
