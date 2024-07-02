@@ -79,6 +79,7 @@ begin
                 update_pid <= FALSE;
                 update_mpu <= FALSE;
                 send_pulse <= FALSE;
+                calculate_attitude <= FALSE;
             end if;
         end if;
     end process;
