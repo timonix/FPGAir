@@ -5,11 +5,18 @@
     <Version>5</Version>
     <Device name="GW1NR-9C" pn="GW1NR-LV9QN88PC6/I5">gw1nr9c-004</Device>
     <FileList>
+        <File path="rtl/attitude module/attitude_module_roll.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/common_pkg.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/cordic/cordic.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/filters/rolling_average_filter.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/motor/pulser.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/mpu6050/brute_6050.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/pid/pid.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/radio/arming.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/radio/radio_channel.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/sequencer/sequencer.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/spi/spi_byte.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/top modules/top_aurora.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/top modules/top_bruse.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/top modules/top_moss.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/top modules/top_red.vhd" type="file.vhdl" enable="1"/>

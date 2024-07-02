@@ -172,17 +172,15 @@ begin
     end procedure;
     begin
         if rising_edge(clk) then
-            mpu_ready <= false;
-            if update_mpu and mpu_ready then
-                s_stage <= C_SET_ADDRESS_0;
-            end if;
+            --mpu_ready <= false;
+            
             
             if reset_mpu then
                 s_stage <= 0;
             end if;
             
             if i2c_clock = '1'then
-            
+            mpu_ready <= false;
             if s_stage = 1023 then
                 mpu_ready <= true;
                 s_stage <= 1023;
@@ -227,6 +225,11 @@ begin
             send_data(C_READ_SENSORS_gyro_z_L,"11111111" & '1'); shift_in_responce(C_READ_SENSORS_gyro_z_L,s_gyro_z);
             send_stop(C_READ_SENSORS_STOP);
             
+        end if;
+        
+        if update_mpu and mpu_ready then
+            mpu_ready <= false;
+            s_stage <= C_SET_ADDRESS_0;
         end if;
         
         if rst = '1' then

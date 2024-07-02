@@ -18,10 +18,9 @@ architecture behavior of tb_top_aurora is
         rst : in std_logic;
         sda : inout std_logic;
         scl : inout std_logic;
-        radio_channels : in std_logic_vector(5 downto 0);
-        pulse_out : out std_logic;
-        led_out : out std_logic;
-        start_btn : in std_logic
+        radio_channel_ext : in std_logic_vector(6 downto 1);
+        tx_ext : out std_logic;
+        led_out : out std_logic
     );
 end component;
 
@@ -55,10 +54,9 @@ begin
         rst => rst,
         sda => sda,
         scl => scl,
-        radio_channels => radio_channels,
-        pulse_out => pulse_out,
-        led_out => led_out,
-        start_btn => start_btn
+        radio_channel_ext => radio_channels,
+        tx_ext => open,
+        led_out => led_out
     );
 
     -- Clock generation

@@ -101,7 +101,7 @@ begin
         if rising_edge(clk) then
             computation_done <= false;
             
-            if index < iterations and mode = "vector" then
+            if (index < iterations) and (mode = "vector") then
                 index <= index + 1;
                 if s_cordic_data.y(s_cordic_data.y'high) = '1' then
                     s_cordic_data <= rotate(s_cordic_data, index, UP);
@@ -110,7 +110,7 @@ begin
                 end if;
             end if;
             
-            if index < iterations and mode = "rotation" then
+            if (index < iterations) and (mode = "rotation") then
                 index <= index + 1;
                 if s_cordic_data.angle(s_cordic_data.angle'high) = '0' then
                     s_cordic_data <= rotate(s_cordic_data, index, UP);
