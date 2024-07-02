@@ -1,5 +1,9 @@
 # System Overview
 
+![alt text](image.png)
+Source: https://www.libreinfo.org/comment-fonctionne-un-drone-quadrirotor/
+
+
 ## TODO
 - Test mixer more
 - Convert signals from Gyro to -1000 to 1000
