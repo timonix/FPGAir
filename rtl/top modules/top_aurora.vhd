@@ -136,8 +136,8 @@ begin
         rst => rst,
         data_in_valid => calculate_attitude,
         gravity_x => filtered_acc_x,
-        gravity_y => filtered_acc_y,
-        gravity_z => filtered_acc_z,
+        gravity_y => filtered_acc_z,
+        gravity_z => filtered_acc_y,
         roll => roll
     );
     

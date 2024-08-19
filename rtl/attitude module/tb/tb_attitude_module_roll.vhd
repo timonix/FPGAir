@@ -57,8 +57,8 @@ BEGIN
         -- Test case 1
         data_in_valid <= TRUE;
         gravity_x <= TO_SIGNED(0, data_width);
-        gravity_y <= TO_SIGNED(16384, data_width);  -- 0.5 in Q15 format
-        gravity_z <= TO_SIGNED(16384, data_width);  -- 0.5 in Q15 format
+        gravity_y <= TO_SIGNED(8000, data_width);  -- 0.5 in Q15 format
+        gravity_z <= TO_SIGNED(8000, data_width);  -- 0.5 in Q15 format
         WAIT FOR TbPeriod;
         data_in_valid <= FALSE;
         WAIT FOR TbPeriod*20;
