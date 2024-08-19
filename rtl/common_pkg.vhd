@@ -52,6 +52,7 @@ package common_pkg is
     function to_natural(A : std_logic_vector) return natural;
     
     function TO_STDLOGICVECTOR(A : character) return std_logic_Vector;
+    function TO_STDLOGICVECTOR_STRING(A : string) return std_logic_Vector;
     
     function reverse(A : std_logic_vector) return std_logic_vector;
     
@@ -113,6 +114,16 @@ function clog2(A: integer) return integer is
     variable result : integer;
 begin
     result := integer(ceil(log2(real(a))));
+end;
+
+function TO_STDLOGICVECTOR_STRING(A: string) return std_logic_Vector is
+    variable result : std_logic_vector(A'low*8 to A'high*8+7);
+begin
+    for i in A'range loop
+        result(i*8 to i*8+7) := TO_STDLOGICVECTOR(A(i));
+    end loop;
+    
+    return result;
 end;
 
 function TO_STDLOGICVECTOR(A : character) return std_logic_Vector is

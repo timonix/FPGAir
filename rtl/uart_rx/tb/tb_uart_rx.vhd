@@ -10,17 +10,19 @@ end tb_uart_rx;
 
 architecture tb of tb_uart_rx is
 
-signal clk        : std_logic;
-signal rst        : std_logic;
-signal enable     : boolean;
-signal rx         : std_logic;
-signal data       : std_logic_vector (7 downto 0);
-signal data_valid : boolean;
-signal ready      : boolean;
+    signal clk        : std_logic;
+    signal rst        : std_logic;
+    signal enable     : boolean;
+    signal rx         : std_logic;
+    signal data       : std_logic_vector (7 downto 0);
+    signal data_valid : boolean;
+    signal ready      : boolean;
 
-constant TbPeriod : time := 37 ns; -- EDIT Put right period here
-signal TbClock : std_logic := '0';
-signal TbSimEnded : std_logic := '0';
+    constant TbPeriod : time := 37 ns; -- EDIT Put right period here
+    signal TbClock : std_logic := '0';
+    signal TbSimEnded : std_logic := '0';
+
+    signal switching : boolean := false;
 
 begin
 
@@ -52,26 +54,36 @@ begin
         
         wait for 1000 ns;
         rx <= '0';
-        
+        switching <= not switching;
         wait for 8681 ns;
-        
+        switching <= not switching;
         rx <= '1';
         wait for 8681 ns;
+        switching <= not switching;
         rx <= '1';
         wait for 8681 ns;
+        switching <= not switching;
+        rx <= '0';
+        wait for 8681 ns;
+        switching <= not switching;
+        rx <= '1';
+        wait for 8681 ns;
+        switching <= not switching;
+        rx <= '1';
+        wait for 8681 ns;
+        switching <= not switching;
+        rx <= '0';
+        wait for 8681 ns;
+        switching <= not switching;
+        rx <= '1';
+        wait for 8681 ns;
+        switching <= not switching;
         rx <= '0';
         wait for 8681 ns;
         rx <= '1';
+        switching <= not switching;
         wait for 8681 ns;
         rx <= '1';
-        wait for 8681 ns;
-        rx <= '0';
-        wait for 8681 ns;
-        rx <= '1';
-        wait for 8681 ns;
-        rx <= '0';
-        wait for 8681 ns;
-        wait for 8681 ns;
         
         wait for 100 * TbPeriod;
 
