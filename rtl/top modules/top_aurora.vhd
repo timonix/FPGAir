@@ -53,7 +53,6 @@ begin
     
     led_out <= '0' when system_armed else '1';
     
-    
     sequencer_inst : entity work.sequencer
     generic map (
         frequency_mhz => 27.0

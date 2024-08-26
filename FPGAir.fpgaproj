@@ -33,6 +33,7 @@
     "rtl/mpu6050/tb/tb_brute_6050.vhd",
     "rtl/sequencer/tb/tb_sequencer.vhd",
     "sim/sim_mpu6050/sim_mpu6050.vhd",
-    "sim/sim_mpu6050/tb/tb_sim_mpu6050.vhd"
+    "sim/sim_mpu6050/tb/tb_sim_mpu6050.vhd",
+    "tete.vhd"
   ]
 }

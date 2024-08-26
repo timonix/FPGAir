@@ -42,8 +42,8 @@ BEGIN
     PORT MAP (
         clk => clk,
         rst => rst,
-        i_x => gravity_y,
-        i_y => gravity_z,
+        i_x => gravity_z,
+        i_y => gravity_y,
         i_angle => (OTHERS => '0'),
         update_data => cordic_update,
         ready_to_recieve => cordic_ready,

@@ -82,7 +82,7 @@ signal index : integer range 0 to iterations;
 
 signal s_ready_to_recieve : boolean;
 
-signal s_quadrant : boolean_vector(0 to 1);
+signal s_quadrant : std_logic_vector(0 to 1);
 
 begin
     
@@ -119,23 +119,24 @@ begin
                 end if;
             end if;
             
-            if index = iterations and s_quadrant(0) then
+            if index = iterations and s_quadrant(0)='1' then
                 s_cordic_data.x <= -s_cordic_data.x;
             end if;
             
-            if index = iterations and s_quadrant(1) then
+            if index = iterations and s_quadrant(1)='1' then
                 s_cordic_data.y <= -s_cordic_data.y;
             end if;
             
             if index = iterations then
-                if s_quadrant(0) and (not s_quadrant(1)) then
+                if s_quadrant(0) and (not s_quadrant(1)) then --WRONG
                     s_cordic_data.angle <= deg_180 - s_cordic_data.angle;
                 elsif s_quadrant(0) and s_quadrant(1) then
                     s_cordic_data.angle <= s_cordic_data.angle - deg_180;
-                elsif not s_quadrant(0) and s_quadrant(1) then
+                    
+                elsif not s_quadrant(0) and s_quadrant(1) then --correct
                     s_cordic_data.angle <= not s_cordic_data.angle;
                 end if;
-                s_quadrant <= (others => false);
+                s_quadrant <= (others => '0');
                 s_ready_to_recieve <= true;
                 if not s_ready_to_recieve then
                     computation_done <= true;
@@ -143,11 +144,15 @@ begin
             end if;
             
             if update_data and s_ready_to_recieve then
-                s_cordic_data.x <= i_x(i_x'high) & abs(i_x) & zero_extend;
-                s_cordic_data.y <= i_y(i_y'high) & abs(i_y) & zero_extend;
+                --s_cordic_data.x <= i_x(i_x'high) & abs(i_x) & zero_extend;
+                --s_cordic_data.y <= i_y(i_y'high) & abs(i_y) & zero_extend;
+
+                s_cordic_data.x <= abs(i_x(i_x'high) & i_x & zero_extend);
+                s_cordic_data.y <= abs(i_y(i_y'high) & i_y & zero_extend);
                 s_cordic_data.angle <= i_angle;
                 
-                s_quadrant <= (i_x < 0) & (i_y < 0);
+                --s_quadrant <= (i_x < 0) & (i_y < 0);
+                s_quadrant <= i_x(i_x'high) & i_y(i_y'high);
                 
                 index <= 0;
                 s_ready_to_recieve <= false;
@@ -157,7 +162,7 @@ begin
                 s_cordic_data.x <= (others => '0');
                 s_cordic_data.y <= (others => '0');
                 s_cordic_data.angle <= (others => '0');
-                s_quadrant <= (others => false);
+                s_quadrant <= (others => '0');
                 s_ready_to_recieve <= true;
                 index <= iterations;
             end if;
