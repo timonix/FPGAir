@@ -31,9 +31,9 @@ architecture rtl of top_aurora is
     signal filtered_acc_z : SIGNED(15 downto 0);
     
     signal roll : UNSIGNED(15 downto 0);
-    signal pid_roll : sfixed(10 downto -11);
-    signal pid_setpoint : sfixed(10 downto -11);
-    signal pid_output : sfixed(10 downto -11);
+    signal pid_roll : sfixed(11 downto -12);
+    signal pid_setpoint : sfixed(11 downto -12) := (others => '0');
+    signal pid_output : sfixed(11 downto -12);
 
     
     type channel_data_array is array (1 to 6) of unsigned(10 downto 0);
@@ -135,8 +135,8 @@ begin
         rst => rst,
         data_in_valid => calculate_attitude,
         gravity_x => filtered_acc_x,
-        gravity_y => filtered_acc_z,
-        gravity_z => filtered_acc_y,
+        gravity_y => filtered_acc_y,
+        gravity_z => filtered_acc_z,
         roll => roll
     );
     
@@ -166,19 +166,19 @@ port map (
     channel_5 => channel_data(5),  -- Connect to your channel 5 signal
     armed => system_armed     -- Connect to your armed signal
 );
-pidassignment: for i in 10 downto -4 generate
-    pid_roll(i) <= roll(i+5);
+pidassignment: for i in 11 downto -3 generate
+    pid_roll(i) <= roll(i+4);
 end generate;
 
-pid_roll(-5 downto -11) <= (others => '0');
+pid_roll(-4 downto -12) <= (others => '0');
 
 pid_inst : entity work.pid(rtl)
 generic map (
-    integer_bits => 11,
-    fractional_bits => 11,
-    Kp => 0.005,
-    Ki => 0.001,
-    Kd => 0.002
+    integer_bits => 12,
+    fractional_bits => 12,
+    Kp => 1.0,
+    Ki => 0.00,
+    Kd => 0.00
 )
 port map (
     clk  => clk,
@@ -197,7 +197,7 @@ port map (
 
 unloader_inst: entity work.data_unloader(rtl)
 generic map(
-    num_bytes => 8
+    num_bytes => 11
 )
 
 port map (
@@ -205,7 +205,7 @@ port map (
     rst => rst,
     o_ready => open,
     i_valid => true,
-    i_data => std_logic_vector(filtered_acc_x)&std_logic_vector(filtered_acc_y)&std_logic_vector(filtered_acc_z)&std_logic_vector(roll),
+    i_data => std_logic_vector(pid_setpoint)&std_logic_vector(pid_output)&std_logic_vector(pid_roll)&std_logic_vector(roll),
     o_tx => tx_ext
 );
 

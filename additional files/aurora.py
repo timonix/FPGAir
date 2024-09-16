@@ -18,12 +18,27 @@ x_data = []
 y_data = []
 z_data = []
 roll_data = []
+
+pid_setpoint_data = []
+pid_measured_data = []
+pid_output_data = []
+
+sampled_pid_setpoint_data = []
+sampled_pid_measured_data = []
+sampled_pid_output_data = []
+
 sampled_calculated_roll = []
 plot_roll, = plt.plot([], [], 'yellow', label="Roll")
 plot_calculated_roll, = plt.plot([], [], 'purple', label="Calculated Roll")
+
 plot_x, = plt.plot([], [], 'blue', label="X")
 plot_y, = plt.plot([], [], 'red', label="Y")
 plot_z, = plt.plot([], [], 'green', label="Z")
+
+plot_pid_setpoint, = plt.plot([], [], 'yellow', label="Setpoint")
+plot_pid_measured, = plt.plot([], [], 'green', label="Measured")
+plot_pid_output, = plt.plot([], [], 'red', label="Output")
+
 sampled_x_data = []
 sampled_y_data = []
 sampled_z_data = []
@@ -45,19 +60,28 @@ def read_serial():
             print("-----------------------------------------------------------------------")
             for i in range(num_lines):
                 
-                raw_data = ser.read(2)
-                data = int.from_bytes(raw_data, byteorder='little')
-                if data > 2**15:
-                    data = -(2**16 - data)
                 if i == 0:
-                    data /= 2**16
-                    data *= 360
+                    raw_data = ser.read(2)
+                    data = int.from_bytes(raw_data, byteorder='little')
+                    if data > 2**15:
+                        data = -(2**16 - data)
+                    # if i == 0:
+                    #     data /= 2**16
+                    #     data *= 360
+                else:
+                    raw_data = ser.read(3)
+                    data = int.from_bytes(raw_data, byteorder='little')
+                    if data > 2**23:
+                        data = -(2**24 - data)
+                    # if i == 0:
+                    #     data /= 2**16
+                    #     data *= 360
                 # data_queues[i].append(data)
                 # lines[i].set_data(range(len(data_queues[i])), data_queues[i])
 
-                if i == 3: x_data.append(data)
-                if i == 2: y_data.append(data)
-                if i == 1: z_data.append(data)
+                if i == 3: pid_setpoint_data.append(data)
+                if i == 2: pid_output_data.append(data)
+                if i == 1: pid_measured_data.append(data)
                 if i == 0: roll_data.append(data)
 
                 print(data)
@@ -66,25 +90,30 @@ def update_plot():
     global start_time
     current_time = time.time() - start_time
 
-    if roll_data and x_data and y_data and z_data:
+    if roll_data and pid_setpoint_data and pid_measured_data and pid_output_data:
         sampled_roll_data.append(roll_data[len(roll_data)-1])
-        sampled_x_data.append(x_data[len(x_data)-1])
-        sampled_y_data.append(y_data[len(y_data)-1])
-        sampled_z_data.append(z_data[len(z_data)-1])
+        # sampled_x_data.append(x_data[len(x_data)-1])
+        # sampled_y_data.append(y_data[len(y_data)-1])
+        # sampled_z_data.append(z_data[len(z_data)-1])
+        sampled_pid_setpoint_data.append(pid_setpoint_data[len(pid_setpoint_data)-1])
+        sampled_pid_measured_data.append(pid_measured_data[len(pid_measured_data)-1])
+        sampled_pid_output_data.append(pid_output_data[len(pid_output_data)-1])
         x_axis.append(len(sampled_roll_data))
 
-        sampled_calculated_roll.append(-math.degrees(math.atan2(-y_data[len(y_data)-1], z_data[len(z_data)-1])))
+        # sampled_calculated_roll.append(-math.degrees(math.atan2(-y_data[len(y_data)-1], z_data[len(z_data)-1])))
 
         plot_roll.set_data(x_axis, sampled_roll_data)
-        plot_calculated_roll.set_data(x_axis, sampled_calculated_roll)
+        # plot_calculated_roll.set_data(x_axis, sampled_calculated_roll)
         # plot_x.set_data(x_axis, sampled_x_data)
         # plot_y.set_data(x_axis, sampled_y_data)
         # plot_z.set_data(x_axis, sampled_z_data)
-
+        plot_pid_setpoint.set_data(x_axis, sampled_pid_setpoint_data)
+        plot_pid_measured.set_data(x_axis, sampled_pid_measured_data)
+        plot_pid_output.set_data(x_axis, sampled_pid_output_data)
         
 
         ax.set_xlim(x_axis[len(x_axis)-1]-50, x_axis[len(x_axis)-1])
-        # ax.set_ylim(-10000, 10000)
+        ax.set_ylim(-1000000, 1000000)
     
     plt.show()
     plt.pause(0.001)
