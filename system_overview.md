@@ -4,10 +4,8 @@
 Source: https://www.libreinfo.org/comment-fonctionne-un-drone-quadrirotor/
 
 ## TODO
-- Test mixer more
-- Convert signals from Gyro to -1000 to 1000
-- Work with radio_servo_gyro_top.vhd
 - Test PID
+- ***More better filter with GYYYYRO***
 
 Board: Tang Nano 9
 ![Alt text](Pin_overview.png)
