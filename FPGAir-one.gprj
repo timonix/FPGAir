@@ -10,8 +10,10 @@
         <File path="rtl/cordic/cordic.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/filters/rolling_average_filter.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/math/mac.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/mixer/mixer.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/motor/pulser.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/mpu6050/brute_6050.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/pid/neo_pid.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/pid/pid.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/radio/arming.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/radio/radio_channel.vhd" type="file.vhdl" enable="1"/>

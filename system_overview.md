@@ -3,7 +3,6 @@
 ![alt text](image.png)
 Source: https://www.libreinfo.org/comment-fonctionne-un-drone-quadrirotor/
 
-
 ## TODO
 - Test mixer more
 - Convert signals from Gyro to -1000 to 1000
@@ -11,7 +10,9 @@ Source: https://www.libreinfo.org/comment-fonctionne-un-drone-quadrirotor/
 - Test PID
 
 Board: Tang Nano 9
-![Alt text](Tang_nano_9_image.png)
+![Alt text](Pin_overview.png)
+
+
 
 Ports used:
 |Port |Function | Bank | Comment

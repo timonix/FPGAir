@@ -86,6 +86,7 @@ def read_serial():
 
                 print(data)
 
+
 def update_plot():
     global start_time
     current_time = time.time() - start_time
@@ -117,6 +118,7 @@ def update_plot():
     
     plt.show()
     plt.pause(0.001)
+
 
 if __name__ == "__main__":
     start_time = time.time()

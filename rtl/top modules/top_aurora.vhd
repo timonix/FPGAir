@@ -10,10 +10,11 @@ entity top_aurora is
     );
     port (
         clk : in std_logic;
-        rst : in std_logic;
+        a_rst : in std_logic;
         sda : inout std_logic;
         scl : inout std_logic;
         radio_channel_ext : in std_logic_vector(6 downto 1);
+        motor_channel_ext : out std_logic_vector(4 downto 1);
         
         tx_ext : out std_logic;
         led_out : out std_logic
@@ -21,6 +22,8 @@ entity top_aurora is
 end entity top_aurora;
 
 architecture rtl of top_aurora is
+
+    signal rst : std_logic;
 
     signal acc_x : STD_LOGIC_VECTOR(15 downto 0);
     signal acc_y : STD_LOGIC_VECTOR(15 downto 0);
@@ -49,7 +52,16 @@ architecture rtl of top_aurora is
     
     signal system_armed : boolean;
     
+    signal motor_signal_0 : unsigned(10 downto 0);
+    signal motor_signal_1 : unsigned(10 downto 0);
+    signal motor_signal_2 : unsigned(10 downto 0);
+    signal motor_signal_3 : unsigned(10 downto 0);
+    
+    
+    
 begin
+
+    rst <= not a_rst;
     
     led_out <= '0' when system_armed else '1';
     
@@ -172,32 +184,73 @@ end generate;
 
 pid_roll(-4 downto -12) <= (others => '0');
 
-pid_inst : entity work.pid(rtl)
-generic map (
+neo_pid_inst: entity work.neo_pid
+generic map(
     integer_bits => 12,
     fractional_bits => 12,
-    Kp => 1.0,
-    Ki => 0.00,
-    Kd => 0.00
+    Kp => 0.01,
+    Ki => 0.001,
+    Kd => 0.001
 )
-port map (
-    clk  => clk,
+port map(
+    clk => clk,
     rst => rst,
-    enable => true,
+    enable => system_armed,
     update => update_pid,
-    
-    A_setpoint => (others => '0'),
-    A_measured => (others => '0'),
-    A_output =>open,
-    
-    B_setpoint =>pid_setpoint,
-    B_measured =>pid_roll,
-    B_output   =>pid_output
+    output_valid => open,
+    A_setpoint => pid_setpoint,
+    A_measured => pid_roll,
+    A_output => pid_output
 );
+
+mixer_inst: entity work.mixer
+generic map (
+    max_value => 300
+)
+port map(
+    clk => clk,
+    rst => rst,
+    enable => system_armed,
+    throttle_i => to_sfixed(150.0,pid_output),
+    roll_pid_i => pid_output,
+    pitch_pid_i => to_sfixed(0.0,pid_output),
+    yaw_pid_i => to_sfixed(0.0,pid_output),
+    motor1_signal_o => motor_signal_0,
+    motor2_signal_o => motor_signal_1,
+    motor3_signal_o => motor_signal_2,
+    motor4_signal_o => motor_signal_3
+);
+
+motor0_inst: entity work.pulser
+generic map(
+    frequency_mhz => frequency_mhz
+)
+port map(
+    clk => clk,
+    input_valid => send_pulse,
+    pulse_len_us => motor_signal_0+1000,
+    pulser_ready => open,
+    output => motor_channel_ext(2)
+);
+
+motor1_inst: entity work.pulser
+generic map(
+    frequency_mhz => frequency_mhz
+)
+port map(
+    clk => clk,
+    input_valid => send_pulse,
+    pulse_len_us => motor_signal_1+1000,
+    pulser_ready => open,
+    output => motor_channel_ext(1)
+);
+
+
 
 unloader_inst: entity work.data_unloader(rtl)
 generic map(
-    num_bytes => 11
+    num_bytes => 2*4,
+    baud_rate_mhz => 115200.0/1000000
 )
 
 port map (
@@ -205,7 +258,7 @@ port map (
     rst => rst,
     o_ready => open,
     i_valid => true,
-    i_data => std_logic_vector(pid_setpoint)&std_logic_vector(pid_output)&std_logic_vector(pid_roll)&std_logic_vector(roll),
+    i_data => "00000"&std_logic_vector(motor_signal_3)&"00000"&std_logic_vector(motor_signal_2)&"00000"&std_logic_vector(motor_signal_1)&"00000"&std_logic_vector(motor_signal_0),
     o_tx => tx_ext
 );
 

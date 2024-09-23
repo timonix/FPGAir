@@ -65,7 +65,7 @@ begin
                             update_pid <= TRUE;
                         end if;
                         
-                        if counter = 101 then
+                        if counter = 105 then
                             send_pulse <= TRUE;
                         end if;
                         

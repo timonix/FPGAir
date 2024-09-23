@@ -6,7 +6,9 @@
     "*.vcd",
     ".gitignore",
     "*.sdc",
-    "*.cst"
+    "*.cst",
+    "test_data_tb2.txt",
+    "tetete"
   ],
   "Exclude": [
     "additional files",
@@ -34,6 +36,8 @@
     "rtl/sequencer/tb/tb_sequencer.vhd",
     "sim/sim_mpu6050/sim_mpu6050.vhd",
     "sim/sim_mpu6050/tb/tb_sim_mpu6050.vhd",
-    "tete.vhd"
+    "rtl/pid/tb/tb_neo_pid.vhd",
+    "rtl/pid/tb/tb_2_neo_pid.vhd",
+    "tetete.vhd"
   ]
 }

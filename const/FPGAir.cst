@@ -4,6 +4,18 @@
 //IO_LOC  "pulse_out" 51;
 //IO_PORT "pulse_out" DRIVE=8 PULL_MODE=UP;
 
+IO_LOC  "motor_channel_ext[0]" 51;
+IO_PORT "motor_channel_ext[0]" DRIVE=8 PULL_MODE=UP;
+
+IO_LOC  "motor_channel_ext[1]" 53;
+IO_PORT "motor_channel_ext[1]" DRIVE=8 PULL_MODE=UP;
+
+IO_LOC  "motor_channel_ext[2]" 54;
+IO_PORT "motor_channel_ext[2]" DRIVE=8 PULL_MODE=UP;
+
+IO_LOC  "motor_channel_ext[3]" 55;
+IO_PORT "motor_channel_ext[3]" DRIVE=8 PULL_MODE=UP;
+
 //
 IO_LOC  "tx_ext" 17;
 IO_PORT "tx_ext" IO_TYPE=LVCMOS33;
@@ -66,8 +78,8 @@ IO_PORT "radio_channel_ext[5]" PULL_MODE=UP;
 IO_LOC  "radio_channel_ext[6]" 72;
 IO_PORT "radio_channel_ext[6]" PULL_MODE=UP;
 
-IO_LOC  "rst" 4;
-IO_PORT "rst" PULL_MODE=UP;
+IO_LOC  "a_rst" 4;
+IO_PORT "a_rst" PULL_MODE=UP;
 //
 IO_LOC  "clk" 52;
 IO_PORT "clk" IO_TYPE=LVCMOS33 PULL_MODE=UP;
