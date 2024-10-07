@@ -117,6 +117,7 @@ function clog2(A: integer) return integer is
     variable result : integer;
 begin
     result := integer(ceil(log2(real(a))));
+return result;
 end;
 
 function TO_STDLOGICVECTOR_STRING(A: string) return std_logic_Vector is

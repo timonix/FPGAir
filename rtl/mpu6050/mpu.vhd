@@ -55,6 +55,8 @@ architecture rtl of mpu is
     constant mpu_addr_R : std_logic_vector (7 downto 0) := "11010001";
     constant pwr_mgt_0 : std_logic_vector (7 downto 0) := x"6b";
     constant data_addr : std_logic_vector (7 downto 0) := x"3b";
+    
+    
 
 begin
 
