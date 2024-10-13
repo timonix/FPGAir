@@ -5,6 +5,7 @@
     <Version>5</Version>
     <Device name="GW1NR-9C" pn="GW1NR-LV9QN88PC6/I5">gw1nr9c-004</Device>
     <FileList>
+        <File path="experimental/tricore.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/attitude module/attitude_module_roll.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/common_pkg.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/cordic/cordic.vhd" type="file.vhdl" enable="1"/>

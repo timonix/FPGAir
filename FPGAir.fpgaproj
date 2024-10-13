@@ -8,7 +8,8 @@
     "*.sdc",
     "*.cst",
     "test_data_tb2.txt",
-    "tetete"
+    "tetete",
+    "tricore"
   ],
   "Exclude": [
     "additional files",
@@ -38,6 +39,10 @@
     "sim/sim_mpu6050/tb/tb_sim_mpu6050.vhd",
     "rtl/pid/tb/tb_neo_pid.vhd",
     "rtl/pid/tb/tb_2_neo_pid.vhd",
-    "tetete.vhd"
+    "experimental/tb/tb_tricore.vhd",
+    "experimental/tb/tb_ucore.vhd"
+  ],
+  "CompileExcluded": [
+    "sim/sim_tools_pkg.vhd"
   ]
 }

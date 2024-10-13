@@ -51,6 +51,8 @@ package common_pkg is
     
     function to_natural(A : std_logic_vector) return natural;
     
+    function to_sfixed24(A:real) return sfixed;
+    
     function TO_STDLOGICVECTOR(A : character) return std_logic_Vector;
     function TO_STDLOGICVECTOR_STRING(A : string) return std_logic_Vector;
     
@@ -62,6 +64,8 @@ package common_pkg is
     function muladd(A : in sfixed; B : in sfixed; C : in sfixed; output_size: in sfixed ) return sfixed;
     function muladd(A : in sfixed; B : in real;   C : in sfixed; output_size: in sfixed ) return sfixed;
     function mulsub(A : in sfixed; B : in sfixed; C : in sfixed; output_size: in sfixed ) return sfixed;
+    
+    function comp2(A : in sfixed) return sfixed;
     
     function "+" (a : attitude; b: attitude) return attitude;
     
@@ -112,6 +116,11 @@ begin
     res.yaw := a.yaw+b.yaw;
     return res;
 end function;
+
+function to_sfixed24(A:real) return sfixed is
+begin
+    return to_sfixed(A,11,-12);
+end;
 
 function clog2(A: integer) return integer is
     variable result : integer;
@@ -269,6 +278,16 @@ begin
         tmp(i) := source(i); -- Copy source to tmp
     end loop;
     return tmp;
+end function;
+
+function comp2(A : in sfixed) return sfixed is
+begin
+    return resize (
+        arg => -A,
+        size_res => A,
+        overflow_style => IEEE.fixed_float_types.fixed_saturate,
+        round_style => IEEE.fixed_float_types.fixed_truncate
+    );
 end function;
 
 
