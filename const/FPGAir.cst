@@ -4,17 +4,17 @@
 //IO_LOC  "pulse_out" 51;
 //IO_PORT "pulse_out" DRIVE=8 PULL_MODE=UP;
 
-IO_LOC  "motor_channel_ext[0]" 51;
-IO_PORT "motor_channel_ext[0]" DRIVE=8 PULL_MODE=UP;
-
-IO_LOC  "motor_channel_ext[1]" 53;
+IO_LOC  "motor_channel_ext[1]" 51;
 IO_PORT "motor_channel_ext[1]" DRIVE=8 PULL_MODE=UP;
 
-IO_LOC  "motor_channel_ext[2]" 54;
+IO_LOC  "motor_channel_ext[2]" 53;
 IO_PORT "motor_channel_ext[2]" DRIVE=8 PULL_MODE=UP;
 
-IO_LOC  "motor_channel_ext[3]" 55;
+IO_LOC  "motor_channel_ext[3]" 54;
 IO_PORT "motor_channel_ext[3]" DRIVE=8 PULL_MODE=UP;
+
+IO_LOC  "motor_channel_ext[4]" 55;
+IO_PORT "motor_channel_ext[4]" DRIVE=8 PULL_MODE=UP;
 
 //
 IO_LOC  "tx_ext" 17;

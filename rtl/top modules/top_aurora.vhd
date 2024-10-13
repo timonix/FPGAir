@@ -114,7 +114,7 @@ begin
     
     filter_y : entity work.rolling_average_filter
     generic map (
-        taps => 4,
+        taps => 32,
         data_width => 16
     )
     port map (
@@ -127,7 +127,7 @@ begin
     
     filter_z : entity work.rolling_average_filter
     generic map (
-        taps => 4,
+        taps => 32,
         data_width => 16
     )
     port map (
@@ -188,9 +188,9 @@ neo_pid_inst: entity work.neo_pid
 generic map(
     integer_bits => 12,
     fractional_bits => 12,
-    Kp => 0.01,
+    Kp => 0.6,
     Ki => 0.001,
-    Kd => 0.001
+    Kd => 0.0
 )
 port map(
     clk => clk,
@@ -205,7 +205,7 @@ port map(
 
 mixer_inst: entity work.mixer
 generic map (
-    max_value => 300
+    max_value => 400
 )
 port map(
     clk => clk,
@@ -249,7 +249,7 @@ port map(
 
 unloader_inst: entity work.data_unloader(rtl)
 generic map(
-    num_bytes => 2*4,
+    num_bytes => 14,
     baud_rate_mhz => 115200.0/1000000
 )
 
@@ -258,7 +258,7 @@ port map (
     rst => rst,
     o_ready => open,
     i_valid => true,
-    i_data => "00000"&std_logic_vector(motor_signal_3)&"00000"&std_logic_vector(motor_signal_2)&"00000"&std_logic_vector(motor_signal_1)&"00000"&std_logic_vector(motor_signal_0),
+    i_data => "00000"&std_logic_vector(motor_signal_3)&"00000"&std_logic_vector(motor_signal_2)&"00000"&std_logic_vector(motor_signal_1)&"00000"&std_logic_vector(motor_signal_0)&std_logic_vector(pid_output)&std_logic_vector(pid_roll),
     o_tx => tx_ext
 );
 

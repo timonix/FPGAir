@@ -30,7 +30,6 @@ begin
     generic map(
         integer_bits => integer_bits,
         fractional_bits => fractional_bits,
-        A_enabled => True,
         Kp => 2.0,
         Ki => 0.1,
         Kd => 1.0

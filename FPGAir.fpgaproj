@@ -9,7 +9,8 @@
     "*.cst",
     "test_data_tb2.txt",
     "tetete",
-    "tricore"
+    "tricore",
+    "*.sby"
   ],
   "Exclude": [
     "additional files",
@@ -43,6 +44,12 @@
     "experimental/tb/tb_ucore.vhd"
   ],
   "CompileExcluded": [
-    "sim/sim_tools_pkg.vhd"
+    "sim/sim_tools_pkg.vhd",
+    "rtl/mixer/mixer.vhd",
+    "sim/fst_test/fst_test.vhd"
+  ],
+  "CompileExcluded": [
+    "rtl/mixer/formal/psl_mixer_bmc/src/mixer.vhd",
+    "rtl/mixer/formal/psl_mixer_bmc/src/mixer.vhd"
   ]
 }

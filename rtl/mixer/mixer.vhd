@@ -31,6 +31,8 @@ architecture rtl of mixer is
     signal tmp3 : sfixed(14 downto -12);
     signal tmp4 : sfixed(14 downto -12);
     
+    signal formal_reset_deasserted : boolean := false;
+    
     function clamp(value: sfixed; min_val: integer; max_val: integer) return sfixed is
 begin
     if to_integer(value) < min_val then
@@ -64,9 +66,25 @@ begin
                 motor2_signal_o <= (others => '0');
                 motor3_signal_o <= (others => '0');
                 motor4_signal_o <= (others => '0');
+                formal_reset_deasserted <= true;
             end if;
             
         end if;
     end process;
+    
+    
+    -- //FORMAL VERIFICATION
+    
+    
+    
+    -- psl default clock is rising_edge(clk);
+    
+    -- psl defreset_motor_signals : assert always (rst = '1') ->
+    -- (next(motor1_signal_o = 0 and
+    --       motor2_signal_o = 0 and
+    --       motor3_signal_o = 0 and
+    --       motor4_signal_o = 0));
+
+    -- psl assert_max_value : assert always (formal_reset_deasserted -> motor1_signal_o <= max_value);
 
 end architecture rtl;

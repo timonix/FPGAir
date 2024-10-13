@@ -41,6 +41,7 @@ Libraries/.qsys_edit
 .cache/
 obj/
 mem_init/
+*_bmc/
 
 ## BSP Libraries
 **/Software/**/generated_bsp/
