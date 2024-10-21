@@ -1,0 +1,312 @@
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2020  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.36+8 (git sha1 e6021b2b4, clang 11.0.1-2 -fPIC -Os)
+
+
+-- Executing script file `../model/design.ys' --
+
+1. Executing GHDL.
+Importing module uCore.
+
+2. Executing PREP pass.
+
+2.1. Executing HIERARCHY pass (managing design hierarchy).
+
+2.1.1. Analyzing design hierarchy..
+Top module:  \uCore
+
+2.1.2. Analyzing design hierarchy..
+Top module:  \uCore
+Removed 0 unused modules.
+Module uCore directly or indirectly contains formal properties -> setting "keep" attribute.
+
+2.2. Executing PROC pass (convert processes to netlists).
+
+2.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+2.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+2.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+2.2.4. Executing PROC_INIT pass (extract init attributes).
+
+2.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+2.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+2.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+2.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+2.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+2.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+2.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+2.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module uCore.
+<suppressed ~63 debug messages>
+
+2.3. Executing FUTURE pass.
+
+2.4. Executing OPT_EXPR pass (perform const folding).
+Optimizing module uCore.
+
+2.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \uCore..
+Removed 56 unused cells and 108 unused wires.
+<suppressed ~58 debug messages>
+
+2.6. Executing CHECK pass (checking for obvious problems).
+Checking module uCore...
+Found and reported 0 problems.
+
+2.7. Executing OPT pass (performing simple optimizations).
+
+2.7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module uCore.
+
+2.7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\uCore'.
+<suppressed ~202 debug messages>
+Removed a total of 74 cells.
+
+2.7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \uCore..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port B of cell \440: $auto$ghdl.cc:806:import_module$50 [17:0] -> { 1'1 $auto$ghdl.cc:806:import_module$50 [16:0] }
+      Replacing known input bits on port A of cell \420: $auto$ghdl.cc:806:import_module$50 [17:0] -> { 1'0 $auto$ghdl.cc:806:import_module$50 [16:0] }
+      Replacing known input bits on port B of cell \1434: $auto$ghdl.cc:806:import_module$204 [17:0] -> { 1'1 $auto$ghdl.cc:806:import_module$204 [16:0] }
+      Replacing known input bits on port A of cell \1414: $auto$ghdl.cc:806:import_module$204 [17:0] -> { 1'0 $auto$ghdl.cc:806:import_module$204 [16:0] }
+      Replacing known input bits on port B of cell \939: $auto$ghdl.cc:806:import_module$127 [17:0] -> { 1'1 $auto$ghdl.cc:806:import_module$127 [16:0] }
+      Replacing known input bits on port A of cell \919: $auto$ghdl.cc:806:import_module$127 [17:0] -> { 1'0 $auto$ghdl.cc:806:import_module$127 [16:0] }
+  Analyzing evaluation results.
+    dead port 5/6 on $pmux \1020.
+    dead port 6/6 on $pmux \1020.
+    dead port 5/6 on $pmux \1023.
+    dead port 6/6 on $pmux \1023.
+    dead port 5/6 on $pmux \522.
+    dead port 6/6 on $pmux \522.
+    dead port 5/6 on $pmux \526.
+    dead port 6/6 on $pmux \526.
+Removed 8 multiplexer ports.
+<suppressed ~24 debug messages>
+
+2.7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \uCore.
+    New ctrl vector for $pmux cell \1011: { $auto$ghdl.cc:806:import_module$229 $auto$opt_reduce.cc:134:opt_pmux$314 }
+    New ctrl vector for $pmux cell \1014: { $auto$ghdl.cc:806:import_module$230 $auto$opt_reduce.cc:134:opt_pmux$316 }
+    New ctrl vector for $pmux cell \1017: { $auto$ghdl.cc:806:import_module$154 $auto$opt_reduce.cc:134:opt_pmux$318 }
+    New ctrl vector for $pmux cell \1026: { $auto$ghdl.cc:806:import_module$155 $auto$opt_reduce.cc:134:opt_pmux$320 }
+    New ctrl vector for $pmux cell \455: { $auto$opt_reduce.cc:134:opt_pmux$322 $auto$ghdl.cc:806:import_module$201 }
+    New ctrl vector for $pmux cell \457: { $auto$ghdl.cc:806:import_module$216 $auto$opt_reduce.cc:134:opt_pmux$324 }
+    New ctrl vector for $pmux cell \1449: { $auto$opt_reduce.cc:134:opt_pmux$326 $auto$ghdl.cc:806:import_module$201 }
+    New ctrl vector for $pmux cell \512: { $auto$ghdl.cc:806:import_module$229 $auto$opt_reduce.cc:134:opt_pmux$328 }
+    New ctrl vector for $pmux cell \515: { $auto$ghdl.cc:806:import_module$230 $auto$opt_reduce.cc:134:opt_pmux$330 }
+    New ctrl vector for $pmux cell \518: { $auto$ghdl.cc:806:import_module$154 $auto$opt_reduce.cc:134:opt_pmux$332 }
+    New ctrl vector for $pmux cell \529: { $auto$ghdl.cc:806:import_module$155 $auto$opt_reduce.cc:134:opt_pmux$334 }
+    New ctrl vector for $pmux cell \1451: { $auto$ghdl.cc:806:import_module$216 $auto$opt_reduce.cc:134:opt_pmux$336 }
+    New ctrl vector for $pmux cell \1502: { $auto$ghdl.cc:806:import_module$229 $auto$opt_reduce.cc:134:opt_pmux$338 }
+    New ctrl vector for $pmux cell \1505: { $auto$ghdl.cc:806:import_module$230 $auto$opt_reduce.cc:134:opt_pmux$340 }
+    New ctrl vector for $pmux cell \1508: { $auto$ghdl.cc:806:import_module$154 $auto$opt_reduce.cc:134:opt_pmux$342 }
+    New ctrl vector for $pmux cell \1511: { $auto$ghdl.cc:806:import_module$155 $auto$opt_reduce.cc:134:opt_pmux$344 }
+    New ctrl vector for $pmux cell \954: { $auto$opt_reduce.cc:134:opt_pmux$346 $auto$ghdl.cc:806:import_module$201 }
+    New ctrl vector for $pmux cell \956: { $auto$ghdl.cc:806:import_module$216 $auto$opt_reduce.cc:134:opt_pmux$348 }
+    New ctrl vector for $pmux cell \1514: { $auto$ghdl.cc:806:import_module$155 $auto$opt_reduce.cc:134:opt_pmux$350 }
+    New ctrl vector for $pmux cell \1517: { $auto$ghdl.cc:806:import_module$155 $auto$opt_reduce.cc:134:opt_pmux$352 }
+  Optimizing cells in module \uCore.
+Performed a total of 24 changes.
+
+2.7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\uCore'.
+<suppressed ~42 debug messages>
+Removed a total of 14 cells.
+
+2.7.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \uCore..
+Removed 0 unused cells and 72 unused wires.
+<suppressed ~1 debug messages>
+
+2.7.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module uCore.
+
+2.7.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+2.7.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \uCore..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~24 debug messages>
+
+2.7.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \uCore.
+Performed a total of 0 changes.
+
+2.7.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\uCore'.
+Removed a total of 0 cells.
+
+2.7.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \uCore..
+
+2.7.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module uCore.
+
+2.7.14. Finished OPT passes. (There is nothing left to do.)
+
+2.8. Executing WREDUCE pass (reducing word size of cells).
+Removed top 27 bits (of 32) from port A of cell uCore.\28 ($add).
+Removed top 31 bits (of 32) from port B of cell uCore.\28 ($add).
+Removed top 27 bits (of 32) from port Y of cell uCore.\28 ($add).
+Removed top 3 bits (of 4) from port B of cell uCore.\54 ($eq).
+Removed top 2 bits (of 4) from port B of cell uCore.\68 ($eq).
+Removed top 2 bits (of 4) from port B of cell uCore.\70 ($eq).
+Removed top 1 bits (of 4) from port B of cell uCore.\72 ($eq).
+Removed top 1 bits (of 4) from port B of cell uCore.\74 ($eq).
+Removed top 1 bits (of 4) from port B of cell uCore.\76 ($eq).
+Removed top 1 bits (of 4) from port B of cell uCore.\78 ($eq).
+Removed top 18 bits (of 36) from port A of cell uCore.\149 ($mul).
+Removed top 18 bits (of 36) from port B of cell uCore.\149 ($mul).
+Removed top 1 bits (of 19) from port A of cell uCore.\369 ($neg).
+Removed top 1 bits (of 18) from mux cell uCore.\420 ($mux).
+Removed top 1 bits (of 18) from mux cell uCore.\440 ($mux).
+Removed top 3 bits (of 4) from port B of cell uCore.\553 ($eq).
+Removed top 2 bits (of 4) from port B of cell uCore.\567 ($eq).
+Removed top 2 bits (of 4) from port B of cell uCore.\569 ($eq).
+Removed top 1 bits (of 4) from port B of cell uCore.\571 ($eq).
+Removed top 1 bits (of 4) from port B of cell uCore.\573 ($eq).
+Removed top 1 bits (of 4) from port B of cell uCore.\575 ($eq).
+Removed top 1 bits (of 4) from port B of cell uCore.\577 ($eq).
+Removed top 18 bits (of 36) from port A of cell uCore.\648 ($mul).
+Removed top 18 bits (of 36) from port B of cell uCore.\648 ($mul).
+Removed top 1 bits (of 19) from port A of cell uCore.\868 ($neg).
+Removed top 1 bits (of 18) from mux cell uCore.\919 ($mux).
+Removed top 1 bits (of 18) from mux cell uCore.\939 ($mux).
+Removed top 1 bits (of 3) from port B of cell uCore.\1002 ($eq).
+Removed top 3 bits (of 4) from port B of cell uCore.\1049 ($eq).
+Removed top 2 bits (of 4) from port B of cell uCore.\1063 ($eq).
+Removed top 2 bits (of 4) from port B of cell uCore.\1065 ($eq).
+Removed top 1 bits (of 4) from port B of cell uCore.\1067 ($eq).
+Removed top 1 bits (of 4) from port B of cell uCore.\1069 ($eq).
+Removed top 1 bits (of 4) from port B of cell uCore.\1071 ($eq).
+Removed top 1 bits (of 4) from port B of cell uCore.\1073 ($eq).
+Removed top 18 bits (of 36) from port A of cell uCore.\1144 ($mul).
+Removed top 18 bits (of 36) from port B of cell uCore.\1144 ($mul).
+Removed top 1 bits (of 19) from port A of cell uCore.\1363 ($neg).
+Removed top 1 bits (of 18) from mux cell uCore.\1414 ($mux).
+Removed top 1 bits (of 18) from mux cell uCore.\1434 ($mux).
+Removed top 1 bits (of 2) from port B of cell uCore.\1443 ($eq).
+Removed top 2 bits (of 3) from port B of cell uCore.\1486 ($eq).
+Removed top 1 bits (of 3) from port B of cell uCore.\1490 ($eq).
+Removed top 1 bits (of 18) from FF cell uCore.\1642 ($dff).
+Removed top 1 bits (of 2) from FF cell uCore.\1711 ($dff).
+Removed top 1 bits (of 18) from wire uCore.$auto$ghdl.cc:806:import_module$133.
+Removed top 1 bits (of 18) from wire uCore.$auto$ghdl.cc:806:import_module$137.
+Removed top 1 bits (of 18) from wire uCore.$auto$ghdl.cc:806:import_module$210.
+Removed top 1 bits (of 18) from wire uCore.$auto$ghdl.cc:806:import_module$214.
+Removed top 1 bits (of 18) from wire uCore.$auto$ghdl.cc:806:import_module$56.
+Removed top 27 bits (of 32) from wire uCore.$auto$ghdl.cc:806:import_module$6.
+Removed top 1 bits (of 18) from wire uCore.$auto$ghdl.cc:806:import_module$60.
+
+2.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \uCore..
+Removed 0 unused cells and 7 unused wires.
+<suppressed ~1 debug messages>
+
+2.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+2.11. Executing OPT pass (performing simple optimizations).
+
+2.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module uCore.
+
+2.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\uCore'.
+Removed a total of 0 cells.
+
+2.11.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \uCore..
+
+2.11.4. Finished fast OPT passes.
+
+2.12. Printing statistics.
+
+=== uCore ===
+
+   Number of wires:                180
+   Number of wire bits:           1631
+   Number of public wires:          27
+   Number of public wire bits:     520
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                166
+     $add                            4
+     $and                           21
+     $assert                         2
+     $cover                          2
+     $dff                           11
+     $eq                            52
+     $logic_not                      5
+     $mem_v2                         1
+     $mul                            3
+     $mux                           21
+     $neg                            3
+     $not                            2
+     $or                             3
+     $pmux                          23
+     $reduce_and                     3
+     $reduce_or                      9
+     $sub                            1
+
+2.13. Executing CHECK pass (checking for obvious problems).
+Checking module uCore...
+Found and reported 0 problems.
+
+3. Executing HIERARCHY pass (managing design hierarchy).
+
+3.1. Analyzing design hierarchy..
+Top module:  \uCore
+
+3.2. Analyzing design hierarchy..
+Top module:  \uCore
+Removed 0 unused modules.
+Module uCore directly or indirectly contains formal properties -> setting "keep" attribute.
+
+4. Executing jny backend.
+
+5. Executing RTLIL backend.
+Output filename: ../model/design.il
+
+End of script. Logfile hash: 4eff090d61, CPU: user 0.20s system 0.02s, MEM: 25.41 MB peak
+Yosys 0.36+8 (git sha1 e6021b2b4, clang 11.0.1-2 -fPIC -Os)
+Time spent: 62% 1x ghdl (0 sec), 8% 5x opt_clean (0 sec), ...

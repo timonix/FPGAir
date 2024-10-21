@@ -10,10 +10,12 @@
     "test_data_tb2.txt",
     "tetete",
     "tricore",
-    "*.sby"
+    "*.sby",
+    "*.ps1"
   ],
   "Exclude": [
     "additional files",
+    "tmp",
     "build",
     "old"
   ],
@@ -41,15 +43,11 @@
     "rtl/pid/tb/tb_neo_pid.vhd",
     "rtl/pid/tb/tb_2_neo_pid.vhd",
     "experimental/tb/tb_tricore.vhd",
-    "experimental/tb/tb_ucore.vhd"
+    "experimental/tb/tb_ucore.vhd",
+    "rtl/gyro estimator/neo_gyro_estimator.vhd"
   ],
   "CompileExcluded": [
-    "sim/sim_tools_pkg.vhd",
     "rtl/mixer/mixer.vhd",
     "sim/fst_test/fst_test.vhd"
-  ],
-  "CompileExcluded": [
-    "rtl/mixer/formal/psl_mixer_bmc/src/mixer.vhd",
-    "rtl/mixer/formal/psl_mixer_bmc/src/mixer.vhd"
   ]
 }

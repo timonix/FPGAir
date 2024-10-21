@@ -29,6 +29,10 @@ architecture rtl of top_aurora is
     signal acc_y : STD_LOGIC_VECTOR(15 downto 0);
     signal acc_z : STD_LOGIC_VECTOR(15 downto 0);
     
+    signal gyro_x : STD_LOGIC_VECTOR(15 downto 0);
+    signal gyro_y : STD_LOGIC_VECTOR(15 downto 0);
+    signal gyro_z : STD_LOGIC_VECTOR(15 downto 0);
+    
     signal filtered_acc_x : SIGNED(15 downto 0);
     signal filtered_acc_y : SIGNED(15 downto 0);
     signal filtered_acc_z : SIGNED(15 downto 0);
@@ -95,6 +99,9 @@ begin
         acc_x => acc_x,
         acc_y => acc_y,
         acc_z => acc_z,
+        gyro_x => gyro_x,
+        gyro_y => gyro_y,
+        gyro_z => gyro_z,
         mpu_data_valid => mpu_data_valid,
         update_mpu => read_mpu
     );

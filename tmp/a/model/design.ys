@@ -1,0 +1,7 @@
+# running in /tmp/a/src/
+ghdl --std=08 -fpsl uCore.vhd common_pkg.vhd -e uCore
+prep -top uCore
+
+hierarchy -smtcheck
+write_jny -no-connections ../model/design.json
+write_rtlil ../model/design.il

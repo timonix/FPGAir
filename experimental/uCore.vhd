@@ -8,10 +8,10 @@ use work.common_pkg.muladd;
 use work.common_pkg.to_sfixed24;
 use work.common_pkg.comp2;
 
-entity ucore is
+entity uCore is
     generic (
         integer_bits : integer := 6;
-        fractional_bits : integer := 12
+        fractional_bits : integer := 18
     );
     port (
         clk   : in std_logic;
@@ -33,18 +33,19 @@ entity ucore is
         output_Y : out sfixed(integer_bits-1 downto -fractional_bits);
         output_Z : out sfixed(integer_bits-1 downto -fractional_bits);
         
-        instruction_start_pointer : in integer range 0 to 63;
+        instruction_start_pointer : in integer range 0 to 31;
+        
         run  : in boolean;
-        done : out boolean
+        core_ready : out boolean;
+        core_done : out boolean
         
     );
-end entity ucore;
+end entity uCore;
 
-architecture rtl of ucore is
+architecture rtl of uCore is
     type instruction_T is ( None, Move, Multiply, Move_negative );
     
-    signal instruction_pointer : integer range 0 to 63;
-    signal running : boolean;
+    signal instruction_pointer : integer range 0 to 31 := 0;
     
     type source_T is (Zero, One, ext_AX, ext_AY, ext_AZ, ext_BX, ext_BY, ext_BZ, ext_CX, ext_CY, ext_CZ, A, B, C, Res, None);
     type sources_T is array (0 to 2) of source_T;
@@ -59,7 +60,7 @@ architecture rtl of ucore is
     
     constant instruction_RZ : instruction_R := (instruction => None, source => (Zero,Zero,Zero),destination => None);
     
-    type ROM_T is array (0 to 63) of instruction_R;
+    type ROM_T is array (0 to 31) of instruction_R;
     constant rom: ROM_T := (
         
         -- out_x = vec_x - vec_y*gyro_z + vec_z*gyro_y
@@ -69,17 +70,40 @@ architecture rtl of ucore is
         2  => (instruction => Move    , source => (ext_BY, ext_BZ, ext_BX ), destination => B),
         3  => (instruction => Move    , source => (Zero  , Zero  , Zero )  , destination => C),
         4  => (instruction => Multiply, source => (None  , None  , None)   , destination => None),
-        5  => (instruction => None    , source => (Res   , Res   , Res )   , destination => C),
+        5  => (instruction => Move    , source => (Res   , Res   , Res )   , destination => C),
 
         6  => (instruction => Move_negative , source => (ext_AY, ext_AZ, ext_AX ), destination => A),
         7  => (instruction => Move          , source => (ext_BZ, ext_BX, ext_BY ), destination => B),
         8  => (instruction => Multiply      , source => (None  , None  , None)   , destination => None),
-        9  => (instruction => None          , source => (Res   , Res   , Res )   , destination => C),
+        9  => (instruction => Move          , source => (Res   , Res   , Res )   , destination => C),
         
         10 => (instruction => Move    , source => (ext_AX, ext_AY, ext_AZ ), destination => A),
         11 => (instruction => Move    , source => (One   , One   , One )   , destination => B),
         12 => (instruction => Multiply, source => (None  , None  , None)   , destination => None),
-        13 => (instruction => None    , source => (Res   , Res   , Res )   , destination => ext_out),
+        13 => (instruction => Move    , source => (Res   , Res   , Res )   , destination => ext_out),
+        
+        
+        -- Scale and bias A*s+b
+        15 => (instruction => Move    , source => (ext_AX, ext_AY, ext_AZ ), destination => A),
+        16 => (instruction => Move    , source => (ext_BX, ext_BY, ext_BZ ), destination => B),
+        17 => (instruction => Move    , source => (ext_CX, ext_CY, ext_CZ ), destination => C),
+        18 => (instruction => Multiply, source => (None  , None  , None)   , destination => None),
+        19 => (instruction => Move    , source => (Res   , Res   , Res )   , destination => ext_out),
+        
+        -- combine
+        21 => (instruction => Move    , source => (ext_AX, ext_AY, ext_AZ ), destination => A),
+        22 => (instruction => Move    , source => (ext_BX, ext_BY, ext_BZ ), destination => B),
+        23 => (instruction => Move    , source => (Zero  , Zero  , Zero )  , destination => C),
+        24 => (instruction => Multiply, source => (None  , None  , None)   , destination => None),
+        25 => (instruction => Move    , source => (Res   , Res   , Res )   , destination => ext_out),
+        
+        27 => (instruction => Move    , source => (ext_AX, ext_AY, ext_AZ ), destination => A),
+        28 => (instruction => Move    , source => (ext_BX, ext_BY, ext_BZ ), destination => B),
+        29 => (instruction => Move    , source => (Res   , Res   , Res )   , destination => C),
+        30 => (instruction => Multiply, source => (None  , None  , None)   , destination => None),
+        31 => (instruction => Move    , source => (Res   , Res   , Res )   , destination => ext_out),
+
+        
         
         others =>  instruction_RZ);
 
@@ -90,11 +114,17 @@ architecture rtl of ucore is
     signal B_regs  : multi_regs;
     signal C_regs  : multi_regs;
     signal result_regs : multi_regs;
+    
+    signal s_done : boolean := false;
+    signal s_ready : boolean := true;
 
-    signal output_regs : multi_regs;
-
+    signal output_regs : multi_regs := (others => (others => '0'));
 
 begin
+    
+
+    core_done <= s_done;
+    core_ready <= s_ready;
     
     current_instruction <= ROM(instruction_pointer);
     
@@ -108,18 +138,7 @@ begin
     begin
         if rising_edge(clk) then
             
-            
-            
-            if run then
-                instruction_pointer <= instruction_start_pointer;
-                running <= true;
-            end if;
-            
-            if running then
-                instruction_pointer <= instruction_pointer +1;
-            end if;
-            
-            done <= false;
+            s_done <= false;
             for i in 0 to 2 loop
                 v_source(i) := (others => '0');
 
@@ -155,15 +174,33 @@ begin
                 end case;
                 
                 case current_instruction.destination is
-                    when None => 
-                    when A  => A_regs(i) <= v_source(i); 
-                    when B  => B_regs(i) <= v_source(i); 
-                    when C  => C_regs(i) <= v_source(i); 
-                    when ext_out => output_regs(i) <= v_source(i); done <= true; running <= false;
+                    when None =>
+                    when A  => A_regs(i) <= v_source(i);
+                    when B  => B_regs(i) <= v_source(i);
+                    when C  => C_regs(i) <= v_source(i);
+                    when ext_out => output_regs(i) <= v_source(i); s_done <= true; s_ready <= true;
                 end case;
             end loop;
+            
+            if run and s_ready then
+                instruction_pointer <= instruction_start_pointer;
+                s_ready <= false;
+            end if;
+            
+            if not s_ready then
+                instruction_pointer <= instruction_pointer +1;
+            end if;
+            
         end if;
     end process;
+
+    -- PSL default clock is rising_edge(clk);
+    -- PSL S2: assert always (run and core_ready -> next_e[0 to 33] (core_done));
+    -- PSL S1: assert always (run and s_ready -> next (not s_ready));
     
+    -- PSL cover {core_done};
+
+    
+
 
 end architecture;

@@ -1,0 +1,17 @@
+[tasks]
+bmc
+
+[options]
+depth 25
+bmc: mode bmc
+
+[engines]
+bmc: smtbmc z3
+
+[script]
+bmc: ghdl --std=08 -fpsl uCore.vhd common_pkg.vhd -e uCore
+prep -top uCore
+
+[files]
+../uCore.vhd
+../packages/common_pkg.vhd
