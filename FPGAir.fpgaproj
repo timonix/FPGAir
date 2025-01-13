@@ -44,7 +44,10 @@
     "rtl/pid/tb/tb_2_neo_pid.vhd",
     "experimental/tb/tb_tricore.vhd",
     "experimental/tb/tb_ucore.vhd",
-    "rtl/gyro estimator/neo_gyro_estimator.vhd"
+    "rtl/gyro estimator/tb/tb_neo_gyro_estimator.vhd",
+    "rtl/gyro estimator/tb/tb_neo_gyro_estimator_full.vhd",
+    "logtest.vhd",
+    "experimental/Mcore.vhd"
   ],
   "CompileExcluded": [
     "rtl/mixer/mixer.vhd",

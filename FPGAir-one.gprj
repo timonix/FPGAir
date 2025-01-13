@@ -6,10 +6,12 @@
     <Device name="GW1NR-9C" pn="GW1NR-LV9QN88PC6/I5">gw1nr9c-004</Device>
     <FileList>
         <File path="experimental/tricore.vhd" type="file.vhdl" enable="1"/>
+        <File path="experimental/uCore.vhd" type="file.vhdl" enable="1"/>
+        <File path="packages/common_pkg.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/attitude module/attitude_module_roll.vhd" type="file.vhdl" enable="1"/>
-        <File path="rtl/common_pkg.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/cordic/cordic.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/filters/rolling_average_filter.vhd" type="file.vhdl" enable="1"/>
+        <File path="rtl/gyro estimator/neo_gyro_estimator.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/math/mac.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/mixer/mixer.vhd" type="file.vhdl" enable="1"/>
         <File path="rtl/motor/pulser.vhd" type="file.vhdl" enable="1"/>

@@ -33,7 +33,7 @@ entity uCore is
         output_Y : out sfixed(integer_bits-1 downto -fractional_bits);
         output_Z : out sfixed(integer_bits-1 downto -fractional_bits);
         
-        instruction_start_pointer : in integer range 0 to 31;
+        instruction_start_pointer : in integer range 0 to 63;
         
         run  : in boolean;
         core_ready : out boolean;
@@ -45,7 +45,7 @@ end entity uCore;
 architecture rtl of uCore is
     type instruction_T is ( None, Move, Multiply, Move_negative );
     
-    signal instruction_pointer : integer range 0 to 31 := 0;
+    signal instruction_pointer : integer range 0 to 63 := 0;
     
     type source_T is (Zero, One, ext_AX, ext_AY, ext_AZ, ext_BX, ext_BY, ext_BZ, ext_CX, ext_CY, ext_CZ, A, B, C, Res, None);
     type sources_T is array (0 to 2) of source_T;
@@ -60,7 +60,7 @@ architecture rtl of uCore is
     
     constant instruction_RZ : instruction_R := (instruction => None, source => (Zero,Zero,Zero),destination => None);
     
-    type ROM_T is array (0 to 31) of instruction_R;
+    type ROM_T is array (0 to 63) of instruction_R;
     constant rom: ROM_T := (
         
         -- out_x = vec_x - vec_y*gyro_z + vec_z*gyro_y
@@ -114,6 +114,9 @@ architecture rtl of uCore is
     signal B_regs  : multi_regs;
     signal C_regs  : multi_regs;
     signal result_regs : multi_regs;
+    signal DEBUG_result_regs_X : sfixed(integer_bits-1 downto -fractional_bits);
+    signal DEBUG_result_regs_Y : sfixed(integer_bits-1 downto -fractional_bits);
+    signal DEBUG_result_regs_Z : sfixed(integer_bits-1 downto -fractional_bits);
     
     signal s_done : boolean := false;
     signal s_ready : boolean := true;
@@ -127,6 +130,10 @@ begin
     core_ready <= s_ready;
     
     current_instruction <= ROM(instruction_pointer);
+    
+    DEBUG_result_regs_X <= result_regs(0);
+    DEBUG_result_regs_Y <= result_regs(1);
+    DEBUG_result_regs_Z <= result_regs(2);
     
     output_X <= output_regs(0);
     output_Y <= output_regs(1);

@@ -33,7 +33,6 @@ package common_pkg is
         Y : signed(15 downto 0);
         Z : signed(15 downto 0);
     end record raw_sensor;
-    
 
     type dbus is record
         target_address  : natural range 0 to dbus_range;
@@ -126,7 +125,7 @@ function clog2(A: integer) return integer is
     variable result : integer;
 begin
     result := integer(ceil(log2(real(a))));
-return result;
+    return result;
 end;
 
 function TO_STDLOGICVECTOR_STRING(A: string) return std_logic_Vector is

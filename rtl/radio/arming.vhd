@@ -6,6 +6,7 @@ entity arming is
     Port (
         clk : in STD_LOGIC;
         rst : in STD_LOGIC;
+        force_disarm : in boolean := false;
         channel_1 : in UNSIGNED(10 downto 0);
         channel_2 : in UNSIGNED(10 downto 0);
         channel_3 : in UNSIGNED(10 downto 0);
@@ -34,7 +35,7 @@ begin
                 armed_state <= false;
             end if;
             
-            if rst = '1' then
+            if rst = '1' or force_disarm then
                 armed_state <= false;
             end if;
         end if;

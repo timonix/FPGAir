@@ -5,7 +5,11 @@ use ieee.fixed_pkg.all;
 
 entity neo_gyro_estimator is
     generic (
-        gyro_scale : real := 1/131*0.0174532925*2**10*0.0005;
+        gyro_scale : real := 0.007;
+        gyro_bias_x : real := 0.007*0.2;
+        gyro_bias_y : real := 0.007*0.08984375;
+        gyro_bias_z : real := -0.007*0.0302734375;
+        alpha : real := 0.95;
         integer_bits : integer := 6;
         fractional_bits : integer := 18
     );
@@ -52,7 +56,7 @@ architecture rtl of neo_gyro_estimator is
     signal core_output_y : sfixed(integer_bits-1 downto -fractional_bits);
     signal core_output_z : sfixed(integer_bits-1 downto -fractional_bits);
     
-    signal instruction_start_pointer : integer range 0 to 31;
+    signal instruction_start_pointer : integer range 0 to 63;
     signal run : boolean;
     signal core_ready : boolean;
     signal core_done : boolean;
@@ -89,25 +93,48 @@ begin
     process (clk)
     begin
         if rising_edge(clk) then
+
             if start_processing then
                 step <= 1;
-                
-                
+                report "start_processing";
             end if;
+            -- // SCALE AND BIAS GYRO \\ --
+            -- // ligger på plats 15 i uCore
+            -- // Gyro raw -> A
+            -- // Gyro scale -> B
+            -- // 0 -> C
             if step = 1 then
                 input_A_X <= (others => '0');
+                input_A_Y <= (others => '0');
+                input_A_Z <= (others => '0');
+                -- KAN VARA FEL
                 for i in gyro_x'range loop
-                    input_A_X(integer_bits-i) <= gyro_x(i);
+                    input_A_X(i-10) <= gyro_x(i);
+                    input_A_Y(i-10) <= gyro_y(i);
+                    input_A_Z(i-10) <= gyro_z(i);
                 end loop;
                 input_B_X <= to_sfixed(gyro_scale,input_B_X);
-                input_C_X <= to_sfixed(0.0,input_C_X);
+                input_B_Y <= to_sfixed(gyro_scale,input_B_Y);
+                input_B_Z <= to_sfixed(gyro_scale,input_B_Z);
+                
+                input_C_X <= to_sfixed(gyro_bias_x,input_C_X);
+                input_C_Y <= to_sfixed(gyro_bias_y,input_C_Y);
+                input_C_Z <= to_sfixed(gyro_bias_z,input_C_Z);
                 instruction_start_pointer <= 15;
                 run <= true;
                 step <= 2;
             elsif step = 2 then
                 run <= false;
-                if core_ready then step <= 3; end if;
+                step <= 3;
             elsif step = 3 then
+                if core_ready then step <= 4; end if;
+                
+            -- // ROTATE ESTIMATE \\ --
+            -- // ligger på plats 1 i uCore
+            -- // old estimate-> A
+            -- // Current scaled gyro RAD*deltaT -> B
+            -- // 0 -> C
+            elsif step = 4 then
                 input_A_X <= gravity_x;
                 input_A_Y <= gravity_y;
                 input_A_Z <= gravity_z;
@@ -117,41 +144,53 @@ begin
                 input_B_Z <= core_output_z;
                 run <= true;
                 instruction_start_pointer <= 1;
-                step <= 4;
-            elsif step = 4 then
-                run <= false;
-                if core_ready then step <= 5; end if;
+                step <= 5;
             elsif step = 5 then
-                input_A_X <= to_sfixed(0.95,input_A_X);
-                input_A_Y <= to_sfixed(0.95,input_A_Y);
-                input_A_Z <= to_sfixed(0.95,input_A_Z);
+                run <= false;
+                step <= 6;
+            elsif step = 6 then
+                if core_ready then step <= 7; end if;
+                
+            -- // COMBINE WITH ACCELEROMETER DATA \\ --
+            -- // ligger på plats 21 och 27 i uCore
+            elsif step = 7 then
+                input_A_X <= to_sfixed(alpha,input_A_X);
+                input_A_Y <= to_sfixed(alpha,input_A_Y);
+                input_A_Z <= to_sfixed(alpha,input_A_Z);
+                
                 input_B_X <= core_output_x;
                 input_B_Y <= core_output_y;
                 input_B_Z <= core_output_z;
                 run <= true;
                 instruction_start_pointer <= 21;
-                step <= 6;
-            elsif step = 6 then
+                step <= 8;
+            elsif step = 8 then
                 run <= false;
-                if core_ready then step <= 7; end if;
-            elsif step = 7 then
-                input_A_X <= to_sfixed(0.05,input_A_X);
-                input_A_Y <= to_sfixed(0.05,input_A_Y);
-                input_A_Z <= to_sfixed(0.05,input_A_Z);
+                step <= 9;
+            elsif step = 9 then
+                if core_ready then step <= 10; end if;
+            elsif step = 10 then
+                input_A_X <= to_sfixed(1.0-alpha,input_A_X);
+                input_A_Y <= to_sfixed(1.0-alpha,input_A_Y);
+                input_A_Z <= to_sfixed(1.0-alpha,input_A_Z);
                 input_B_X <= acc_estimate_x;
                 input_B_Y <= acc_estimate_y;
                 input_B_Z <= acc_estimate_z;
                 run <= true;
                 instruction_start_pointer <= 27;
-                step <= 8;
-            elsif step = 8 then
+                step <= 11;
+            elsif step = 11 then
                 run <= false;
-                if core_ready then step <= 9; end if;
+                step <= 12;
+            elsif step = 12 then
+                if core_ready then step <= 13; end if;
+            elsif step=13 then
+                new_estimate_x <= core_output_x;
+                new_estimate_y <= core_output_y;
+                new_estimate_z <= core_output_z;
+                step <= 14;
             end if;
             
-            if rst = '1' then
-                step <= 0;
-            end if;
         end if;
     end process;
 

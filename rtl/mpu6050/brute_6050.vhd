@@ -8,7 +8,9 @@ entity brute_6050 is
         i2c_frequency_mhz : real := 0.4;
         reset_on_reset : boolean := false;
         start_on_reset : boolean := true;
-        simulation : boolean := false
+        simulation : boolean := false;
+        
+        error_detection : boolean := false
     );
     port(
         
@@ -32,7 +34,9 @@ entity brute_6050 is
         
         reset_mpu : in boolean := false;
         mpu_ready  : out boolean;
-        update_mpu : in boolean
+        update_mpu : in boolean;
+        
+        mpu_failure : out boolean
     );
 end entity brute_6050;
 
@@ -106,7 +110,30 @@ architecture rtl of brute_6050 is
     
     signal s_temperature :  std_logic_vector(15 downto 0);
     
+    signal error_count : integer range 0 to 7 := 0;
+    
 begin
+    
+    mpu_failure <= error_count = 7;
+    process (clk)
+    begin
+        if rising_edge(clk) and error_detection then
+
+            if mpu_data_valid then
+                if gyro_x = x"FFFF" and gyro_y = x"FFFF" and gyro_z = x"FFFF" then
+                    if error_count < 7 then
+                        error_count <= error_count + 1;
+                    end if;
+                elsif gyro_x = x"0000" and gyro_y = x"0000" and gyro_z = x"0000" then
+                    if error_count < 7 then
+                        error_count <= error_count + 1;
+                    end if;
+                else
+                    error_count <= 0;
+                end if;
+            end if;
+        end if;
+    end process;
     
     gyro_x <= s_gyro_x;
     gyro_y <= s_gyro_y;

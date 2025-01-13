@@ -57,7 +57,7 @@ architecture rtl of cordic is
     constant lookup_table: lookup_table_type := generate_lookup_table;
 
     constant one : unsigned(data_width_angle-1 downto 0) := (1 => '1', others => '0');
-    signal deg_180 : unsigned(data_width_angle-1 downto 0) := shift_left(one,data_width_angle-2);
+    constant deg_180 : unsigned(data_width_angle-1 downto 0) := shift_left(one,data_width_angle-2);
 
     constant zero_extend : signed(iterations-1 downto 0) := (others => '0');
     

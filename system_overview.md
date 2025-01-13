@@ -4,8 +4,9 @@
 Source: https://www.libreinfo.org/comment-fonctionne-un-drone-quadrirotor/
 
 ## TODO
-- Test PID
-- ***More better filter with GYYYYRO***
+-- Kolla glapp
+-- fixa säkringar
+-- implementera failsafe för saknad gyro
 
 Board: Tang Nano 9
 ![Alt text](Pin_overview.png)
