@@ -30,11 +30,11 @@ Ports used:
 |34|GPS RX|2
 |41|Magnetometer SDA|2
 |42|Magnetometer SCL|2
-|51|Motor 1|1
+|51|Motor 1|1|Front Left
 |52|Clk|
-|53|Motor 2|1
-|54|Motor 3|1
-|55|Motor 4|1
+|53|Motor 2|1|Front Right
+|54|Motor 3|1|Rear Left
+|55|Motor 4|1|Rear Right
 |56|Motor 5|1
 |57|Motor 6|1
 |68|Motor 7|1
