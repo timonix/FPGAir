@@ -30,7 +30,7 @@ def create_RAM_file(input_file, ram_file):
     for line in lines:
         if line.startswith("LD "):
             dummy, value = line.split('$')
-            value_bin = format(float(value.strip()), "032b")    # TODO: Convert float to binary with correct fractionals
+            value_bin = format(int(value.strip()), "032b")    # TODO: Convert float to binary with correct fractionals
             ram_dict[value_bin] = address_counter
             address_counter += 1
             ram_lines.append(value_bin)
@@ -88,6 +88,7 @@ def instruction_assembler(instruction : str):
     elif "LD " in instruction:
         instruction_name, value = instruction.split("$")
         value.strip()
+        value = format(int(value), "032b")
         bin_instr = int(instruction_mapping["LDADDR"], 2)
         bin_value = ram_dict[value]
         return bin(bin_instr | bin_value)[2:]
