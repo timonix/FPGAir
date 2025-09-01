@@ -1,0 +1,6 @@
+IO_LOC "clk" 52;
+IO_LOC "tx_ext" 17;
+IO_LOC "rx_ext" 27;
+IO_LOC "resetn" 3;
+IO_LOC "sda" 31;
+IO_LOC "scl" 32;

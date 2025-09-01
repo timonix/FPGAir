@@ -1,0 +1,32 @@
+{
+  "Include": [
+    "*.vhd",
+    "*.vhdl",
+    "*.v",
+    "*.vcd",
+    "vhdl_ls.toml",
+    "*.sdc",
+    "*.ghw",
+    "*.txt",
+    "*.rom",
+    "*.ram"
+  ],
+  "Exclude": [
+    "build"
+  ],
+  "Loader": "Gowin",
+  "Toolchain": "Gowin",
+  "TopEntity": "modules/beagle_cpu/hw_test/balloon_top.vhd",
+  "Fpga": "TangNano9K",
+  "CompileExcluded": [
+    "modules/mpu6050/hw_test/top_banana.vhd",
+    "modules/sequencer/tb/sequencer_tb.vhd",
+    "modules/eager_cpu/sim/eager_tb_pc.vhd"
+  ],
+  "TestBenches": [
+    "modules/eager_cpu/sim/eager_tb_pc.vhd",
+    "modules/beagle_cpu/sim/beagle_sim.vhd",
+    "modules/beagle_cpu/hw_test/balloon_top_tb.vhd"
+  ],
+  "VHDL_Standard": "08"
+}

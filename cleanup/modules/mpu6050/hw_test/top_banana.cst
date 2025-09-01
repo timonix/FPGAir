@@ -1,0 +1,6 @@
+IO_LOC "clk" 52;
+IO_LOC "a_rst" 3;
+IO_LOC "led[0]" 10;
+IO_LOC "led[1]" 11;
+IO_LOC "sda" 31;
+IO_LOC "scl" 32;
