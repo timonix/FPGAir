@@ -1,9 +1,13 @@
+LABEL START
+
 LD $1
-LD $2
-LD $3
+LD $2.5
+LD $3.9
 
 $GYRO_X = 10
 $VEC_X = 5
+
+LABEL TEST_1
 
 LDADDR $GYRO_X
 MOV RAM->A

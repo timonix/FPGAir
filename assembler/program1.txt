@@ -1,0 +1,10 @@
+
+LD $3
+MOV RAM->A
+
+LD $4
+MOV RAM->B
+
+MOV ONE->X
+
+MULADD

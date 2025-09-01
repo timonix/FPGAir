@@ -1,0 +1,9 @@
+label start_helloworld
+
+$UART = 127
+
+LD 'HELL
+MOV RAM->A
+
+LDADDR $UART
+mov a ram
