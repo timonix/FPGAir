@@ -1,7 +1,9 @@
-2025-09-01 21:31:39
+2025-09-08 21:02:51
 
 --- Input files assembled ---
+rotate_vector.txt
 scale_bias_mpu.txt
 -----------------------------
 
-SCALE_BIAS_MPU 0
+ROTATE_VECTOR 0
+SCALE_BIAS_MPU 50
