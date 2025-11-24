@@ -1,0 +1,2 @@
+
+LOAD_CONSTANT #42 X

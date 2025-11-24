@@ -1,0 +1,6 @@
+
+
+%macro LOAD_CONSTANT constant register
+    LD %constant
+    MOV RAM %register
+%end_macro
