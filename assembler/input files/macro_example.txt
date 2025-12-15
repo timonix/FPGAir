@@ -1,2 +1,2 @@
 
-LOAD_CONSTANT #42 X
+    MUL #4 #12 $LKNS

@@ -157,7 +157,7 @@ def instruction_assembler(instruction : str):
     if instruction_string in instruction_mapping:
         return instruction_mapping[instruction_string]
 
-    if "LDADDR" in instruction_string:
+    if "LD $" in instruction_string:
         instruction_name, variable_name = instruction_string.split("$")
         instruction_name = instruction_name.strip()
         variable_name = variable_name.strip()
@@ -173,7 +173,7 @@ def instruction_assembler(instruction : str):
         
         return bin(bin_instr | ram_address)[2:]
 
-    elif "LD " in instruction_string:
+    elif "LD #" in instruction_string:
         instruction_name, value = instruction_string.split("#")
         bin_instr = int(instruction_mapping["LDADDR"], 2)
 

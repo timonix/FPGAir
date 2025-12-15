@@ -1,0 +1,26 @@
+
+   MOV zero BLD %constant
+MOV RAM %register
+LD %constant
+MOV RAM %register
+LD %constant
+MOV RAM %register
+LD %constant
+MOV RAM %register
+LD %constant
+MOV RAM %register
+LD %constant
+MOV RAM %register
+LD %constant
+MOV RAM %register
+LD %constant
+MOV RAM %register
+LD %constant
+MOV RAM %register
+
+LOAD_REG %scr1 A
+LOAD_REG %scr2 X
+MULADD
+LD $LKNS
+MOV res ram
+

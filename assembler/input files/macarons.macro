@@ -1,6 +1,14 @@
 
-
-%macro LOAD_CONSTANT constant register
+%macro LOAD_REG constant register
     LD %constant
     MOV RAM %register
+%end_macro
+
+%macro MUL src1 src2 dest
+    MOV zero B
+    LOAD_REG %src1 A
+    LOAD_REG %src2 X
+    MULADD
+    LD %dest
+    MOV res ram
 %end_macro

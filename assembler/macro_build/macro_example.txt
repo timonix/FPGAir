@@ -1,0 +1,12 @@
+
+    MOV zero B
+LD #4
+MOV RAM A
+
+LD #12
+MOV RAM X
+
+MULADD
+LD $LKNS
+MOV res ram
+

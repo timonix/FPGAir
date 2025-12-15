@@ -1,13 +1,20 @@
 
 from pathlib import Path
+import re
+
+# TODO
+# Make sure assembler.py reads from the macro_build!
+# Profit
 
 
 class Macros():
 
     macros = []
 
-    def __init__(self, folder_path):
-        for macro_file in folder_path.glob("*.macro"):
+    def __init__(self, input_folder_path, output_file_path):
+        self.output_file_path = output_file_path
+
+        for macro_file in input_folder_path.glob("*.macro"):
             with open(macro_file, "r", encoding="utf-8") as f:
                 lines = f.readlines()
 
@@ -29,9 +36,30 @@ class Macros():
                     
                     current_macro.add_line(line.strip())
 
-    # TODO apply all macros method
-    # Parse all macros
-    # Read from input folders
+        for input_file in input_folder_path.glob("*.txt"):
+            with open(input_file, "r", encoding="utf-8") as f:
+                file_data = f.read()
+
+                for i in range(1000):
+                    old_file_data = file_data
+                    for macro in self.macros:
+                        file_data = macro.apply(file_data)
+
+                    if file_data == old_file_data:
+                        print(f"DEBUG: {i} iterations performed")
+                        break
+
+                    if i == 9:
+                        print("Macro iteration limit reached 💥😭🤢🤮")
+                
+            self.save_output(data=file_data, name=input_file.name)
+
+
+    def save_output(self, data : str, name : str):
+        output_file = str(self.output_file_path) + "/" + name
+        with open(output_file, "w", encoding="utf-8") as f:
+            f.write(data)
+
 
 class Macro():
 
@@ -46,7 +74,13 @@ class Macro():
 
     def apply(self, file_data : str):
 
-        start_index = file_data.find(self.name)
+        pos = re.search(rf"\s{re.escape(self.name)}\s", file_data)
+
+        # start_index = file_data.find(self.name)
+        if not pos:
+            return file_data
+        
+        start_index = pos.start()+1
         stop_index = file_data.find("\n", start_index)
 
         text = file_data[start_index:stop_index]
@@ -69,8 +103,9 @@ class Macro():
 if __name__ == "__main__":
     BASE_DIR = Path(__file__).parent
     input_folder_path = BASE_DIR / "input files"
+    output_folder_path = BASE_DIR / "macro_build"
 
-    macros = Macros(input_folder_path)
+    macros = Macros(input_folder_path, output_folder_path)
 
-    print(macros.macros[0].apply("LOAD_CONSTANT #42 X\n"))
+    # print(macros.macros[0].apply("LOAD_CONSTANT #42 X\n"))
 
