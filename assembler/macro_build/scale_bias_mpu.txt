@@ -1,4 +1,4 @@
-label scale_bias_mpu
+LABEL SCALE_BIAS_MPU
 
 #GYRO_X_SCALE = 0.54571516154
 #GYRO_Y_SCALE = 0.54571516154
@@ -18,12 +18,12 @@ label scale_bias_mpu
 
 // -----------------------
 
-$GYRO_X_RAW = b1000000
-$GYRO_Y_RAW = b1000001
-$GYRO_Z_RAW = b1000010
-$ACC_X_RAW = b1000011
-$ACC_Y_RAW = b1000100
-$ACC_Z_RAW = b1000101
+$GYRO_X_RAW = B1000000
+$GYRO_Y_RAW = B1000001
+$GYRO_Z_RAW = B1000010
+$ACC_X_RAW = B1000011
+$ACC_Y_RAW = B1000100
+$ACC_Z_RAW = B1000101
 
 $GYRO_X = 32
 $GYRO_Y = 33
@@ -33,54 +33,54 @@ $ACC_Y = 36
 $ACC_Z = 37
 
 
-// --- Rotate and add bias to gyroscope --------------------
+// --- ROTATE AND ADD BIAS TO GYROSCOPE --------------------
 
 LDADDR $GYRO_X_RAW
-mov RAM A
+MOV RAM A
 LD #GYRO_X_SCALE
-mov ram x
+MOV RAM X
 LD #GYRO_X_BIAS
-mov ram B
+MOV RAM B
 MULADD
 LDADDR $GYRO_X
-mov res ram
+MOV RES RAM
 
 LDADDR $GYRO_Y_RAW
-mov RAM A
+MOV RAM A
 LD #GYRO_Y_SCALE
-mov ram x
+MOV RAM X
 LD #GYRO_Y_BIAS
-mov ram B
+MOV RAM B
 MULADD
 LDADDR $GYRO_Y
-mov res ram
+MOV RES RAM
 
 LDADDR $GYRO_Z_RAW
-mov RAM A
+MOV RAM A
 LD #GYRO_Z_SCALE
-mov ram x
+MOV RAM X
 LD #GYRO_Z_BIAS
-mov ram B
+MOV RAM B
 MULADD
 LDADDR $GYRO_Z
-mov res ram
+MOV RES RAM
 
 
-// --- Move raw acc to acc ------------------
+// --- MOVE RAW ACC TO ACC ------------------
 
 LDADDR $ACC_X
-mov ram A
+MOV RAM A
 LDADDR $ACC_X_RAW
-mov a ram
+MOV A RAM
 
 LDADDR $ACC_Y
-mov ram A
+MOV RAM A
 LDADDR $ACC_Y_RAW
-mov a ram
+MOV A RAM
 
 LDADDR $ACC_Z
-mov ram A
+MOV RAM A
 LDADDR $ACC_Z_RAW
-mov a ram
+MOV A RAM
 
 HALT

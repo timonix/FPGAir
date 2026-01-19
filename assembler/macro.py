@@ -1,10 +1,7 @@
 
 from pathlib import Path
 import re
-
-# TODO
-# Make sure assembler.py reads from the macro_build!
-# Profit
+import os
 
 
 class Macros():
@@ -13,6 +10,7 @@ class Macros():
 
     def __init__(self, input_folder_path, output_file_path):
         self.output_file_path = output_file_path
+        self.clear_macro_folder(self.output_file_path)
 
         for macro_file in input_folder_path.glob("*.macro"):
             with open(macro_file, "r", encoding="utf-8") as f:
@@ -54,11 +52,16 @@ class Macros():
                 
             self.save_output(data=file_data, name=input_file.name)
 
+    def clear_macro_folder(self, output_file_path : str):
+        for name in os.listdir(output_file_path):
+            path = os.path.join(output_file_path, name)
+            if os.path.isfile(path):
+                os.remove(path)
 
     def save_output(self, data : str, name : str):
         output_file = str(self.output_file_path) + "/" + name
         with open(output_file, "w", encoding="utf-8") as f:
-            f.write(data)
+            f.write(data.upper())
 
 
 class Macro():

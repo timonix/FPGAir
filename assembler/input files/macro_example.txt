@@ -1,2 +1,6 @@
-
+label hehehehe
+$LKNS = 10
+#hejsan = 100
+LD #hejsan
+LD #100
     MUL #4 #12 $LKNS

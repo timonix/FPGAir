@@ -1,5 +1,9 @@
-
-    MOV zero B
+LABEL HEHEHEHE
+$LKNS = 10
+#HEJSAN = 100
+LD #HEJSAN
+LD #100
+    MOV ZERO B
 LD #4
 MOV RAM A
 
@@ -8,5 +12,5 @@ MOV RAM X
 
 MULADD
 LD $LKNS
-MOV res ram
+MOV RES RAM
 

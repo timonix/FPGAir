@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 from decimal import Decimal
 import datetime
+from macro import Macros
 
 BASE_DIR = Path(__file__).parent
 variable_dict = {}
@@ -106,7 +107,7 @@ def read_variables(input_folder):
             if line.startswith("$"):
                 name, value = line.split('=')
                 name = name.strip()[1:]
-                if value.strip().startswith("b"):
+                if value.strip().startswith("B"):
                     value_bin = value.strip()[1:]
                 else:
                     value_bin = format(int(value.strip()), "08b")
@@ -157,7 +158,7 @@ def instruction_assembler(instruction : str):
     if instruction_string in instruction_mapping:
         return instruction_mapping[instruction_string]
 
-    if "LD $" in instruction_string:
+    if "LD $" in instruction_string:    # Load from address
         instruction_name, variable_name = instruction_string.split("$")
         instruction_name = instruction_name.strip()
         variable_name = variable_name.strip()
@@ -169,20 +170,20 @@ def instruction_assembler(instruction : str):
         value = instruction[3:]
         bin_value = str_value_to_bin(value)
         ram_address = ram_dict[bin_value]
-        bin_instr = int(instruction_mapping["LDADDR"], 2)
+        bin_instr = int(instruction_mapping["LD"], 2)
         
         return bin(bin_instr | ram_address)[2:]
 
-    elif "LD #" in instruction_string:
+    elif "LD #" in instruction_string:      # Get hardcoded value
         instruction_name, value = instruction_string.split("#")
-        bin_instr = int(instruction_mapping["LDADDR"], 2)
+        instruction_name = instruction_name.strip()
+        bin_instr = int(instruction_mapping[instruction_name], 2)
 
         if is_number(value_str=value):  # Hardcoded number
             bin_value = str_value_to_bin(value)
             ram_address = ram_dict[bin_value]
         else:                           # Variable -> get value from variable dict
             bin_value = variable_dict[value]
-            # bin_value = str_value_to_bin(variable_value)
             ram_address = ram_dict[bin_value]
         
         return bin(bin_instr | ram_address)[2:]
@@ -203,7 +204,7 @@ def create_metadata_file(metadata_file, input_folder):
     metadata_lines.append("\n--- Input files assembled ---")
     for input_file in input_folder.glob("*.txt"):
         metadata_lines.append(input_file.name)
-    metadata_lines.append("-----------------------------\n")
+    metadata_lines.append("\n--- Labels --------------------------")
 
     for data_name in metadata_dict:
         metadata_lines.append(f"{data_name} {metadata_dict[data_name]}")
@@ -211,24 +212,27 @@ def create_metadata_file(metadata_file, input_folder):
     with open(metadata_file, "w", encoding="utf-8") as f:
         f.write("\n".join(metadata_lines))
 
-def main(csv_path, input_path, output_path, ram_path, metadata_path):
+def main(csv_path, input_path, output_path, ram_path, metadata_path, macro_folder_path):
 
     print("-----")
     print(f"Generating output based on file at: {input_path}")
     print("-----")
 
     csv_file = Path(csv_path)
-    input_folder = Path(input_path)
+    # input_folder = Path(input_path)
     output_file = Path(output_path)
     ram_file = Path(ram_path)
     metadata_file = Path(metadata_path)
+    macro_folder = Path(macro_folder_path)
+
+    macros = Macros(input_folder_path, macro_folder_path)
 
     global instruction_mapping
     instruction_mapping = load_instruction_map(csv_file)
-    create_RAM_file(input_folder, ram_file)
-    read_variables(input_folder)
-    assemble(input_folder, output_file)
-    create_metadata_file(metadata_file, input_folder)
+    create_RAM_file(macro_folder, ram_file)
+    read_variables(macro_folder)
+    assemble(macro_folder, output_file)
+    create_metadata_file(metadata_file, macro_folder)
     print(f"✨ Assembling complete. Behold thy ROM: {output_file}")
 
 if __name__ == "__main__":
@@ -239,8 +243,9 @@ if __name__ == "__main__":
     output_file_path = BASE_DIR / "output.rom"
     ram_file_path = BASE_DIR / "ram.ram"
     metadata_file_path = BASE_DIR / "metadata.txt"
+    macro_folder_path = BASE_DIR / "macro_build"
     
-    main(csv_file_path, input_folder_path, output_file_path, ram_file_path, metadata_file_path)
+    main(csv_file_path, input_folder_path, output_file_path, ram_file_path, metadata_file_path, macro_folder_path)
 
 
 # TODO
