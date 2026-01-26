@@ -57,30 +57,95 @@ Ports used:
 ```mermaid
 ---
 title: Components
+
+config:
+    class:
+        hideEmptyMembersBox: true
 ---
 classDiagram
-    class top
-        top <|-- DCCM
-        top <|-- uart_top
-
-    class DCCM
     
-    class mpu6050
 
-    class pwm 
+    class esc:::hardware{
+        motor_1
+        motor_2
+        motor_3
+        motor_4
+        }
+        esc <-- pulser
 
-    class uart_top
-        uart_top <|-- uart_rx
-        uart_top <|-- uart_tx
+    class pulser:::vhdl
+        pulser <-- mixer
+        pulser <-- sequencer
 
-    class uart_rx
+    class mixer:::software
+        mixer <-- pid_roll
+        mixer <-- pid_pitch
+        mixer <-- pid_yaw
+        mixer <-- radio_throttle
 
-    class uart_tx
+    class pid_roll:::software
+        pid_roll <-- combine_acc_gyro
+        pid_roll <-- radio_roll
 
-    class radio_channel
+    class pid_pitch:::software
+        pid_pitch <-- combine_acc_gyro
+        pid_pitch <-- radio_pitch
 
-    class acc_angles
-        acc_angles <|-- cordic_acc
+    class pid_yaw:::software
+        pid_yaw <-- scale_bias_mpu
+        pid_yaw <-- radio_yaw
 
-    class cordic_acc
+    class combine_acc_gyro:::software
+        combine_acc_gyro <-- estimate_acc_vector
+        combine_acc_gyro <--> estimate_gyro_vector 
+
+    class estimate_gyro_vector:::software
+        estimate_gyro_vector <-- scale_bias_mpu
+
+    class estimate_acc_vector:::software
+        estimate_acc_vector <-- scale_bias_mpu
+
+    class scale_bias_mpu:::software
+        scale_bias_mpu <-- brute_6050      
+    
+    class brute_6050:::vhdl
+        brute_6050 <-- accelerometer
+        brute_6050 <-- gyroscope
+        brute_6050 <-- sequencer
+
+    class sequencer:::vhdl
+        sequencer <-- arming
+
+    class arming:::vhdl
+        arming <-- radio_roll
+        arming <-- radio_pitch
+        arming <-- radio_yaw
+        arming <-- radio_arming
+        arming <-- radio_throttle
+
+    class radio_throttle:::vhdl
+        radio_throttle <-- radio_reciever
+
+    class radio_pitch:::vhdl
+        radio_pitch <-- radio_reciever
+
+    class radio_roll:::vhdl
+        radio_roll <-- radio_reciever
+
+    class radio_yaw:::vhdl
+        radio_yaw <-- radio_reciever
+
+    class radio_arming:::vhdl
+        radio_arming <-- radio_reciever
+
+    class gyroscope:::hardware
+    class accelerometer:::hardware
+    class radio_reciever::: hardware
+
+
+
+
+    classDef vhdl fill:#69f
+    classDef software fill:#606
+    classDef hardware fill:#930
 ```
