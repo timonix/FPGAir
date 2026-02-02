@@ -86,6 +86,9 @@ class Macro():
         start_index = pos.start()+1
         stop_index = file_data.find("\n", start_index)
 
+        if stop_index == -1:
+            print(f"Macro: Something went wrong when finding the stop index in {self.name}. Maybe you need a newline at the end of the file?!? 🤬")
+
         text = file_data[start_index:stop_index]
         variable_values = text.strip().split(" ")[1:]
 

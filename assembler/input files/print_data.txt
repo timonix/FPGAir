@@ -1,0 +1,2 @@
+label print_data
+SERIAL_WRITE_WORD $GYRO_X

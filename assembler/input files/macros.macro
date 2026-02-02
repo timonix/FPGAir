@@ -1,0 +1,10 @@
+
+%macro SERIAL_WRITE_WORD source
+    
+    LD %source
+    MOV RAM->A
+
+    LD $UART_TX
+    mov a ram
+
+%end_macro
