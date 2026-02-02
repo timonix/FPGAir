@@ -140,12 +140,26 @@ classDiagram
 
     class gyroscope:::hardware
     class accelerometer:::hardware
-    class radio_reciever::: hardware
+    class radio_reciever:::hardware
 
+    
+    class radio_reciever:::done
+    class radio_throttle:::done
+    class radio_pitch:::done
+    class radio_roll:::done
+    class radio_yaw:::done
+    class radio_arming:::done
+
+    class accelerometer:::subjectToChange
+    class gyroscope:::subjectToChange
 
 
 
     classDef vhdl fill:#69f
     classDef software fill:#606
     classDef hardware fill:#930
+
+    classDef done stroke:#00FF00,stroke-width:4px
+    classDef subjectToChange stroke:#FFFF00,stroke-width:4px
+    classDef notTested stroke:#00FFFF,stroke-width:4px
 ```

@@ -1,11 +1,14 @@
-2026-01-19 21:23:04
+2026-02-02 20:10:58
 
 --- Input files assembled ---
+AA_registers.txt
+AB_regtest.txt
 macro_example.txt
 rotate_vector.txt
 scale_bias_mpu.txt
 
 --- Labels --------------------------
-HEHEHEHE 0
-ROTATE_VECTOR 11
-SCALE_BIAS_MPU 43
+REGTEST 0
+HEHEHEHE 2
+ROTATE_VECTOR 13
+SCALE_BIAS_MPU 45
