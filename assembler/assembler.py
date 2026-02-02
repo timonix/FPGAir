@@ -48,17 +48,14 @@ def create_RAM_file(input_folder, ram_file):
     ram_lines = []
     address_counter = 0
 
-    for input_file in input_folder.glob("*.txt"):
+    files = list(input_folder.glob("*.txt"))
+    files.sort(key=lambda f: f.name != "register.txt")
+
+    for input_file in files:
         with open(input_file, "r", encoding="utf-8") as f:
             lines = f.readlines()
 
         for line in lines:
-            # if line.upper().startswith("LD $"):
-            #     dummy, value = line.split('$')
-            #     value_bin = str_value_to_bin(value)
-            #     ram_dict[value_bin] = address_counter
-            #     address_counter += 1
-            #     ram_lines.append(value_bin)
 
             if line[0:4].upper().startswith("LD #"):
                 dummy, value = line.split('#')
@@ -85,15 +82,7 @@ def create_RAM_file(input_folder, ram_file):
                     ram_dict[value_bin] = address_counter
                     address_counter += 1
                     ram_lines.append(value_bin)
-
-            # elif line.upper().startswith("DEFINE "):
-            #     dummy, var_and_value_str = line.split('$')
-                
-            #     value_bin = str_value_to_bin(value)
-            #     ram_dict[value_bin] = address_counter
-            #     address_counter += 1
-            #     ram_lines.append(value_bin)
-
+                    
     with open(ram_file, "w", encoding="utf-8") as f:
         f.write("\n".join(ram_lines))
             
