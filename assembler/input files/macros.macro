@@ -1,6 +1,6 @@
 
 %macro SERIAL_WRITE_WORD source
-    
+    $UART = 127
     LD %source
     MOV RAM->A
 
