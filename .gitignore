@@ -52,6 +52,7 @@ mem_init/
 assembler/metadata.txt
 assembler/output.rom
 assembler/ram.ram
+assembler/macro_build/
 
 ## Python
 *__pycache__*
