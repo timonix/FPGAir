@@ -60,3 +60,5 @@ assembler/macro_build/
 **/additional\ files/**/.hypothesis
 
 _hdl_checker/
+
+/.venv
