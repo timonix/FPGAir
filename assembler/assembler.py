@@ -48,8 +48,7 @@ def create_RAM_file(input_folder, ram_file):
     ram_lines = []
     address_counter = 0
 
-    files = list(input_folder.glob("*.txt"))
-    files.sort(key=lambda f: f.name != "register.txt")
+    files = read_files(input_folder)
 
     for input_file in files:
         with open(input_file, "r", encoding="utf-8") as f:
@@ -88,7 +87,7 @@ def create_RAM_file(input_folder, ram_file):
             
 
 def read_variables(input_folder):
-    for input_file in input_folder.glob("*.txt"):
+    for input_file in read_files(input_folder):
         with open(input_file, "r", encoding="utf-8") as f:
             lines = f.readlines()
         
@@ -112,7 +111,7 @@ def read_variables(input_folder):
                 
 
 def assemble(input_folder, output_file):
-    for input_file in input_folder.glob("*.txt"):
+    for input_file in read_files(input_folder):
         with open(input_file, "r", encoding="utf-8") as f:
             lines = f.readlines()
     
@@ -183,6 +182,9 @@ def instruction_assembler(instruction : str):
         metadata_dict[label_name] = len(output_lines)
         return '00000001'
 
+    elif "LD " in instruction:
+        print(f"You sure you wrote that correctly? 😒 Error string: {instruction_string}")
+
     return False
 
 def create_metadata_file(metadata_file, input_folder):
@@ -191,7 +193,7 @@ def create_metadata_file(metadata_file, input_folder):
     metadata_lines.append(str(datetime.datetime.now())[:19])
 
     metadata_lines.append("\n--- Input files assembled ---")
-    for input_file in input_folder.glob("*.txt"):
+    for input_file in read_files(input_folder):
         metadata_lines.append(input_file.name)
     metadata_lines.append("\n--- Labels --------------------------")
 
@@ -223,6 +225,11 @@ def main(csv_path, input_path, output_path, ram_path, metadata_path, macro_folde
     assemble(macro_folder, output_file)
     create_metadata_file(metadata_file, macro_folder)
     print(f"✨ Assembling complete. Behold thy ROM: {output_file}")
+
+def read_files(folder):
+    files = list(folder.glob("*.txt"))
+    files.sort(key=lambda f: f.name != "register.txt")
+    return files
 
 if __name__ == "__main__":
     
