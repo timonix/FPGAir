@@ -16,7 +16,7 @@
   ],
   "Loader": "Gowin",
   "Toolchain": "Gowin",
-  "TopEntity": null,
+  "TopEntity": "modules/temp_test.vhd",
   "Fpga": "TangNano9K",
   "CompileExcluded": [
     "modules/mpu6050/hw_test/top_banana.vhd",

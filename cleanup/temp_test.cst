@@ -1,0 +1,3 @@
+IO_LOC "button" 3;
+IO_LOC "led" 11;
+IO_LOC "ledn" 16;
