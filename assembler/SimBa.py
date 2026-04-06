@@ -1,22 +1,48 @@
-# SCope creep:
+# ----- Scope creep -----
 # Realistic start values
 # Check register contents
 # Log?
 # Send input in test case?
 # Test cases in general?
-#
-
 
 # 128 memory area - 0-127
 # A, B, X, Res, Ram registers
 # PC - program counter
 
-# MIRO - Master In RAM Out - 
-# MORI - 
+# TODO: Troubleshoot: printout of Gyro not working.
+# TODO: Add log of all the executed instructions and register/memory changes for debugging purposes. Maybe also add a "verbose" mode that prints this log to the console.
+# TODO: Make it possible to insert pre-set hardware data into the memory before running the program, to simulate sensor input. Maybe also add a "test case" mode that runs a predefined set of test cases with expected outputs for easier debugging.
+# TODO: Add a happy and sad Simba face at the end of the program to indicate success or failure of the program execution, based on whether it halts successfully or encounters an error.
 
 from pathlib import Path
 import csv
 from dataclasses import dataclass
+
+@dataclass
+class Word():
+    value : int
+    
+    def word_from_bin_string(bin_str):
+        return Word(int(bin_str, 2) if bin_str[0] == '0' else int(bin_str, 2) - (1 << len(bin_str)))
+    
+    def word_from_float(value, frac_bits=20, ram_bits=32):
+        scaled_value = int(round(value * (1 << frac_bits)))
+        mask = (1 << ram_bits) - 1
+        fixed_val = scaled_value & mask
+        return Word(fixed_val)
+    
+    def __str__(self):
+        return str(self.value/2**20)
+    
+    def __mul__(self, other):
+        return Word((self.value * other.value) >> 20)
+    
+    def __add__(self, other):
+        return Word(self.value + other.value)
+    
+    def __neg__(self):
+        return Word(-self.value)
+    
 
 @dataclass
 class InstructionResult():
@@ -39,10 +65,6 @@ class InstructionResult():
 class SimBa():
 
     def __init__(self, output_file_path, metadata_file_path, ram_file_path, instruction_map_path):
-        self.read_files(output_file_path, metadata_file_path, ram_file_path, instruction_map_path)
-        
-        self.RAM_reg_in = None
-        self.RAM_reg_out = None
         self.RES_reg = None
         self.A_reg = None
         self.B_reg = None
@@ -53,6 +75,8 @@ class SimBa():
         self.memory = [None] * 128
 
         self.PC = None
+        
+        self.read_files(output_file_path, metadata_file_path, ram_file_path, instruction_map_path)
 
 
     def read_files(self, output_file_path, metadata_file_path, ram_file_path, instruction_map_path):
@@ -68,7 +92,9 @@ class SimBa():
         with open(ram_file_path, "r", encoding="utf-8") as f:
             self.ram_lines = f.readlines()
             for i, line in enumerate(self.ram_lines):
-                self.ram_lines[i] = line.replace("\n", "")
+                self.memory[i] = Word.word_from_bin_string(line.replace("\n", ""))
+
+            
 
         with open(instruction_map_path, newline='', encoding="utf-8") as f:
             self.instruction_map = {}
@@ -79,6 +105,9 @@ class SimBa():
                 binary, command = row[0].strip(), row[1].strip().upper()
                 self.instruction_map[binary] = command
 
+    def uart_print(self, address):
+        if address == int('1111111', 2):
+            print(f"UART Output: {self.memory[address]}")
 
     def run_instruction(self, instruction) -> InstructionResult:
         
@@ -116,15 +145,6 @@ class SimBa():
         elif op == "NEG_B":
             self.B_reg = -self.B_reg
 
-        elif op == "NEG_X":
-            self.X_reg = -self.X_reg
-
-        elif op == "NEG_RES":
-            self.RES_reg = -self.RES_reg
-
-        elif op == "NEG_RAM":
-            self.RAM_reg_in = -self.RAM_reg_in if self.RAM_reg_in is not None else None
-
         elif op == "MOV A A":
             self.A_reg = self.A_reg
         elif op == "MOV A B":
@@ -132,7 +152,8 @@ class SimBa():
         elif op == "MOV A X":
             self.A_reg = self.X_reg
         elif op == "MOV A RAM":
-            self.A_reg = self.RAM_reg_out
+            self.memory[self.addr] = self.A_reg
+            self.uart_print(self.addr)
         elif op == "MOV A RES":
             self.A_reg = self.RES_reg
 
@@ -143,7 +164,8 @@ class SimBa():
         elif op == "MOV B X":
             self.B_reg = self.X_reg
         elif op == "MOV B RAM":
-            self.B_reg = self.RAM_reg_out
+            self.memory[self.addr] = self.B_reg
+            self.uart_print(self.addr)
         elif op == "MOV B RES":
             self.B_reg = self.RES_reg
 
@@ -154,20 +176,22 @@ class SimBa():
         elif op == "MOV X X":
             self.X_reg = self.X_reg
         elif op == "MOV X RAM":
-            self.X_reg = self.RAM_reg_out
+            self.memory[self.addr] = self.X_reg
+            self.uart_print(self.addr)
         elif op == "MOV X RES":
             self.X_reg = self.RES_reg
 
         elif op == "MOV RAM A":
-            self.RAM_reg_in = self.A_reg
+            self.A_reg = self.memory[self.addr]
         elif op == "MOV RAM B":
-            self.RAM_reg_in = self.B_reg
+            self.B_reg = self.memory[self.addr]
         elif op == "MOV RAM X":
-            self.RAM_reg_in = self.X_reg
+            self.X_reg = self.memory[self.addr] 
         elif op == "MOV RAM RAM":
-            self.RAM_reg_in = self.RAM_reg_out
+            self.memory[self.addr] = self.memory[self.addr]
+            self.uart_print(self.addr)
         elif op == "MOV RAM RES":
-            self.RAM_reg_in = self.RES_reg
+            self.memory[self.addr] = self.RES_reg
 
         elif op == "MOV RES A":
             self.RES_reg = self.A_reg
@@ -176,7 +200,8 @@ class SimBa():
         elif op == "MOV RES X":
             self.RES_reg = self.X_reg
         elif op == "MOV RES RAM":
-            self.RES_reg = self.RAM_reg_out
+            self.memory[self.addr] = self.RES_reg  
+            self.uart_print(self.addr)          
         elif op == "MOV RES RES":
             self.RES_reg = self.RES_reg
 
@@ -187,7 +212,8 @@ class SimBa():
         elif op == "MOV ZERO X":
             self.X_reg = 0
         elif op == "MOV ZERO RAM":
-            self.RAM_reg_in = 0
+            self.memory[self.addr] = 0
+            self.uart_print(self.addr)
         elif op == "MOV ZERO RES":
             self.RES_reg = 0
 
@@ -198,7 +224,8 @@ class SimBa():
         elif op == "MOV ONE X":
             self.X_reg = 1
         elif op == "MOV ONE RAM":
-            self.RAM_reg_in = 1
+            self.memory[self.addr] = 1
+            self.uart_print(self.addr)
         elif op == "MOV ONE RES":
             self.RES_reg = 1
 
@@ -216,9 +243,13 @@ class SimBa():
             program_instruction = self.output_lines[self.PC]
             try:
                 result = self.run_instruction(program_instruction)
+                self.PC = self.PC + 1
+
+                if result.program_finished:
+                    break
 
             except Exception as e:
-                print(f"Error in program code in line: {self.PC}")
+                print(f"Error in program code in line {self.PC}. Error: {e}")
                 break
 
 if __name__ == "__main__":
@@ -235,4 +266,12 @@ if __name__ == "__main__":
                   ram_file_path=ram_file_path,
                   instruction_map_path=instruction_map_path)
     
-    print(simba.run_program(0))
+    simba.run_program(0)
+    simba.run_program(64)
+    simba.run_program(32)
+    simba.run_program(14)
+
+
+    # for i in simba.memory:
+    #     print(i)
+    # print(simba.memory[2])
