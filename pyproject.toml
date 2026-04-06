@@ -1,0 +1,16 @@
+[project]
+name = "FPGAir"
+version = "0.1.0"
+description = "Flying in the sky"
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "ruff"
+]
