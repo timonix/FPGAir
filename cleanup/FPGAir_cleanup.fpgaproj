@@ -14,9 +14,9 @@
   "Exclude": [
     "build"
   ],
-  "Loader": "Gowin",
+  "Loader": "openFpgaLoader",
   "Toolchain": "Gowin",
-  "TopEntity": "modules/temp_test.vhd",
+  "TopEntity": "modules/beagle_cpu/hw_test/consumate_top.vhd",
   "Fpga": "TangNano9K",
   "CompileExcluded": [
     "modules/mpu6050/hw_test/top_banana.vhd",

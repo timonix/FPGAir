@@ -1,4 +1,5 @@
 set_device GW1NR-LV9QN88PC6/I5 -name GW1NR-9C
+add_file modules/temp_test.vhd
 add_file packages/common_pkg.vhd
 add_file modules/beagle_cpu/beagle.vhd
 add_file modules/beagle_cpu/beagle_bus.vhd
@@ -20,7 +21,6 @@ add_file modules/radio/rtl/radio_channel.vhd
 add_file modules/reset/rtl/reset.vhd
 add_file modules/sequencer/rtl/sequencer.vhd
 add_file modules/uart_rx/hw_tb/tb_uart_rx_top.vhd
-add_fuke const/FPGAir.sdc
 add_file consumate_top.cst
 set_option -vhdl_std vhd2008
 set_option -verilog_std sysv2017

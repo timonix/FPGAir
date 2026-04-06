@@ -13,5 +13,6 @@
   "GowinSettingRwCheckOnRam": "true",
   "GowinSettingGenerateSdf": "false",
   "GowinSettingGeneratePostPlace": "false",
-  "GowinSettingGenerateTimingRpt": "false"
+  "GowinSettingGenerateTimingRpt": "false",
+  "openFpgaLoaderBitstreamFormat": "fs"
 }

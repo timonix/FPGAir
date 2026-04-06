@@ -175,8 +175,7 @@ begin
     generic map(
         frequency_mhz => frequency_mhz,
         boot_message => "hello",
-        num_bytes => 4,
-        buffer_size => 32
+        num_bytes => 4
     )
     port map(
         clk => clk,
