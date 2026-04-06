@@ -62,3 +62,4 @@ assembler/macro_build/
 _hdl_checker/
 
 /.venv
+uv.lock
