@@ -1,0 +1,17 @@
+{
+  "yosysToolchainYosysSynthTool": "synth_gowin",
+  "yosysToolchainNextPnrTool": "nextpnr-gowin",
+  "yosysToolchainPackTool": "gowin_pack",
+  "openFpgaLoaderBoard": "tangnano9k",
+  "gowinDevice": "GW1NR-LV9QN88PC6/I5",
+  "gowinDeviceName": "GW1NR-9C",
+  "gowinDeviceVersion": "C",
+  "GowinSettingVerilogStd": "sysv2017",
+  "GowinSettingVhdlStd": "vhd2008",
+  "GowinSettingUseMspiAsGpio": "false",
+  "GowinSettingUseSspiAsGpio": "false",
+  "GowinSettingRwCheckOnRam": "true",
+  "GowinSettingGenerateSdf": "false",
+  "GowinSettingGeneratePostPlace": "false",
+  "GowinSettingGenerateTimingRpt": "false"
+}

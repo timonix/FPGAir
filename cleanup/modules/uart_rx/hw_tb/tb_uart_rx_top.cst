@@ -1,0 +1,4 @@
+IO_LOC "clk" 52;
+IO_LOC "ext_rx" 18;
+IO_LOC "resetn" 3;
+IO_LOC "ext_led" 13;

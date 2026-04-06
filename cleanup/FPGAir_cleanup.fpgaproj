@@ -1,0 +1,37 @@
+{
+  "Include": [
+    "*.vhd",
+    "*.vhdl",
+    "*.v",
+    "*.vcd",
+    "vhdl_ls.toml",
+    "*.sdc",
+    "*.ghw",
+    "*.txt",
+    "*.rom",
+    "*.ram"
+  ],
+  "Exclude": [
+    "build"
+  ],
+  "Loader": "Gowin",
+  "Toolchain": "Gowin",
+  "TopEntity": "modules/beagle_cpu/hw_test/consumate_top.vhd",
+  "Fpga": "TangNano9K",
+  "CompileExcluded": [
+    "modules/mpu6050/hw_test/top_banana.vhd",
+    "modules/sequencer/tb/sequencer_tb.vhd",
+    "modules/eager_cpu/sim/eager_tb_pc.vhd",
+    "modules/data_unloader/tb_baud_timer.vhd",
+    "modules/data_unloader/tb_buffered_data_unloader.vhd"
+  ],
+  "TestBenches": [
+    "modules/eager_cpu/sim/eager_tb_pc.vhd",
+    "modules/beagle_cpu/sim/beagle_sim.vhd",
+    "modules/beagle_cpu/hw_test/balloon_top_tb.vhd",
+    "modules/uart_rx/sim/tb_uart_rx.vhd",
+    "modules/data_unloader/tb_baud_timer.vhd",
+    "modules/data_unloader/tb_buffered_data_unloader.vhd"
+  ],
+  "vhdlStandard": "08"
+}
