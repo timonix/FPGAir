@@ -49,6 +49,9 @@ mem_init/
 
 *.user
 *.cf
+assembler/metadata.txt
+assembler/output.rom
+assembler/ram.ram
 
 ## Python
 *__pycache__*

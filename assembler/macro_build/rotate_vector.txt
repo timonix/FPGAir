@@ -1,81 +1,68 @@
-label rotate_vector
-
-
-$VECTOR_X = 40
-$VECTOR_Y = 41
-$VECTOR_Z = 42
-
-$VECTOR_NEXT_X = 43
-$VECTOR_NEXT_Y = 44
-$VECTOR_NEXT_Z = 45
-
-$GYRO_X = 32
-$GYRO_Y = 33
-$GYRO_Z = 34
+LABEL ROTATE_VECTOR
 
 // --------------------
 
-// -- out_x = vec_x - vec_y X gyro_z + vec_z X gyro_y
-// -- out_y = vec_y - vec_z X gyro_x + vec_x X gyro_z
-// -- out_z = vec_z - vec_x X gyro_y + vec_y X gyro_x
+// -- OUT_X = VEC_X - VEC_Y X GYRO_Z + VEC_Z X GYRO_Y
+// -- OUT_Y = VEC_Y - VEC_Z X GYRO_X + VEC_X X GYRO_Z
+// -- OUT_Z = VEC_Z - VEC_X X GYRO_Y + VEC_Y X GYRO_X
 
-// ~~~ X ~~~ -- out_x = vec_x - vec_y X gyro_z + vec_z X gyro_y
+// ~~~ X ~~~ -- OUT_X = VEC_X - VEC_Y X GYRO_Z + VEC_Z X GYRO_Y
 LDADDR $GYRO_Z
-mov ram A
+MOV RAM A
 NEG_A
 LDADDR $VECTOR_Y
-mov ram X
+MOV RAM X
 LDADDR $VECTOR_X
-mov ram B
+MOV RAM B
 MULADD
-mov res B
+MOV RES B
 
 LDADDR $GYRO_Y
-mov ram A
+MOV RAM A
 LDADDR $VECTOR_Z
-mov ram X
+MOV RAM X
 MULADD
 LDADDR $VECTOR_NEXT_X
-mov res ram
+MOV RES RAM
 
 
-// ~~~ Y ~~~ -- out_y = vec_y - vec_z X gyro_x + vec_x X gyro_z
+// ~~~ Y ~~~ -- OUT_Y = VEC_Y - VEC_Z X GYRO_X + VEC_X X GYRO_Z
 LDADDR $GYRO_X
-mov ram A
+MOV RAM A
 NEG_A
 LDADDR $VECTOR_Z
-mov ram x
+MOV RAM X
 LDADDR $VECTOR_Y
-mov ram B
+MOV RAM B
 MULADD
-mov res B
+MOV RES B
 
 LDADDR $GYRO_Z
-mov ram A
+MOV RAM A
 LDADDR $VECTOR_X
-mov ram X
+MOV RAM X
 MULADD
 LDADDR $VECTOR_NEXT_Y
-mov res ram
+MOV RES RAM
 
 
-// ~~~ Z ~~~ -- out_z = vec_z - vec_x X gyro_y + vec_y X gyro_x
+// ~~~ Z ~~~ -- OUT_Z = VEC_Z - VEC_X X GYRO_Y + VEC_Y X GYRO_X
 LDADDR $GYRO_Y
-mov ram A
+MOV RAM A
 NEG_A
 LDADDR $VECTOR_X
-mov ram X
+MOV RAM X
 LDADDR $VECTOR_Z
-mov ram B
+MOV RAM B
 MULADD
-mov res B
+MOV RES B
 
 LDADDR $GYRO_X
-mov ram A
+MOV RAM A
 LDADDR $VECTOR_Y
-mov ram X
+MOV RAM X
 MULADD
 LDADDR $VECTOR_NEXT_Z
-mov res ram
+MOV RES RAM
 
 HALT

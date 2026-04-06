@@ -1,5 +1,18 @@
 label rotate_vector
 
+
+$VECTOR_X = 40
+$VECTOR_Y = 41
+$VECTOR_Z = 42
+
+$VECTOR_NEXT_X = 43
+$VECTOR_NEXT_Y = 44
+$VECTOR_NEXT_Z = 45
+
+$GYRO_X = 32
+$GYRO_Y = 33
+$GYRO_Z = 34
+
 // --------------------
 
 // -- out_x = vec_x - vec_y X gyro_z + vec_z X gyro_y
