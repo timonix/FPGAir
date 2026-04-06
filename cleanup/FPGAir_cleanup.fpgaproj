@@ -16,7 +16,7 @@
   ],
   "Loader": "Gowin",
   "Toolchain": "Gowin",
-  "TopEntity": "modules/beagle_cpu/hw_test/consumate_top.vhd",
+  "TopEntity": null,
   "Fpga": "TangNano9K",
   "CompileExcluded": [
     "modules/mpu6050/hw_test/top_banana.vhd",
@@ -31,7 +31,9 @@
     "modules/beagle_cpu/hw_test/balloon_top_tb.vhd",
     "modules/uart_rx/sim/tb_uart_rx.vhd",
     "modules/data_unloader/tb_baud_timer.vhd",
-    "modules/data_unloader/tb_buffered_data_unloader.vhd"
+    "modules/data_unloader/tb_buffered_data_unloader.vhd",
+    "modules/data_unloader/tb/tb_baud_timer.vhd",
+    "modules/data_unloader/tb/tb_buffered_data_unloader.vhd"
   ],
   "vhdlStandard": "08"
 }

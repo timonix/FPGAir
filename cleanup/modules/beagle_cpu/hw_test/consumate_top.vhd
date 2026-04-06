@@ -21,6 +21,8 @@ entity consumate_top is
         
         led_ext : out std_logic;
         
+        led_running : out std_logic;
+        
         tx_ext : out std_logic;
         rx_ext : in std_logic
         
@@ -82,6 +84,7 @@ begin
     end process;
     
     led_ext <= '0' when mpu_failure else '1';
+    led_running <= q_resetn;
     
     reset_sync_inst: entity work.reset_sync
     generic map(

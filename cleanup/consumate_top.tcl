@@ -20,6 +20,7 @@ add_file modules/radio/rtl/radio_channel.vhd
 add_file modules/reset/rtl/reset.vhd
 add_file modules/sequencer/rtl/sequencer.vhd
 add_file modules/uart_rx/hw_tb/tb_uart_rx_top.vhd
+add_fuke const/FPGAir.sdc
 add_file consumate_top.cst
 set_option -vhdl_std vhd2008
 set_option -verilog_std sysv2017
