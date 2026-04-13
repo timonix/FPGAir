@@ -20,62 +20,62 @@ $GYRO_Z = 34
 // -- out_z = vec_z - vec_x X gyro_y + vec_y X gyro_x
 
 // ~~~ X ~~~ -- out_x = vec_x - vec_y X gyro_z + vec_z X gyro_y
-LDADDR $GYRO_Z
+LD $GYRO_Z
 mov ram A
 NEG_A
-LDADDR $VECTOR_Y
+LD $VECTOR_Y
 mov ram X
-LDADDR $VECTOR_X
+LD $VECTOR_X
 mov ram B
 MULADD
 mov res B
 
-LDADDR $GYRO_Y
+LD $GYRO_Y
 mov ram A
-LDADDR $VECTOR_Z
+LD $VECTOR_Z
 mov ram X
 MULADD
-LDADDR $VECTOR_NEXT_X
+LD $VECTOR_NEXT_X
 mov res ram
 
 
 // ~~~ Y ~~~ -- out_y = vec_y - vec_z X gyro_x + vec_x X gyro_z
-LDADDR $GYRO_X
+LD $GYRO_X
 mov ram A
 NEG_A
-LDADDR $VECTOR_Z
+LD $VECTOR_Z
 mov ram x
-LDADDR $VECTOR_Y
+LD $VECTOR_Y
 mov ram B
 MULADD
 mov res B
 
-LDADDR $GYRO_Z
+LD $GYRO_Z
 mov ram A
-LDADDR $VECTOR_X
+LD $VECTOR_X
 mov ram X
 MULADD
-LDADDR $VECTOR_NEXT_Y
+LD $VECTOR_NEXT_Y
 mov res ram
 
 
 // ~~~ Z ~~~ -- out_z = vec_z - vec_x X gyro_y + vec_y X gyro_x
-LDADDR $GYRO_Y
+LD $GYRO_Y
 mov ram A
 NEG_A
-LDADDR $VECTOR_X
+LD $VECTOR_X
 mov ram X
-LDADDR $VECTOR_Z
+LD $VECTOR_Z
 mov ram B
 MULADD
 mov res B
 
-LDADDR $GYRO_X
+LD $GYRO_X
 mov ram A
-LDADDR $VECTOR_Y
+LD $VECTOR_Y
 mov ram X
 MULADD
-LDADDR $VECTOR_NEXT_Z
+LD $VECTOR_NEXT_Z
 mov res ram
 
 HALT

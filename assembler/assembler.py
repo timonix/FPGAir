@@ -143,6 +143,9 @@ def instruction_assembler(instruction : str):
     instruction_string = instruction.upper()
     instruction_string = instruction_string.replace("->", " ")
 
+    if "LDADDR" in instruction_string:
+        print("LDADDR is deprecated. Use LD $ instead.")
+
     if instruction_string in instruction_mapping:
         return instruction_mapping[instruction_string]
 

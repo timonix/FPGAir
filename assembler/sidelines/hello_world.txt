@@ -5,5 +5,5 @@ $UART = 127
 LD 'HELL
 MOV RAM->A
 
-LDADDR $UART
+LD $UART
 mov a ram

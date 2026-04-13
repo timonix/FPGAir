@@ -19,52 +19,52 @@ label scale_bias_mpu
 
 // --- Rotate and add bias to gyroscope --------------------
 
-LDADDR $GYRO_X_RAW
+LD $GYRO_X_RAW
 mov RAM A
 LD #GYRO_X_SCALE
 mov ram x
 LD #GYRO_X_BIAS
 mov ram B
 MULADD
-LDADDR $GYRO_X
+LD $GYRO_X
 mov res ram
 
-LDADDR $GYRO_Y_RAW
+LD $GYRO_Y_RAW
 mov RAM A
 LD #GYRO_Y_SCALE
 mov ram x
 LD #GYRO_Y_BIAS
 mov ram B
 MULADD
-LDADDR $GYRO_Y
+LD $GYRO_Y
 mov res ram
 
-LDADDR $GYRO_Z_RAW
+LD $GYRO_Z_RAW
 mov RAM A
 LD #GYRO_Z_SCALE
 mov ram x
 LD #GYRO_Z_BIAS
 mov ram B
 MULADD
-LDADDR $GYRO_Z
+LD $GYRO_Z
 mov res ram
 
 
 // --- Move raw acc to acc ------------------
 
-LDADDR $ACC_X
+LD $ACC_X
 mov ram A
-LDADDR $ACC_X_RAW
+LD $ACC_X_RAW
 mov a ram
 
-LDADDR $ACC_Y
+LD $ACC_Y
 mov ram A
-LDADDR $ACC_Y_RAW
+LD $ACC_Y_RAW
 mov a ram
 
-LDADDR $ACC_Z
+LD $ACC_Z
 mov ram A
-LDADDR $ACC_Z_RAW
+LD $ACC_Z_RAW
 mov a ram
 
 HALT

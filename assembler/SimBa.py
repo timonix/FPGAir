@@ -9,7 +9,8 @@
 # A, B, X, Res, Ram registers
 # PC - program counter
 
-# TODO: Troubleshoot: printout of Gyro not working.
+# TODO: Robot framework
+# TODO: Import hardware data
 # TODO: Add log of all the executed instructions and register/memory changes for debugging purposes. Maybe also add a "verbose" mode that prints this log to the console.
 # TODO: Make it possible to insert pre-set hardware data into the memory before running the program, to simulate sensor input. Maybe also add a "test case" mode that runs a predefined set of test cases with expected outputs for easier debugging.
 # TODO: Add a happy and sad Simba face at the end of the program to indicate success or failure of the program execution, based on whether it halts successfully or encounters an error.
@@ -62,6 +63,39 @@ class InstructionResult():
         return InstructionResult(program_finished=False, error=error_message)
 
 
+class DataLoader:
+    def __init__(self, csv_file_path, column_memory_map):
+        if not column_memory_map:
+            raise ValueError("DataLoader requires a non-empty column_memory_map")
+
+        self.data = []
+        with open(csv_file_path, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            self.fieldnames = reader.fieldnames
+            for row in reader:
+                self.data.append(row)
+
+        self.index = 0
+        self.column_memory_map = column_memory_map
+
+    def next_datapoint(self, simba):
+        if self.index >= len(self.data):
+            return False
+        row = self.data[self.index]
+
+        for col, addr in self.column_memory_map.items():
+            if col not in row:
+                continue
+            try:
+                value = int(row[col])
+                simba.memory[addr] = Word(value)
+            except ValueError:
+                pass
+
+        self.index += 1
+        return True
+
+
 class SimBa():
 
     def __init__(self, output_file_path, metadata_file_path, ram_file_path, instruction_map_path):
@@ -105,9 +139,24 @@ class SimBa():
                 binary, command = row[0].strip(), row[1].strip().upper()
                 self.instruction_map[binary] = command
 
+
     def uart_print(self, address):
         if address == int('1111111', 2):
-            print(f"UART Output: {self.memory[address]}")
+            print(f"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nUART Output: {self.memory[address]}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+
+    def print_instruction(self, instruction):
+        if instruction is None:
+            print("Instruction not found in list")
+            return
+        
+        print_prefix = f"\033[2m{self.PC} -> \033[22m"
+        
+        ram_val = self.memory[self.addr] if self.addr is not None else None
+        output = f"{instruction:<15} \033[20G | A: {self.A_reg} \033[35G | B: {self.B_reg} \033[50G | X: {self.X_reg} \033[65G | RES: {self.RES_reg} \033[80G | ADDR: {self.addr} \033[95G | RAM[{self.addr}]: {ram_val}"
+        
+        print(f"{print_prefix}{output}")
+
 
     def run_instruction(self, instruction) -> InstructionResult:
         
@@ -123,10 +172,12 @@ class SimBa():
         # LD: top bit indicates load-address, lower 7 bits are the address
         if instruction[0] == "1":
             self.addr = int(instruction[1:], 2)
+            self.print_instruction(f"LD {self.addr}")
             return InstructionResult.success()
 
         # Look up instruction name from preloaded map
         op = self.instruction_map.get(instruction)
+        
         if op is None:
             return InstructionResult.failed(error="Error: Instruction not found in list")
 
@@ -232,11 +283,12 @@ class SimBa():
         else:
             return InstructionResult.failed(error="Error: No instruction case executed")
 
+        self.print_instruction(op)
         return InstructionResult.success()
 
 
     def run_program(self, program_address):
-        print(f"Running program with address: {program_address}")
+        print(f"=================================\nRunning program with address: {program_address}\n=================================")
         self.PC = program_address
 
         while True:
@@ -249,7 +301,8 @@ class SimBa():
                     break
 
             except Exception as e:
-                print(f"Error in program code in line {self.PC}. Error: {e}")
+                print(f"🤬 Error in program code in line {self.PC}. Error: {e}")
+                print(f"Instruction: {program_instruction}, A: {self.A_reg}, B: {self.B_reg}, X: {self.X_reg}, RES: {self.RES_reg}, Addr: {self.addr}")
                 break
 
 if __name__ == "__main__":
