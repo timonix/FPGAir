@@ -170,12 +170,12 @@ class BeagleSim():
 
         # Must be an 8-bit binary string
         if not isinstance(instruction, str):
-            return InstructionResult.failed(error="Error: Input not a string")
+            return InstructionResult.failed("Error: Input not a string")
 
         instruction = instruction.strip()
 
         if len(instruction) != 8 or any(bit not in "01" for bit in instruction):
-            return InstructionResult.failed(error="Error: Wrong length or not binary")
+            return InstructionResult.failed("Error: Wrong length or not binary")
 
         # LD: top bit indicates load-address, lower 7 bits are the address
         if instruction[0] == "1":
@@ -187,7 +187,7 @@ class BeagleSim():
         op = self.instruction_map.get(instruction)
         
         if op is None:
-            return InstructionResult.failed(error="Error: Instruction not found in list")
+            return InstructionResult.failed("Error: Instruction not found in list")
 
         if op == "HALT":
             return InstructionResult.finished()
@@ -289,7 +289,7 @@ class BeagleSim():
             self.RES_reg = 1
 
         else:
-            return InstructionResult.failed(error="Error: No instruction case executed")
+            return InstructionResult.failed("Error: No instruction case executed")
 
         self.print_instruction(op)
         return InstructionResult.success()
@@ -312,6 +312,7 @@ class BeagleSim():
                 print(f"🤬 Error in program code in line {self.PC}. Error: {e}")
                 print(f"Instruction: {program_instruction}, A: {self.A_reg}, B: {self.B_reg}, X: {self.X_reg}, RES: {self.RES_reg}, Addr: {self.addr}")
                 break
+
 
 if __name__ == "__main__":
 

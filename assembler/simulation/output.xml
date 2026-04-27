@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.2 (Python 3.14.3 on win32)" generated="2026-04-27T20:54:17.311328" rpa="false" schemaversion="5">
+<suite id="s1" name="Mpu Tests" source="C:\Users\Tommy\VHDPlus\Projects\FPGAir\assembler\simulation\test cases\mpu_tests.robot">
+<test id="s1-t1" name="Get value at time returns expected values" line="5">
+<kw name="Get Value At Time" owner="SimBaLibrary">
+<msg time="2026-04-27T20:54:17.395684" level="INFO">${values} = [0.25, 0.25, 0.0]</msg>
+<var>${values}</var>
+<arg>0.5</arg>
+<doc>Get the simulated sensor values at time t.</doc>
+<status status="PASS" start="2026-04-27T20:54:17.395367" elapsed="0.000372"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2026-04-27T20:54:17.397007" level="INFO">Argument types are:
+&lt;class 'float'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${values[0]}</arg>
+<arg>0.25</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2026-04-27T20:54:17.396045" elapsed="0.001067"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2026-04-27T20:54:17.398946" level="INFO">Argument types are:
+&lt;class 'float'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${values[1]}</arg>
+<arg>0.25</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2026-04-27T20:54:17.397552" elapsed="0.001547"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2026-04-27T20:54:17.400441" level="INFO">Argument types are:
+&lt;class 'float'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${values[2]}</arg>
+<arg>0.0</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2026-04-27T20:54:17.399533" elapsed="0.001000"/>
+</kw>
+<status status="PASS" start="2026-04-27T20:54:17.394234" elapsed="0.006756"/>
+</test>
+<status status="PASS" start="2026-04-27T20:54:17.313624" elapsed="0.088328"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Mpu Tests" id="s1" pass="1" fail="0" skip="0">Mpu Tests</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
