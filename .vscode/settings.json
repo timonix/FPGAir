@@ -1,0 +1,10 @@
+{
+    "python.testing.pytestArgs": [
+        "--rootdir=.",
+        "--html=report.html",
+        "--self-contained-html"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+    
+}

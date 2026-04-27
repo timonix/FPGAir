@@ -9,6 +9,9 @@ impl/
 
 vhdl_ls.toml
 
+.coverage
+report.html
+
 ## MacOS
 .DS_Store
 
