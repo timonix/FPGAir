@@ -11,9 +11,11 @@
 
 # TODO: Robot framework
 # TODO: Import hardware data
+# TODO: simulate with time.
+# 
 # TODO: Add log of all the executed instructions and register/memory changes for debugging purposes. Maybe also add a "verbose" mode that prints this log to the console.
 # TODO: Make it possible to insert pre-set hardware data into the memory before running the program, to simulate sensor input. Maybe also add a "test case" mode that runs a predefined set of test cases with expected outputs for easier debugging.
-# TODO: Add a happy and sad Simba face at the end of the program to indicate success or failure of the program execution, based on whether it halts successfully or encounters an error.
+# TODO: Add a happy and sad sim face at the end of the program to indicate success or failure of the program execution, based on whether it halts successfully or encounters an error.
 
 from pathlib import Path
 import csv
@@ -78,7 +80,7 @@ class DataLoader:
         self.index = 0
         self.column_memory_map = column_memory_map
 
-    def next_datapoint(self, simba):
+    def next_datapoint(self, sim : BeagleSim):
         if self.index >= len(self.data):
             return False
         row = self.data[self.index]
@@ -88,7 +90,7 @@ class DataLoader:
                 continue
             try:
                 value = int(row[col])
-                simba.memory[addr] = Word(value)
+                sim.memory[addr] = Word(value)
             except ValueError:
                 pass
 
@@ -96,7 +98,7 @@ class DataLoader:
         return True
 
 
-class SimBa():
+class BeagleSim():
 
     def __init__(self, output_file_path, metadata_file_path, ram_file_path, instruction_map_path):
         self.RES_reg = None
@@ -109,8 +111,13 @@ class SimBa():
         self.memory = [None] * 128
 
         self.PC = None
+        self.cycles = 0
         
         self.read_files(output_file_path, metadata_file_path, ram_file_path, instruction_map_path)
+
+
+    def reset_cycles(self):
+        self.cycles = 0
 
 
     def read_files(self, output_file_path, metadata_file_path, ram_file_path, instruction_map_path):
@@ -159,7 +166,8 @@ class SimBa():
 
 
     def run_instruction(self, instruction) -> InstructionResult:
-        
+        self.cycles += 1
+
         # Must be an 8-bit binary string
         if not isinstance(instruction, str):
             return InstructionResult.failed(error="Error: Input not a string")
@@ -307,24 +315,25 @@ class SimBa():
 
 if __name__ == "__main__":
 
-    BASE_DIR = Path(__file__).parent
+    PARENT_DIR = Path(__file__).parent
 
-    output_file_path = BASE_DIR / "output.rom"
-    metadata_file_path = BASE_DIR / "metadata.txt"
-    ram_file_path = BASE_DIR / "ram.ram"
-    instruction_map_path = BASE_DIR / "instruction_map.csv"
+    PARENT_DIR = Path(__file__).parent.parent
+    output_file_path = PARENT_DIR / "output.rom"
+    metadata_file_path = PARENT_DIR / "metadata.txt"
+    ram_file_path = PARENT_DIR / "ram.ram"
+    instruction_map_path = PARENT_DIR / "instruction_map.csv"
 
-    simba = SimBa(output_file_path=output_file_path, 
+    beagle = BeagleSim(output_file_path=output_file_path, 
                   metadata_file_path=metadata_file_path, 
                   ram_file_path=ram_file_path,
                   instruction_map_path=instruction_map_path)
     
-    simba.run_program(0)
-    simba.run_program(64)
-    simba.run_program(32)
-    simba.run_program(14)
+    beagle.run_program(0)
+    beagle.run_program(64)
+    beagle.run_program(32)
+    beagle.run_program(14)
 
 
-    # for i in simba.memory:
+    # for i in sim.memory:
     #     print(i)
-    # print(simba.memory[2])
+    # print(sim.memory[2])
