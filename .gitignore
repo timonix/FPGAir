@@ -9,6 +9,8 @@ impl/
 
 vhdl_ls.toml
 
+*.log
+
 .coverage
 report.html
 
