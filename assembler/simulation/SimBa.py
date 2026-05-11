@@ -9,16 +9,13 @@
 # A, B, X, Res, Ram registers
 # PC - program counter
 
-# TODO: Robot framework
-# TODO: Import hardware data
-# TODO: simulate with time.
-# 
-# TODO: Add log of all the executed instructions and register/memory changes for debugging purposes. Maybe also add a "verbose" mode that prints this log to the console.
-# TODO: Make it possible to insert pre-set hardware data into the memory before running the program, to simulate sensor input. Maybe also add a "test case" mode that runs a predefined set of test cases with expected outputs for easier debugging.
-# TODO: Add a happy and sad sim face at the end of the program to indicate success or failure of the program execution, based on whether it halts successfully or encounters an error.
+ # TODO: Add a happy and sad sim face at the end of the program to indicate success or failure of the program execution, based on whether it halts successfully or encounters an error.
+# TODO: Comlimplentary filter assembly program
+
 
 from pathlib import Path
 import csv
+import logging
 from dataclasses import dataclass
 
 @dataclass
@@ -149,12 +146,12 @@ class BeagleSim():
 
     def uart_print(self, address):
         if address == int('1111111', 2):
-            print(f"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nUART Output: {self.memory[address]}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            logging.info(f"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nUART Output: {self.memory[address]}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 
     def print_instruction(self, instruction):
         if instruction is None:
-            print("Instruction not found in list")
+            logging.warning("Instruction not found in list")
             return
         
         print_prefix = f"\033[2m{self.PC} -> \033[22m"
@@ -162,7 +159,7 @@ class BeagleSim():
         ram_val = self.memory[self.addr] if self.addr is not None else None
         output = f"{instruction:<15} \033[20G | A: {self.A_reg} \033[35G | B: {self.B_reg} \033[50G | X: {self.X_reg} \033[65G | RES: {self.RES_reg} \033[80G | ADDR: {self.addr} \033[95G | RAM[{self.addr}]: {ram_val}"
         
-        print(f"{print_prefix}{output}")
+        logging.debug(f"{print_prefix}{output}")
 
 
     def run_instruction(self, instruction) -> InstructionResult:
@@ -196,7 +193,7 @@ class BeagleSim():
             return InstructionResult.success()
 
         elif op == "MULADD":
-            self.RES_reg = self.A_reg * self.B_reg + self.X_reg
+            self.RES_reg = self.A_reg * self.X_reg + self.B_reg
 
         elif op == "NEG_A":
             self.A_reg = -self.A_reg
@@ -295,8 +292,14 @@ class BeagleSim():
         return InstructionResult.success()
 
 
-    def run_program(self, program_address):
-        print(f"=================================\nRunning program with address: {program_address}\n=================================")
+    def run_program(self, program_name : str):
+        
+        for line in self.metadata_lines:
+            if program_name in line:
+                program_address = int(line.split()[1])
+                break
+        
+        logging.info(f"=================================\nRunning program with address: {program_address}\n=================================")
         self.PC = program_address
 
         while True:
@@ -309,12 +312,19 @@ class BeagleSim():
                     break
 
             except Exception as e:
-                print(f"🤬 Error in program code in line {self.PC}. Error: {e}")
-                print(f"Instruction: {program_instruction}, A: {self.A_reg}, B: {self.B_reg}, X: {self.X_reg}, RES: {self.RES_reg}, Addr: {self.addr}")
-                break
+                logging.error(f"🤬 Error in program code in line {self.PC}. Error: {e}")
+                logging.error(f"Instruction: {program_instruction}, A: {self.A_reg}, B: {self.B_reg}, X: {self.X_reg}, RES: {self.RES_reg}, Addr: {self.addr}")
+                raise e
 
 
 if __name__ == "__main__":
+    # Configure logging to file
+    logging.basicConfig(
+        filename='SimBa.log',
+        level=logging.DEBUG,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
 
     PARENT_DIR = Path(__file__).parent
 

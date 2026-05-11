@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
+from SimBa import Word
 
 class mpu6060Sim:
     Xaxis = 0
@@ -139,9 +140,9 @@ class mpu6060Sim:
         ax, ay, wx, wy, alphax, alphay = self._state(t)
 
         # Accelerometer in g
-        acc_x = self.L * alphax / self.g
-        acc_y = self.L * alphay / self.g
-        acc_z = 1.0 + self.L * (wx**2 + wy**2) / self.g
+        acc_x = np.sin(ax)
+        acc_y = np.sin(ay)
+        acc_z = np.cos(ax) * np.cos(ay) + self.L * (wx**2 + wy**2) / self.g
 
         # Gyro in deg/s
         gyro_x = np.degrees(wy)
@@ -149,12 +150,12 @@ class mpu6060Sim:
         gyro_z = 0.0
 
         return (
-            int(acc_x * self.ACC_SCALE),
-            int(acc_y * self.ACC_SCALE),
-            int(acc_z * self.ACC_SCALE),
-            int(gyro_x * self.GYRO_SCALE),
-            int(gyro_y * self.GYRO_SCALE),
-            int(gyro_z * self.GYRO_SCALE),
+            Word(int(acc_x * self.ACC_SCALE)),
+            Word(int(acc_y * self.ACC_SCALE)),
+            Word(int(acc_z * self.ACC_SCALE)),
+            Word(int(gyro_x * self.GYRO_SCALE)),
+            Word(int(gyro_y * self.GYRO_SCALE)),
+            Word(int(gyro_z * self.GYRO_SCALE)),
         )
 
     def drawGraphs(self, t0=0, t1=None, n=1000):
