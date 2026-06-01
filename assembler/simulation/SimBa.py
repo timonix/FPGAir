@@ -5,7 +5,7 @@
 # Send input in test case?
 # Test cases in general?
 
-# 128 memory area - 0-127
+# 64 internal RAM (0-63) + 64 external bus (64-127)
 # A, B, X, Res, Ram registers
 # PC - program counter
 
@@ -17,6 +17,16 @@ from pathlib import Path
 import csv
 import logging
 from dataclasses import dataclass
+
+REG_GYRO_X  = 64
+REG_GYRO_Y  = 65
+REG_GYRO_Z  = 66
+REG_ACC_X   = 67
+REG_ACC_Y   = 68
+REG_ACC_Z   = 69
+REG_TEMP    = 70
+REG_UART_RX = 126
+REG_UART_TX = 127
 
 @dataclass
 class Word():
@@ -87,7 +97,7 @@ class DataLoader:
                 continue
             try:
                 value = int(row[col])
-                sim.memory[addr] = Word(value)
+                sim.write_memory(addr, Word(value))
             except ValueError:
                 pass
 
@@ -105,13 +115,24 @@ class BeagleSim():
 
         self.addr = None
 
-        self.memory = [None] * 128
+        self.memory = [None] * 64
 
         self.PC = None
         self.cycles = 0
         
         self.read_files(output_file_path, metadata_file_path, ram_file_path, instruction_map_path)
 
+
+    def read_memory(self, addr):
+        if addr < 64:
+            return self.memory[addr]
+        return None
+
+    def write_memory(self, addr, value):
+        if addr < 64:
+            self.memory[addr] = value
+        elif addr == REG_UART_TX:
+            logging.info(f"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nUART Output: {value}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     def reset_cycles(self):
         self.cycles = 0
@@ -144,11 +165,6 @@ class BeagleSim():
                 self.instruction_map[binary] = command
 
 
-    def uart_print(self, address):
-        if address == int('1111111', 2):
-            logging.info(f"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nUART Output: {self.memory[address]}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
-
     def print_instruction(self, instruction):
         if instruction is None:
             logging.warning("Instruction not found in list")
@@ -156,7 +172,7 @@ class BeagleSim():
         
         print_prefix = f"\033[2m{self.PC} -> \033[22m"
         
-        ram_val = self.memory[self.addr] if self.addr is not None else None
+        ram_val = self.read_memory(self.addr) if self.addr is not None else None
         output = f"{instruction:<15} \033[20G | A: {self.A_reg} \033[35G | B: {self.B_reg} \033[50G | X: {self.X_reg} \033[65G | RES: {self.RES_reg} \033[80G | ADDR: {self.addr} \033[95G | RAM[{self.addr}]: {ram_val}"
         
         logging.debug(f"{print_prefix}{output}")
@@ -219,8 +235,7 @@ class BeagleSim():
         elif op == "MOV A X":
             self.X_reg = self.A_reg
         elif op == "MOV A RAM":
-            self.memory[self.addr] = self.A_reg
-            self.uart_print(self.addr)
+            self.write_memory(self.addr, self.A_reg)
 
         elif op == "MOV B A":
             self.A_reg = self.B_reg
@@ -229,8 +244,7 @@ class BeagleSim():
         elif op == "MOV B X":
             self.X_reg = self.B_reg
         elif op == "MOV B RAM":
-            self.memory[self.addr] = self.B_reg
-            self.uart_print(self.addr)
+            self.write_memory(self.addr, self.B_reg)
 
         elif op == "MOV X A":
             self.A_reg = self.X_reg
@@ -239,18 +253,16 @@ class BeagleSim():
         elif op == "MOV X X":
             self.X_reg = self.X_reg
         elif op == "MOV X RAM":
-            self.memory[self.addr] = self.X_reg
-            self.uart_print(self.addr)
+            self.write_memory(self.addr, self.X_reg)
 
         elif op == "MOV RAM A":
-            self.A_reg = self.memory[self.addr]
+            self.A_reg = self.read_memory(self.addr)
         elif op == "MOV RAM B":
-            self.B_reg = self.memory[self.addr]
+            self.B_reg = self.read_memory(self.addr)
         elif op == "MOV RAM X":
-            self.X_reg = self.memory[self.addr] 
+            self.X_reg = self.read_memory(self.addr)
         elif op == "MOV RAM RAM":
-            self.memory[self.addr] = self.memory[self.addr]
-            self.uart_print(self.addr)
+            self.write_memory(self.addr, self.read_memory(self.addr))
 
         elif op == "MOV RES A":
             self.A_reg = self.RES_reg
@@ -259,8 +271,7 @@ class BeagleSim():
         elif op == "MOV RES X":
             self.X_reg = self.RES_reg
         elif op == "MOV RES RAM":
-            self.memory[self.addr] = self.RES_reg  
-            self.uart_print(self.addr)          
+            self.write_memory(self.addr, self.RES_reg)
 
         elif op == "MOV ZERO A":
             self.A_reg = 0
@@ -269,8 +280,7 @@ class BeagleSim():
         elif op == "MOV ZERO X":
             self.X_reg = 0
         elif op == "MOV ZERO RAM":
-            self.memory[self.addr] = 0
-            self.uart_print(self.addr)
+            self.write_memory(self.addr, Word(0))
 
         elif op == "MOV ONE A":
             self.A_reg = 1
@@ -279,8 +289,7 @@ class BeagleSim():
         elif op == "MOV ONE X":
             self.X_reg = 1
         elif op == "MOV ONE RAM":
-            self.memory[self.addr] = 1
-            self.uart_print(self.addr)
+            self.write_memory(self.addr, Word(1))
 
         else:
             return InstructionResult.failed("Error: No instruction case executed")
