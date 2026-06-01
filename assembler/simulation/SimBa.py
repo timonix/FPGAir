@@ -221,8 +221,6 @@ class BeagleSim():
         elif op == "MOV A RAM":
             self.memory[self.addr] = self.A_reg
             self.uart_print(self.addr)
-        elif op == "MOV A RES":
-            self.A_reg = self.RES_reg
 
         elif op == "MOV B A":
             self.B_reg = self.A_reg
@@ -233,8 +231,6 @@ class BeagleSim():
         elif op == "MOV B RAM":
             self.memory[self.addr] = self.B_reg
             self.uart_print(self.addr)
-        elif op == "MOV B RES":
-            self.B_reg = self.RES_reg
 
         elif op == "MOV X A":
             self.X_reg = self.A_reg
@@ -245,8 +241,6 @@ class BeagleSim():
         elif op == "MOV X RAM":
             self.memory[self.addr] = self.X_reg
             self.uart_print(self.addr)
-        elif op == "MOV X RES":
-            self.X_reg = self.RES_reg
 
         elif op == "MOV RAM A":
             self.A_reg = self.memory[self.addr]
@@ -257,8 +251,6 @@ class BeagleSim():
         elif op == "MOV RAM RAM":
             self.memory[self.addr] = self.memory[self.addr]
             self.uart_print(self.addr)
-        elif op == "MOV RAM RES":
-            self.memory[self.addr] = self.RES_reg
 
         elif op == "MOV RES A":
             self.RES_reg = self.A_reg
@@ -269,8 +261,6 @@ class BeagleSim():
         elif op == "MOV RES RAM":
             self.memory[self.addr] = self.RES_reg  
             self.uart_print(self.addr)          
-        elif op == "MOV RES RES":
-            self.RES_reg = self.RES_reg
 
         elif op == "MOV ZERO A":
             self.A_reg = 0
@@ -281,8 +271,6 @@ class BeagleSim():
         elif op == "MOV ZERO RAM":
             self.memory[self.addr] = 0
             self.uart_print(self.addr)
-        elif op == "MOV ZERO RES":
-            self.RES_reg = 0
 
         elif op == "MOV ONE A":
             self.A_reg = 1
@@ -293,8 +281,6 @@ class BeagleSim():
         elif op == "MOV ONE RAM":
             self.memory[self.addr] = 1
             self.uart_print(self.addr)
-        elif op == "MOV ONE RES":
-            self.RES_reg = 1
 
         else:
             return InstructionResult.failed("Error: No instruction case executed")
