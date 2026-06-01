@@ -215,27 +215,27 @@ class BeagleSim():
         elif op == "MOV A A":
             self.A_reg = self.A_reg
         elif op == "MOV A B":
-            self.A_reg = self.B_reg
+            self.B_reg = self.A_reg
         elif op == "MOV A X":
-            self.A_reg = self.X_reg
+            self.X_reg = self.A_reg
         elif op == "MOV A RAM":
             self.memory[self.addr] = self.A_reg
             self.uart_print(self.addr)
 
         elif op == "MOV B A":
-            self.B_reg = self.A_reg
+            self.A_reg = self.B_reg
         elif op == "MOV B B":
             self.B_reg = self.B_reg
         elif op == "MOV B X":
-            self.B_reg = self.X_reg
+            self.X_reg = self.B_reg
         elif op == "MOV B RAM":
             self.memory[self.addr] = self.B_reg
             self.uart_print(self.addr)
 
         elif op == "MOV X A":
-            self.X_reg = self.A_reg
+            self.A_reg = self.X_reg
         elif op == "MOV X B":
-            self.X_reg = self.B_reg
+            self.B_reg = self.X_reg
         elif op == "MOV X X":
             self.X_reg = self.X_reg
         elif op == "MOV X RAM":
@@ -253,11 +253,11 @@ class BeagleSim():
             self.uart_print(self.addr)
 
         elif op == "MOV RES A":
-            self.RES_reg = self.A_reg
+            self.A_reg = self.RES_reg
         elif op == "MOV RES B":
-            self.RES_reg = self.B_reg
+            self.B_reg = self.RES_reg
         elif op == "MOV RES X":
-            self.RES_reg = self.X_reg
+            self.X_reg = self.RES_reg
         elif op == "MOV RES RAM":
             self.memory[self.addr] = self.RES_reg  
             self.uart_print(self.addr)          
