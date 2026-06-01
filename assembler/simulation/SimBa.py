@@ -201,6 +201,17 @@ class BeagleSim():
         elif op == "NEG_B":
             self.B_reg = -self.B_reg
 
+        elif op == "CLAMP":
+            x_val = self.X_reg.value if isinstance(self.X_reg, Word) else self.X_reg
+            a_val = self.A_reg.value if isinstance(self.A_reg, Word) else self.A_reg
+            b_val = self.B_reg.value if isinstance(self.B_reg, Word) else self.B_reg
+            if x_val < a_val:
+                self.RES_reg = self.A_reg
+            elif x_val > b_val:
+                self.RES_reg = self.B_reg
+            else:
+                self.RES_reg = self.X_reg
+
         elif op == "MOV A A":
             self.A_reg = self.A_reg
         elif op == "MOV A B":
